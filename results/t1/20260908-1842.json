@@ -1,0 +1,562 @@
+{
+  "track": "t1",
+  "run_at": "2026-09-08T18:42:36",
+  "parser": "textlayer-rules",
+  "evaluator": "field-match",
+  "ground_truth": "open.go.kr metadata.tsv (T1a) / 정답 없음 (T1b)",
+  "note": "결과에는 값(제목·이름)을 저장하지 않는다. 일치 여부·개수·직위만.",
+  "documents": [
+    {
+      "doc_id": "법무부_총무과-7941",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 0,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 0,
+          "협조": 0
+        },
+        "titles": [],
+        "has_text": false
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-5908",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        }
+      ],
+      "approval_line": {
+        "count": 0,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 0,
+          "협조": 0
+        },
+        "titles": [],
+        "has_text": false
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-6989",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": true,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.3333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "문서번호",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        }
+      ],
+      "approval_line": {
+        "count": 0,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 0,
+          "협조": 0
+        },
+        "titles": [],
+        "has_text": false
+      }
+    },
+    {
+      "doc_id": "기후에너지환경부_정보관리팀-995",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": true,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.3333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "문서번호",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        }
+      ],
+      "approval_line": {
+        "count": 0,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 0,
+          "협조": 0
+        },
+        "titles": [],
+        "has_text": false
+      }
+    },
+    {
+      "doc_id": "기후에너지환경부_생물소재활용과-1332",
+      "fields": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": true,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "제목",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산기관",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당부서",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "과장",
+          "부장",
+          "관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12039",
+      "fields": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": true,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "제목",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "문서번호",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "팀장",
+          "관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12016",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 1,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "과장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12012",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        }
+      ],
+      "approval_line": {
+        "count": 1,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "과장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "제주특별자치도_일자리에너지과-40914",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.3333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 0,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 0,
+          "협조": 0
+        },
+        "titles": [],
+        "has_text": false
+      }
+    },
+    {
+      "doc_id": "제주특별자치도_보건환경연구원-17732",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        },
+        {
+          "field": "담당자",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "부분일치(추출값이 정답보다 김)"
+        }
+      ],
+      "approval_line": {
+        "count": 0,
+        "roles": {
+          "기안": 0,
+          "검토": 0,
+          "결재": 0,
+          "협조": 0
+        },
+        "titles": [],
+        "has_text": false
+      }
+    }
+  ],
+  "summary": {
+    "documents": 10,
+    "field_accuracy_mean": 0.2167,
+    "by_field": {
+      "제목": 0.8,
+      "생산기관": 0.0,
+      "담당부서": 0.1,
+      "담당자": 0.0,
+      "생산일자": 0.4,
+      "문서번호": 0.0
+    },
+    "approval_line_text_docs": 4,
+    "title_histogram": {
+      "과장": 3,
+      "부장": 1,
+      "관장": 2,
+      "주무관": 1,
+      "팀장": 1
+    },
+    "elapsed_sec": 0.06
+  },
+  "skipped": []
+}

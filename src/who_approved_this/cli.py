@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import typer
 
-from who_approved_this.tracks import t4_gazette_ocr
+from who_approved_this.tracks import t1_approval_line, t4_gazette_ocr
 
 app = typer.Typer(
     help="who-approved-this — 공개 공공데이터 문서 파싱 벤치마크",
@@ -16,7 +16,7 @@ app = typer.Typer(
 )
 
 #: 트랙 이름 → 실행 함수. 트랙이 늘면 여기에 한 줄만 추가한다.
-TRACKS = {"t4": t4_gazette_ocr.run}
+TRACKS = {"t1": t1_approval_line.run, "t4": t4_gazette_ocr.run}
 
 
 @app.callback()
@@ -36,6 +36,10 @@ def run(
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
         raise typer.BadParameter(f"모르는 트랙: {track} (가능: {', '.join(TRACKS)})")
+
+    if track == "t1":
+        t1_approval_line.report(TRACKS[track](max_docs=docs))
+        return
 
     report = TRACKS[track](
         dpi=dpi, max_pages=pages, max_docs=docs, only=only, select=select
