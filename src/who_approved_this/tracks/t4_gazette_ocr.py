@@ -45,6 +45,7 @@ def run(
     max_pages: int | None = None,
     max_docs: int | None = None,
     only: str | None = None,
+    select: str = "first",
 ) -> dict[str, Any]:
     """T4를 collect → parse → evaluate 순서로 돌리고 결과 JSON을 남긴다.
 
@@ -54,14 +55,14 @@ def run(
     results_dir = track_results_dir(TRACK)
 
     collector = TextLayerCollector(
-        data_dir, max_pages=max_pages, max_docs=max_docs, only=only
+        data_dir, max_pages=max_pages, max_docs=max_docs, only=only, select=select
     )
     parser = AppleVisionOCRParser(render_root=data_dir / "rendered", dpi=dpi)
     evaluator = TextCEREvaluator()
 
     started = time.perf_counter()
     documents = [
-        _run_document(pdf_path, truth, parser, evaluator, max_pages)
+        _run_document(pdf_path, truth, parser, evaluator)
         for pdf_path, truth in collector.items()
     ]
     elapsed = time.perf_counter() - started
@@ -80,20 +81,24 @@ def run(
         "ground_truth": "pdf-text-layer(pymupdf)",
         "evaluator": evaluator.name,
         "normalization": evaluator.normalization,
+        "normalization_no_leader": evaluator.normalization_no_leader,
         "dpi": dpi,
         "max_pages": max_pages,
         "only": only,
+        "select": select,
         "documents": documents,
         "summary": {
             "documents": len(documents),
             "pages": sum(d["page_count"] for d in documents),
             "cer_mean": _mean(d["overall"]["cer"] for d in documents),
+            "cer_no_leader_mean": _mean(d["overall"]["cer_no_leader"] for d in documents),
             "cer_nospace_mean": _mean(d["overall"]["cer_nospace"] for d in documents),
+            "char_overlap_mean": _mean(d["overall"]["char_overlap"] for d in documents),
             "wer_mean": _mean(d["overall"]["wer"] for d in documents),
             "cer_raw_mean": _mean(d["overall"]["cer_raw"] for d in documents),
-            "wer_raw_mean": _mean(d["overall"]["wer_raw"] for d in documents),
             "elapsed_sec": round(elapsed, 2),
         },
+        "by_page_type": _by_page_type(documents),
         "skipped": [{"pdf": p.name, "reason": why} for p, why in collector.skipped],
     }
 
@@ -118,21 +123,22 @@ def _run_document(
     truth: dict[str, Any],
     parser: AppleVisionOCRParser,
     evaluator: TextCEREvaluator,
-    max_pages: int | None,
 ) -> dict[str, Any]:
     """문서 하나를 OCR·채점해 페이지별 점수와 문서 전체 점수를 돌려준다."""
+    numbers: list[int] = truth["page_numbers"]
+
     t0 = time.perf_counter()
-    ocr_pages = parser.parse_pages(pdf_path, max_pages=max_pages)
+    ocr_pages = parser.parse_pages(pdf_path, page_numbers=numbers)
     parse_sec = time.perf_counter() - t0
 
     ref_pages: list[str] = truth["pages"]
     pages: list[dict[str, Any]] = []
-    for n, (ref, hyp) in enumerate(zip(ref_pages, ocr_pages), start=1):
+    for n, stats, ref, hyp in zip(numbers, truth["page_stats"], ref_pages, ocr_pages):
         if not ref.strip():
             # 텍스트 레이어가 빈 페이지는 정답이 없으니 채점에서 뺀다.
-            pages.append({"page": n, "skipped": "텍스트 레이어 없음"})
+            pages.append({"page": n, **stats, "skipped": "텍스트 레이어 없음"})
             continue
-        pages.append({"page": n, **_round(evaluator.evaluate(hyp, {"text": ref}))})
+        pages.append({"page": n, **stats, **_round(evaluator.evaluate(hyp, {"text": ref}))})
 
     scored = [p for p in pages if "cer" in p]
     if not scored:
@@ -144,12 +150,36 @@ def _run_document(
     )
     return {
         "pdf": pdf_path.name,
+        "doc_pages": truth["doc_pages"],
         "page_count": len(ocr_pages),
         "scored_pages": len(scored),
+        "page_selection": truth["page_selection"],
         "pages": pages,
         "overall": _round(overall),
+        "by_page_type": _type_means(scored),
         "parse_sec": round(parse_sec, 2),
     }
+
+
+def _type_means(scored: list[dict[str, Any]]) -> dict[str, Any]:
+    """페이지 유형별 평균 지표. 목차 한 장이 평균을 끌고 가는 걸 막는다."""
+    out: dict[str, Any] = {}
+    for t in sorted({p["page_type"] for p in scored}):
+        rows = [p for p in scored if p["page_type"] == t]
+        out[t] = {
+            "pages": len(rows),
+            "cer": _mean(r["cer"] for r in rows),
+            "cer_no_leader": _mean(r["cer_no_leader"] for r in rows),
+            "cer_nospace": _mean(r["cer_nospace"] for r in rows),
+            "char_overlap": _mean(r["char_overlap"] for r in rows),
+        }
+    return out
+
+
+def _by_page_type(documents: list[dict[str, Any]]) -> dict[str, Any]:
+    """모든 문서의 채점된 페이지를 합쳐 유형별 평균을 낸다."""
+    scored = [p for d in documents for p in d["pages"] if "cer" in p]
+    return _type_means(scored)
 
 
 def _round(scores: dict[str, float]) -> dict[str, float]:

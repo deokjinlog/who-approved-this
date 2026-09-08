@@ -27,12 +27,14 @@ def render_pdf(
     pdf_path: Path,
     out_root: Path,
     dpi: int = DEFAULT_DPI,
-    max_pages: int | None = None,
+    page_numbers: list[int] | None = None,
 ) -> list[Path]:
-    """``pdf_path`` 를 ``dpi`` 로 렌더링하고 PNG 경로 목록을 돌려준다.
+    """``pdf_path`` 의 지정 페이지를 ``dpi`` 로 렌더링하고 PNG 경로 목록을 돌려준다.
 
     ``out_root`` 는 리포 밖 :data:`~who_approved_this.config.DATA_ROOT` 아래를 쓴다
-    (중간 산출물은 커밋하지 않는다). ``max_pages`` 를 주면 앞에서부터 그만큼만 그린다.
+    (중간 산출물은 커밋하지 않는다). ``page_numbers`` 는 **1부터 세는 페이지 번호**
+    목록이고, 생략하면 전체를 그린다. 파일명이 실제 페이지 번호를 쓰므로
+    띄엄띄엄 고른 페이지도 캐시가 그대로 맞는다.
     """
     out_dir = out_root / pdf_path.stem
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -40,11 +42,11 @@ def render_pdf(
     reusable = _marker_matches(out_dir, dpi)
     pngs: list[Path] = []
     with pymupdf.open(pdf_path) as doc:
-        limit = doc.page_count if max_pages is None else min(max_pages, doc.page_count)
-        for i in range(limit):
-            png = out_dir / f"p{i + 1}.png"
+        wanted = page_numbers if page_numbers is not None else range(1, doc.page_count + 1)
+        for n in wanted:
+            png = out_dir / f"p{n}.png"
             if not (reusable and png.exists()):
-                doc[i].get_pixmap(dpi=dpi).save(png)
+                doc[n - 1].get_pixmap(dpi=dpi).save(png)
             pngs.append(png)
 
     (out_dir / _MARKER).write_text(

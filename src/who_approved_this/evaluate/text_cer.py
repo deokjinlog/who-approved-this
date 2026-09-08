@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections import Counter
 from typing import Any
 
 import jiwer
@@ -43,8 +44,12 @@ _INTERPUNCTS = "·ᆞ•∙⋅・·‧"
 #: 점 3개 이상이 이어지면 내용이 아니라 목차 점선 리더로 본다.
 _LEADERS = re.compile(f"[{_INTERPUNCTS}\\s]*[{_INTERPUNCTS}]{{3,}}[{_INTERPUNCTS}\\s]*")
 
-#: 결과 JSON에 남길 정규화 방식 설명. 점수를 재현하려면 이게 같아야 한다.
-NORMALIZATION = "nfc + quotes + interpunct + leaders + whitespace-collapse"
+#: 기본 정규화. 리더 제거는 **포함하지 않는다** — 지표를 유리하게 만드는 조작이
+#: 기본값에 숨지 않도록, 리더를 뺀 값은 ``cer_no_leader`` 로 따로 기록한다.
+NORMALIZATION = "nfc + quotes + interpunct + whitespace-collapse"
+
+#: 리더 제거까지 적용한 정규화(``cer_no_leader`` 용).
+NORMALIZATION_NO_LEADER = NORMALIZATION + " + leaders-removed"
 
 
 def unify_punct(text: str) -> str:
@@ -61,16 +66,34 @@ def drop_leaders(text: str) -> str:
     return _LEADERS.sub(" ", text)
 
 
-def normalize(text: str) -> str:
-    """NFC → 부호 통일 → 점선 리더 제거 → 공백 압축 순으로 정리한다.
+def normalize(text: str, *, no_leader: bool = False) -> str:
+    """NFC → 부호 통일 → (선택) 리더 제거 → 공백 압축 순으로 정리한다.
 
     NFC는 한글 자모 분리(NFD) 표기를 완성형으로 모은다. macOS에서 섞여 들어오면
     글자는 같은데 코드포인트가 달라 CER이 부풀려진다.
+
+    ``no_leader=True`` 면 목차 점선 리더를 지운다. 기본값은 ``False`` — 리더도
+    정답에 있는 글자이므로, 지운 값은 별도 지표로만 보고한다.
     """
     out = unicodedata.normalize("NFC", text)
     out = unify_punct(out)
-    out = drop_leaders(out)
+    if no_leader:
+        out = drop_leaders(out)
     return _WS.sub(" ", out).strip()
+
+
+def char_overlap(ref: str, hyp: str) -> float:
+    """글자 다중집합 겹침 — 순서를 무시하고 "글자를 맞혔는지"만 본다.
+
+    ``|ref ∩ hyp| / |ref|`` (공백 제외). 1에 가까운데 CER이 높으면 글자는 맞고
+    **순서만 다르다**는 뜻이다. 읽는 순서가 성능과 무관한 과제(T1의 필드 추출처럼
+    어디서 뽑았든 값만 맞으면 되는 경우)에 CER보다 가까운 지표다.
+    """
+    ref_c, hyp_c = Counter(strip_spaces(ref)), Counter(strip_spaces(hyp))
+    total = sum(ref_c.values())
+    if not total:
+        return 0.0
+    return sum((ref_c & hyp_c).values()) / total
 
 
 def strip_spaces(text: str) -> str:
@@ -89,10 +112,13 @@ class TextCEREvaluator(Evaluator):
         * ``parsed: str`` — 파서가 돌려준 전문.
         * ``ground_truth: {"text": str}`` — 정답 전문.
     출력
-        ``{"cer", "wer", "cer_nospace", "cer_raw", "wer_raw", "ref_chars", "hyp_chars"}``.
+        ``{"cer", "wer", "cer_no_leader", "cer_nospace", "char_overlap",
+        "cer_raw", "wer_raw", "ref_chars", "hyp_chars"}``.
 
-        * ``cer`` / ``wer`` — :func:`normalize` 를 거친 값.
-        * ``cer_nospace`` — 거기서 공백까지 뺀 값. **한국어 OCR 정확도의 주 지표.**
+        * ``cer`` / ``wer`` — :func:`normalize` 기본값을 거친 값(리더 포함).
+        * ``cer_no_leader`` — 목차 점선 리더를 지우고 잰 값.
+        * ``cer_nospace`` — 공백까지 뺀 값. **한국어 OCR 정확도의 주 지표.**
+        * ``char_overlap`` — 순서를 무시한 글자 겹침(:func:`char_overlap`).
         * ``*_raw`` — 정규화하지 않은 원본끼리 잰 값. 정규화가 얼마나 덮었는지 보려고 함께 남긴다.
 
         WER은 공백으로 자르므로 한국어에서는 어절 단위이고, 띄어쓰기 변동에
@@ -103,6 +129,8 @@ class TextCEREvaluator(Evaluator):
 
     #: 결과표·JSON에 그대로 실리는 정규화 방식.
     normalization = NORMALIZATION
+    #: ``cer_no_leader`` 에 적용된 정규화 방식.
+    normalization_no_leader = NORMALIZATION_NO_LEADER
 
     def evaluate(
         self, parsed: str | dict[str, Any], ground_truth: dict[str, Any]
@@ -118,11 +146,15 @@ class TextCEREvaluator(Evaluator):
         if not ref:
             raise ValueError("정답 텍스트가 비어 있다")
 
+        ref_nl = normalize(ref_raw, no_leader=True)
+        hyp_nl = normalize(parsed, no_leader=True)
         ref_ns, hyp_ns = strip_spaces(ref), strip_spaces(hyp)
         return {
             "cer": float(jiwer.cer(ref, hyp)),
             "wer": float(jiwer.wer(ref, hyp)),
+            "cer_no_leader": float(jiwer.cer(ref_nl, hyp_nl)) if ref_nl else 0.0,
             "cer_nospace": float(jiwer.cer(ref_ns, hyp_ns)) if ref_ns else 0.0,
+            "char_overlap": float(char_overlap(ref, hyp)),
             "cer_raw": float(jiwer.cer(ref_raw, parsed)),
             "wer_raw": float(jiwer.wer(ref_raw, parsed)),
             "ref_chars": float(len(ref)),

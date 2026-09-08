@@ -54,11 +54,15 @@ class AppleVisionOCRParser(Parser):
         self.languages = languages or list(DEFAULT_LANGUAGES)
         self.name = f"apple-vision(ocrmac)@{dpi}dpi"
 
-    def parse(self, pdf_path: Path, max_pages: int | None = None) -> str:
+    def parse(self, pdf_path: Path, page_numbers: list[int] | None = None) -> str:
         """``pdf_path`` 를 렌더링·OCR한 전문을 돌려준다."""
-        return "\n\n".join(self.parse_pages(pdf_path, max_pages=max_pages))
+        return "\n\n".join(self.parse_pages(pdf_path, page_numbers=page_numbers))
 
-    def parse_pages(self, pdf_path: Path, max_pages: int | None = None) -> list[str]:
-        """페이지별 OCR 텍스트를 순서대로 돌려준다."""
-        pages = render_pdf(pdf_path, self.render_root, dpi=self.dpi, max_pages=max_pages)
+    def parse_pages(
+        self, pdf_path: Path, page_numbers: list[int] | None = None
+    ) -> list[str]:
+        """지정 페이지(1부터)의 OCR 텍스트를 순서대로 돌려준다."""
+        pages = render_pdf(
+            pdf_path, self.render_root, dpi=self.dpi, page_numbers=page_numbers
+        )
         return [ocr_image(p, self.languages) for p in pages]
