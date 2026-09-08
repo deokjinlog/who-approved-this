@@ -48,20 +48,23 @@ def run(
                 typer.echo(f"    p{page['page']}: 건너뜀 ({page['skipped']})")
                 continue
             typer.echo(
-                f"    p{page['page']}: CER {page['cer']:.4f} | WER {page['wer']:.4f}"
-                f"   (정규화 전 CER {page['cer_raw']:.4f} | WER {page['wer_raw']:.4f})"
-                f"  정답 {page['ref_chars']}자"
+                f"    p{page['page']}: CER {page['cer']:.4f} | 공백제외 {page['cer_nospace']:.4f}"
+                f" | WER {page['wer']:.4f}"
+                f"   (정규화 전 CER {page['cer_raw']:.4f})  정답 {page['ref_chars']}자"
             )
         overall = doc["overall"]
-        typer.echo(f"    = 문서 전체: CER {overall['cer']:.4f} | WER {overall['wer']:.4f}")
+        typer.echo(
+            f"    = 문서 전체: CER {overall['cer']:.4f} | 공백제외 {overall['cer_nospace']:.4f}"
+            f" | WER {overall['wer']:.4f} (정규화 전 CER {overall['cer_raw']:.4f})"
+        )
 
     for skip in report["skipped"]:
         typer.echo(f"  건너뜀: {skip['pdf']} ({skip['reason']})")
 
     typer.echo(
         f"  == 문서 {summary['documents']}건 / {summary['pages']}페이지 "
-        f"평균 CER {summary['cer_mean']:.4f} | WER {summary['wer_mean']:.4f} "
-        f"({summary['elapsed_sec']}s)"
+        f"평균 CER {summary['cer_mean']:.4f} | 공백제외 {summary['cer_nospace_mean']:.4f} "
+        f"| WER {summary['wer_mean']:.4f} ({summary['elapsed_sec']}s)"
     )
     typer.echo(f"  → {report['results_path']}")
 

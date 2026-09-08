@@ -88,6 +88,7 @@ def run(
             "documents": len(documents),
             "pages": sum(d["page_count"] for d in documents),
             "cer_mean": _mean(d["overall"]["cer"] for d in documents),
+            "cer_nospace_mean": _mean(d["overall"]["cer_nospace"] for d in documents),
             "wer_mean": _mean(d["overall"]["wer"] for d in documents),
             "cer_raw_mean": _mean(d["overall"]["cer_raw"] for d in documents),
             "wer_raw_mean": _mean(d["overall"]["wer_raw"] for d in documents),

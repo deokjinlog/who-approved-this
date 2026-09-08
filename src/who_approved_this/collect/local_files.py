@@ -86,7 +86,13 @@ class TextLayerCollector(Collector):
             yielded += 1
 
     def _page_texts(self, pdf_path: Path) -> list[str]:
-        """앞에서부터 :attr:`max_pages` 장의 텍스트 레이어를 페이지별로 읽는다."""
+        """앞에서부터 :attr:`max_pages` 장의 텍스트 레이어를 페이지별로 읽는다.
+
+        ``sort=True`` 로 **시각적 읽는 순서**(위→아래, 왼→오른쪽)를 쓴다.
+        pymupdf 의 기본값은 PDF 안에 그려진 블록 순서라 사람이 읽는 순서와 다르고,
+        OCR은 화면에 보이는 순서로 읽으므로 그대로 두면 글자를 다 맞혀도 순서 차이가
+        CER로 잡힌다. 실제로 제21317호 20페이지에서 이 한 줄이 CER 0.2755 → 0.1105 을 갈랐다.
+        """
         with pymupdf.open(pdf_path) as doc:
             limit = doc.page_count if self.max_pages is None else min(self.max_pages, doc.page_count)
-            return [doc[i].get_text() for i in range(limit)]
+            return [doc[i].get_text(sort=True) for i in range(limit)]
