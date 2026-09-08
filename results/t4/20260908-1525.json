@@ -1,0 +1,66 @@
+{
+  "track": "t4",
+  "run_at": "2026-09-08T15:25:25",
+  "ocr": "apple-vision(ocrmac)@200dpi",
+  "ground_truth": "pdf-text-layer(pymupdf)",
+  "evaluator": "text-cer",
+  "normalization": "unicode-nfc + whitespace-collapse + strip",
+  "dpi": 200,
+  "max_pages": 3,
+  "only": "21317",
+  "documents": [
+    {
+      "pdf": "제21317호_관보(정호)20260908.pdf",
+      "page_count": 3,
+      "scored_pages": 3,
+      "pages": [
+        {
+          "page": 1,
+          "cer": 0.6759,
+          "wer": 0.3885,
+          "cer_raw": 0.6822,
+          "wer_raw": 0.4222,
+          "ref_chars": 3690,
+          "hyp_chars": 1444
+        },
+        {
+          "page": 2,
+          "cer": 0.621,
+          "wer": 0.3508,
+          "cer_raw": 0.6304,
+          "wer_raw": 0.4791,
+          "ref_chars": 5560,
+          "hyp_chars": 2261
+        },
+        {
+          "page": 3,
+          "cer": 0.5025,
+          "wer": 0.3699,
+          "cer_raw": 0.5147,
+          "wer_raw": 0.4749,
+          "ref_chars": 4521,
+          "hyp_chars": 2428
+        }
+      ],
+      "overall": {
+        "cer": 0.5967,
+        "wer": 0.3678,
+        "cer_raw": 0.6061,
+        "wer_raw": 0.4623,
+        "ref_chars": 13773,
+        "hyp_chars": 6135
+      },
+      "parse_sec": 7.82
+    }
+  ],
+  "summary": {
+    "documents": 1,
+    "pages": 3,
+    "cer_mean": 0.5967,
+    "wer_mean": 0.3678,
+    "cer_raw_mean": 0.6061,
+    "wer_raw_mean": 0.4623,
+    "elapsed_sec": 7.87
+  },
+  "skipped": []
+}

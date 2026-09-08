@@ -1,0 +1,219 @@
+{
+  "track": "t4",
+  "run_at": "2026-09-08T15:32:38",
+  "ocr": "apple-vision(ocrmac)@200dpi",
+  "ground_truth": "pdf-text-layer(pymupdf)",
+  "evaluator": "text-cer",
+  "normalization": "unicode-nfc + whitespace-collapse + strip",
+  "dpi": 200,
+  "max_pages": 20,
+  "only": "21317",
+  "documents": [
+    {
+      "pdf": "제21317호_관보(정호)20260908.pdf",
+      "page_count": 20,
+      "scored_pages": 20,
+      "pages": [
+        {
+          "page": 1,
+          "cer": 0.6759,
+          "wer": 0.3885,
+          "cer_raw": 0.6822,
+          "wer_raw": 0.4222,
+          "ref_chars": 3690,
+          "hyp_chars": 1444
+        },
+        {
+          "page": 2,
+          "cer": 0.621,
+          "wer": 0.3508,
+          "cer_raw": 0.6304,
+          "wer_raw": 0.4791,
+          "ref_chars": 5560,
+          "hyp_chars": 2261
+        },
+        {
+          "page": 3,
+          "cer": 0.5025,
+          "wer": 0.3699,
+          "cer_raw": 0.5147,
+          "wer_raw": 0.4749,
+          "ref_chars": 4521,
+          "hyp_chars": 2428
+        },
+        {
+          "page": 4,
+          "cer": 0.4753,
+          "wer": 0.7028,
+          "cer_raw": 0.5056,
+          "wer_raw": 0.7,
+          "ref_chars": 831,
+          "hyp_chars": 744
+        },
+        {
+          "page": 5,
+          "cer": 0.4942,
+          "wer": 0.6818,
+          "cer_raw": 0.5129,
+          "wer_raw": 0.6613,
+          "ref_chars": 686,
+          "hyp_chars": 622
+        },
+        {
+          "page": 6,
+          "cer": 0.4724,
+          "wer": 0.8252,
+          "cer_raw": 0.5067,
+          "wer_raw": 0.9804,
+          "ref_chars": 1194,
+          "hyp_chars": 1077
+        },
+        {
+          "page": 7,
+          "cer": 0.1974,
+          "wer": 0.3896,
+          "cer_raw": 0.2508,
+          "wer_raw": 0.4211,
+          "ref_chars": 304,
+          "hyp_chars": 287
+        },
+        {
+          "page": 8,
+          "cer": 0.4,
+          "wer": 0.6491,
+          "cer_raw": 0.4271,
+          "wer_raw": 0.6604,
+          "ref_chars": 1440,
+          "hyp_chars": 1338
+        },
+        {
+          "page": 9,
+          "cer": 0.2121,
+          "wer": 0.4693,
+          "cer_raw": 0.2609,
+          "wer_raw": 0.5,
+          "ref_chars": 712,
+          "hyp_chars": 683
+        },
+        {
+          "page": 10,
+          "cer": 0.4495,
+          "wer": 0.6781,
+          "cer_raw": 0.4974,
+          "wer_raw": 0.6265,
+          "ref_chars": 1417,
+          "hyp_chars": 1257
+        },
+        {
+          "page": 11,
+          "cer": 0.1561,
+          "wer": 0.3394,
+          "cer_raw": 0.2142,
+          "wer_raw": 0.3812,
+          "ref_chars": 1403,
+          "hyp_chars": 1355
+        },
+        {
+          "page": 12,
+          "cer": 0.2462,
+          "wer": 0.5125,
+          "cer_raw": 0.3059,
+          "wer_raw": 0.5067,
+          "ref_chars": 1560,
+          "hyp_chars": 1452
+        },
+        {
+          "page": 13,
+          "cer": 0.2193,
+          "wer": 0.5273,
+          "cer_raw": 0.2724,
+          "wer_raw": 0.5931,
+          "ref_chars": 1049,
+          "hyp_chars": 1014
+        },
+        {
+          "page": 14,
+          "cer": 0.3485,
+          "wer": 0.6026,
+          "cer_raw": 0.3808,
+          "wer_raw": 0.6139,
+          "ref_chars": 1406,
+          "hyp_chars": 1323
+        },
+        {
+          "page": 15,
+          "cer": 0.2194,
+          "wer": 0.4024,
+          "cer_raw": 0.2806,
+          "wer_raw": 0.4821,
+          "ref_chars": 310,
+          "hyp_chars": 298
+        },
+        {
+          "page": 16,
+          "cer": 0.3136,
+          "wer": 0.5674,
+          "cer_raw": 0.34,
+          "wer_raw": 0.5573,
+          "ref_chars": 1371,
+          "hyp_chars": 1311
+        },
+        {
+          "page": 17,
+          "cer": 0.2193,
+          "wer": 0.4227,
+          "cer_raw": 0.2765,
+          "wer_raw": 0.4348,
+          "ref_chars": 374,
+          "hyp_chars": 358
+        },
+        {
+          "page": 18,
+          "cer": 0.3156,
+          "wer": 0.5503,
+          "cer_raw": 0.3483,
+          "wer_raw": 0.5544,
+          "ref_chars": 1451,
+          "hyp_chars": 1365
+        },
+        {
+          "page": 19,
+          "cer": 0.2733,
+          "wer": 0.4843,
+          "cer_raw": 0.3259,
+          "wer_raw": 0.4845,
+          "ref_chars": 1021,
+          "hyp_chars": 953
+        },
+        {
+          "page": 20,
+          "cer": 0.3049,
+          "wer": 0.5375,
+          "cer_raw": 0.3397,
+          "wer_raw": 0.5507,
+          "ref_chars": 1430,
+          "hyp_chars": 1341
+        }
+      ],
+      "overall": {
+        "cer": 0.4367,
+        "wer": 0.5343,
+        "cer_raw": 0.4624,
+        "wer_raw": 0.5481,
+        "ref_chars": 31749,
+        "hyp_chars": 22930
+      },
+      "parse_sec": 29.69
+    }
+  ],
+  "summary": {
+    "documents": 1,
+    "pages": 20,
+    "cer_mean": 0.4367,
+    "wer_mean": 0.5343,
+    "cer_raw_mean": 0.4624,
+    "wer_raw_mean": 0.5481,
+    "elapsed_sec": 29.92
+  },
+  "skipped": []
+}

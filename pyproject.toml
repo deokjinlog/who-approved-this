@@ -1,16 +1,23 @@
 [project]
-name = "public-doc-bench"
+name = "who-approved-this"
 version = "0.1.0"
-description = "Add your description here"
+description = "공개 공공데이터로 문서 파싱 정확도를 재는 벤치마크 파이프라인"
 readme = "README.md"
 authors = [
     { name = "최덕진", email = "djchoi@in4ucloud.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "jiwer>=4.0.0",
+    "ocrmac>=1.0.1",
+    "pillow>=12.3.0",
+    "pymupdf>=1.28.2",
+    "pyobjc-framework-vision>=12.2.2",
+    "typer>=0.27.2",
+]
 
 [project.scripts]
-public-doc-bench = "public_doc_bench:main"
+wat = "who_approved_this.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.12.8,<0.13.0"]
