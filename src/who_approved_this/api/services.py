@@ -16,7 +16,7 @@ import pymupdf
 from who_approved_this.config import track_data_dir
 from who_approved_this.tracks import t1c_approval_predict as t1c
 from who_approved_this.tracks import t1d_draft as t1d
-from who_approved_this.tracks.t1c_predictors import BaselineVote, LocalLLM
+from who_approved_this.tracks.t1c_predictors import BaselineVote, VoteTitlesLLMNames
 from who_approved_this.tracks.t1d_retrieval import (
     BM25Retriever,
     HybridRetriever,
@@ -38,6 +38,17 @@ def _docs() -> list[dict[str, Any]]:
     for d in docs:
         d["cells"] = cells.get(d["doc_id"], [])
     return docs
+
+
+@lru_cache(maxsize=1)
+def _gold_names() -> frozenset[str]:
+    """초안 컨텍스트에서 가릴 사람 이름(gold 명단)."""
+    return frozenset(
+        c["name"]
+        for d in _docs()
+        for c in d.get("cells", [])
+        if c.get("name") and c["name"] not in ("-", "?")
+    )
 
 
 @lru_cache(maxsize=1)
@@ -96,7 +107,9 @@ def predict_approval_line(
         for d in _docs()
         if d["org"] == org and d["cells"] and d["doc_id"] != exclude_doc_id
     ]
-    predictor = LocalLLM(LLM_MODEL) if LLM_MODEL else BaselineVote()
+    # 기본 예측기는 결합(규칙으로 뼈대, LLM 으로 이름). 12케이스 + 재표집 40회에서
+    # 직위·이름·칸수 모두 단독 방식보다 낫거나 같았다.
+    predictor = VoteTitlesLLMNames(LLM_MODEL) if LLM_MODEL else BaselineVote()
     target = {"제목": title, "body": body, "org": org}
     cells = predictor.predict(refs, target) if refs else []
     return {
@@ -118,15 +131,17 @@ def generate_draft(
     retriever = _retriever()
     hits = [
         (c, s)
-        for c, s in retriever.search(title, k=t1d.TOP_K * 3)
+        for c, s in retriever.search(title, k=t1d.TOP_K * 6)
         if c["doc_id"] != exclude_doc_id
     ][: t1d.TOP_K]
-    refs = [c for c, _ in hits[: t1d.CONTEXT_K]]
+    # 생성 컨텍스트는 같은 조직으로 제한한다(다른 기관 머리글이 초안에 복사되는 걸 막는다).
+    refs = [c for c, _ in hits if c["org"] == org][: t1d.CONTEXT_K]
 
     drafts: list[str] = []
     note = None
     if LLM_MODEL and refs:
-        prompt = t1d.build_prompt({"제목": title}, refs)
+        # 참고 본문의 사람 이름은 가린다(초안에 실명이 복사되지 않게).
+        prompt = t1d.build_prompt({"제목": title}, refs, set(_gold_names()))
         for temp in t1d.TEMPERATURES[:n]:
             drafts.append(t1d.generate(LLM_MODEL, prompt, temp))
     elif not LLM_MODEL:
@@ -138,6 +153,8 @@ def generate_draft(
         "retriever": retriever.name,
         "model": LLM_MODEL,
         "drafts": drafts,
+        "context_same_org_only": True,
+        "names_masked": bool(LLM_MODEL),
         "references": [
             {
                 "chunk_id": c["chunk_id"],

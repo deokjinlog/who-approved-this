@@ -53,6 +53,8 @@ class DraftResponse(BaseModel):
     model: str | None
     drafts: list[str]
     references: list[RetrievedChunk]
+    context_same_org_only: bool = True
+    names_masked: bool = False
     note: str | None = None
 
 

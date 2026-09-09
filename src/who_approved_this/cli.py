@@ -45,6 +45,7 @@ def run(
     model: str | None = typer.Option(None, "--model", help="t1c/t1d 에서 쓸 ollama 생성 모델"),
     embed_model: str | None = typer.Option(None, "--embed-model", help="t1d 임베딩 모델"),
     drafts: int = typer.Option(3, "--drafts", help="t1d 케이스당 초안 개수"),
+    resample: int = typer.Option(0, "--resample", help="t1c 재표집 검증 라운드 수"),
 ) -> None:
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
@@ -57,7 +58,9 @@ def run(
         return
 
     if track == "t1c":
-        t1c_approval_predict.report(TRACKS[track](model=model, max_docs=docs))
+        t1c_approval_predict.report(
+            TRACKS[track](model=model, max_docs=docs, resample=resample)
+        )
         return
 
     if track == "t1":

@@ -57,6 +57,12 @@ MIN_GROUP = 2
 #: 참고 문서를 몇 건까지 주는지 바꿔가며 재는 값("과거 몇 건이면 충분한가").
 REF_SWEEP = (1, 3, 7)
 
+#: 재표집 검증에서 한 대상에 대해 참고 문서 조합을 몇 번 바꿔 볼지.
+RESAMPLE_ROUNDS = 5
+
+#: 재표집에서 쓸 참고 문서 수(전체에서 이만큼 무작위로 고른다).
+RESAMPLE_REFS = 5
+
 
 def load_docs(data_dir: Path) -> list[dict[str, Any]]:
     """PDF 본문(텍스트 레이어)과 gold 결재선을 문서별로 모은다."""
@@ -95,7 +101,11 @@ def groups_of(docs: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     return {k: v for k, v in out.items() if len(v) >= MIN_GROUP}
 
 
-def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]:
+def run(
+    model: str | None = None,
+    max_docs: int | None = None,
+    resample: int = 0,
+) -> dict[str, Any]:
     """T1c를 돌리고 결과 JSON을 남긴다. ``model`` 을 주면 llm_local 도 함께 돈다."""
     data_dir = track_data_dir("t1")
     results_dir = track_results_dir(TRACK)
@@ -156,6 +166,11 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
         }
 
     sweep = _ref_sweep(groups, evaluator)
+    robustness = (
+        _robustness(groups, evaluator, model, resample)
+        if resample and model
+        else {"skipped": "재표집 미실행"}
+    )
 
     now = datetime.now()
     report = {
@@ -169,6 +184,7 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
         "groups": {g: len(v) for g, v in sorted(groups.items())},
         "predictors": results,
         "ref_sweep": sweep,
+        "robustness": robustness,
         "elapsed_sec": round(time.perf_counter() - started, 2),
     }
     out_path = results_dir / f"{now:%Y%m%d-%H%M}.json"
@@ -222,6 +238,93 @@ def _recent_first_docs(docs: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(
         docs, key=lambda d: (d.get("생산일자", ""), d.get("문서번호", "")), reverse=True
     )
+
+
+def _robustness(
+    groups: dict[str, list[dict[str, Any]]],
+    evaluator: ApprovalMatchEvaluator,
+    model: str,
+    rounds: int = RESAMPLE_ROUNDS,
+) -> dict[str, Any]:
+    """참고 문서 **조합을 바꿔가며** 세 예측기를 다시 재는 재표집 검증.
+
+    새 문서를 더 모은 게 아니라 **같은 데이터에서 측정 지점을 늘린 것**이다.
+    독립 표본이 아니므로 신뢰구간으로 쓸 수 없고, "이 우열이 참고 문서 조합에
+    따라 뒤집히는가"만 본다. 뒤집히면 12케이스 결과는 우연이었다는 뜻이다.
+
+    참고를 넉넉히 줄 수 있는 묶음(문서 6건 이상)만 대상으로 한다.
+    """
+    import random
+
+    eligible = {k: v for k, v in groups.items() if len(v) - 1 >= RESAMPLE_REFS}
+    if not eligible:
+        return {"skipped": f"참고 {RESAMPLE_REFS}건을 줄 수 있는 묶음이 없다"}
+
+    rng = random.Random(20260909)
+    rows: dict[str, list[dict[str, float]]] = {}
+    for round_no in range(rounds):
+        for name, make in (
+            ("baseline_vote", lambda: BaselineVote()),
+            ("llm_local", lambda: LocalLLM(model)),
+            ("vote_titles+llm_names", lambda: VoteTitlesLLMNames(model)),
+        ):
+            rows.setdefault(name, [])
+        for group, members in sorted(eligible.items()):
+            for target in members:
+                pool = [d for d in members if d["doc_id"] != target["doc_id"]]
+                refs = rng.sample(pool, RESAMPLE_REFS)
+                for name, predictor in (
+                    ("baseline_vote", BaselineVote()),
+                    ("llm_local", LocalLLM(model)),
+                    ("vote_titles+llm_names", VoteTitlesLLMNames(model)),
+                ):
+                    sc = evaluator.evaluate({"cells": predictor.predict(refs, target)}, target)
+                    rows[name].append(
+                        {
+                            "round": float(round_no),
+                            "title": sc["title_accuracy"],
+                            "name": sc["name_accuracy"],
+                        }
+                    )
+
+    out: dict[str, Any] = {
+        "groups": sorted(eligible),
+        "rounds": rounds,
+        "refs_per_round": RESAMPLE_REFS,
+        "measurements_per_predictor": len(next(iter(rows.values()))),
+        "by_predictor": {},
+    }
+    for name, vals in rows.items():
+        n = len(vals) or 1
+        out["by_predictor"][name] = {
+            "title_mean": round(sum(v["title"] for v in vals) / n, 4),
+            "name_mean": round(sum(v["name"] for v in vals) / n, 4),
+        }
+
+    # 라운드별로 결합이 두 단독을 이겼는지 세어 본다(우열이 뒤집히는지).
+    per_round: list[dict[str, Any]] = []
+    for r in range(rounds):
+        pick = lambda k: [v for v in rows[k] if v["round"] == r]
+        combo, vote, llm = pick("vote_titles+llm_names"), pick("baseline_vote"), pick("llm_local")
+        m = lambda vs, f: sum(v[f] for v in vs) / max(len(vs), 1)
+        per_round.append(
+            {
+                "round": r,
+                "combo_name": round(m(combo, "name"), 4),
+                "vote_name": round(m(vote, "name"), 4),
+                "llm_name": round(m(llm, "name"), 4),
+                "combo_title": round(m(combo, "title"), 4),
+                "vote_title": round(m(vote, "title"), 4),
+                "combo_beats_both_on_name": bool(
+                    m(combo, "name") >= m(vote, "name") and m(combo, "name") >= m(llm, "name")
+                ),
+            }
+        )
+    out["per_round"] = per_round
+    out["rounds_combo_best_on_name"] = sum(
+        1 for r in per_round if r["combo_beats_both_on_name"]
+    )
+    return out
 
 
 def _summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
@@ -281,6 +384,20 @@ def report(rep: dict[str, Any]) -> None:
                 f" | 이름 {s['name_accuracy_mean']:6.1%}"
                 f" | 칸수 {s['cell_count_match_mean']:6.1%}  ({s['cases']}케이스)"
             )
+
+    rb = rep.get("robustness", {})
+    if "by_predictor" in rb:
+        typer.echo("")
+        typer.echo(
+            f"  재표집 검증 — {', '.join(rb['groups'])}, 참고 {rb['refs_per_round']}건을"
+            f" {rb['rounds']}라운드 무작위 재추출 (예측기당 {rb['measurements_per_predictor']}회 측정)"
+        )
+        for name, m in rb["by_predictor"].items():
+            typer.echo(f"    {name:24} 직위 {m['title_mean']:6.1%} | 이름 {m['name_mean']:6.1%}")
+        typer.echo(
+            f"    → 결합이 이름에서 두 단독을 모두 이긴 라운드: "
+            f"{rb['rounds_combo_best_on_name']}/{rb['rounds']}"
+        )
 
     typer.echo("")
     typer.echo(f"  → {rep['results_path']}  ({rep['elapsed_sec']}s)")
