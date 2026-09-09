@@ -12,6 +12,7 @@ from who_approved_this.tracks import (
     t1_approval_line,
     t1c_approval_predict,
     t1d_draft,
+    t5_gazette_summary,
     t4_gazette_ocr,
 )
 
@@ -26,6 +27,7 @@ TRACKS = {
     "t1c": t1c_approval_predict.run,
     "t1d": t1d_draft.run,
     "t4": t4_gazette_ocr.run,
+    "t5": t5_gazette_summary.run,
 }
 
 
@@ -50,6 +52,12 @@ def run(
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
         raise typer.BadParameter(f"모르는 트랙: {track} (가능: {', '.join(TRACKS)})")
+
+    if track == "t5":
+        t5_gazette_summary.report(
+            TRACKS[track](model=model, embed_model=embed_model, sample=docs or 24)
+        )
+        return
 
     if track == "t1d":
         t1d_draft.report(
