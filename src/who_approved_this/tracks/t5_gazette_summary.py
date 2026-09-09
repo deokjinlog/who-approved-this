@@ -52,6 +52,29 @@ MIN_BODY = 300
 #: 요약 표본 크기. 268건 전부 LLM 을 돌리면 오래 걸려, 종류별로 고르게 뽑는다.
 SAMPLE_N = 24
 
+#: 자연어 질문 생성 프롬프트. **제명의 낱말을 그대로 쓰지 말라**고 지시하는 게 핵심이다.
+#: 실제 사용자는 공식 제명을 외워서 치지 않는다. 어휘가 겹치지 않는 질문에서도
+#: 검색이 원 문서를 찾아내는지가 진짜 성능이다.
+QUESTION_SYSTEM = """너는 관보를 찾아보는 공무원이다. 아래 안건 본문을 보고,
+그 안건을 찾으려 할 때 검색창에 칠 법한 **자연어 질문 한 개**를 만든다.
+
+규칙:
+- 공식 제명이나 법령 이름을 그대로 쓰지 않는다. 무엇이 궁금한지를 일상어로 쓴다.
+- 한 문장, 40자 이내.
+- 본문에 없는 내용을 묻지 않는다.
+
+출력은 질문 한 줄만."""
+
+#: 검색된 근거로 질문에 답하는 프롬프트.
+ANSWER_SYSTEM = """너는 관보 검색 도우미다. 아래 검색된 관보 안건들을 근거로 질문에 답한다.
+
+규칙:
+- 근거에 있는 내용만 쓴다. 조문 번호·날짜·금액을 지어내지 않는다.
+- 근거로 답할 수 없으면 "제공된 자료로는 확인되지 않습니다" 라고만 쓴다.
+- 3문장 이내.
+
+출력은 답변만."""
+
 SYSTEM = """너는 한국 행정문서 요약자다. 관보에 실린 안건 하나를 요약한다.
 
 규칙:
@@ -100,6 +123,7 @@ def run(
     model: str | None = None,
     embed_model: str | None = None,
     sample: int = SAMPLE_N,
+    qa: bool = False,
 ) -> dict[str, Any]:
     """T5를 돌린다. ``model`` 이 없으면 검색까지만."""
     data_dir = track_data_dir("t4")  # 관보는 T4 가 쓰는 디렉터리에 있다
@@ -144,6 +168,12 @@ def run(
     if model:
         summary_block = _summarize_all(model, targets)
 
+    qa_block: dict[str, Any] = {"skipped": "미실행"}
+    if qa and model:
+        qa_block = _run_qa(
+            model, retrievers, targets, track_data_dir(TRACK) / "questions.json"
+        )
+
     now = datetime.now()
     report = {
         "track": TRACK,
@@ -158,6 +188,7 @@ def run(
         "model": model,
         "retrieval": retrieval,
         "summary": summary_block,
+        "qa": qa_block,
         "note": "결과에는 제명·본문을 담지 않는다. 점수만.",
         "elapsed_sec": round(time.perf_counter() - started, 2),
     }
@@ -217,6 +248,118 @@ def _summarize_all(model: str, targets: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _make_questions(model: str, targets: list[dict[str, Any]], cache: Any) -> list[str]:
+    """안건마다 자연어 질문을 하나씩 만든다. 만든 질문은 캐시에 저장해 재사용한다."""
+    import json as _json
+
+    saved: dict[str, str] = {}
+    if cache.is_file():
+        saved = _json.loads(cache.read_text(encoding="utf-8"))
+
+    questions: list[str] = []
+    for item in targets:
+        key = item["item_id"]
+        if key not in saved:
+            prompt = (
+                f"{QUESTION_SYSTEM}\n\n# 안건 본문\n\n{item['body'][:2000]}\n\n질문:"
+            )
+            raw = ollama_generate(model, prompt, temperature=0.3, timeout=180) or ""
+            text = _THINK_BLOCK.sub("", raw).strip().splitlines()
+            saved[key] = (text[0].strip() if text else "").strip('"').strip()
+        questions.append(saved[key])
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(_json.dumps(saved, ensure_ascii=False, indent=2), encoding="utf-8")
+    return questions
+
+
+def _lexical_overlap(question: str, title: str) -> float:
+    """질문과 공식 제명의 낱말 겹침. 0에 가까울수록 '어휘가 다른 질문'이다."""
+    qa = set(re.findall(r"[가-힣]{2,}", question))
+    tb = set(re.findall(r"[가-힣]{2,}", title))
+    return len(qa & tb) / len(tb) if tb else 0.0
+
+
+def _run_qa(
+    model: str,
+    retrievers: list[Any],
+    targets: list[dict[str, Any]],
+    cache: Any,
+) -> dict[str, Any]:
+    """자연어 질문으로 검색하고 답변까지 만든다.
+
+    제명으로 질의하는 건 실제 사용 상황이 아니다. 사용자는 공식 제명을 모른 채
+    일상어로 묻는다. 그 조건에서 검색이 원 안건을 찾아내는지가 진짜 성능이다.
+    """
+    t0 = time.perf_counter()
+    questions = _make_questions(model, targets, cache)
+    pairs = [(q, it) for q, it in zip(questions, targets) if q]
+
+    overlap = (
+        sum(_lexical_overlap(q, it["title"]) for q, it in pairs) / len(pairs)
+        if pairs
+        else 0.0
+    )
+
+    retrieval: dict[str, Any] = {}
+    for retriever in retrievers:
+        at1 = at3 = 0
+        for q, item in pairs:
+            ids = [c["chunk_id"] for c, _ in retriever.search(q, k=3)]
+            at1 += int(bool(ids) and ids[0] == item["item_id"])
+            at3 += int(item["item_id"] in ids)
+        n = len(pairs) or 1
+        retrieval[retriever.name] = {
+            "self_at1": round(at1 / n, 3),
+            "self_at3": round(at3 / n, 3),
+        }
+
+    # 답변 생성은 가장 나은 검색기 하나로만 한다.
+    best = retrievers[-1]
+    evaluator = SummaryMatchEvaluator()
+    answers: list[dict[str, Any]] = []
+    for q, item in pairs:
+        hits = best.search(q, k=3)
+        evidence = "\n\n".join(
+            f"[근거 {i}] {c['text'][:1200]}" for i, (c, _) in enumerate(hits, start=1)
+        )
+        prompt = f"{ANSWER_SYSTEM}\n\n# 검색된 근거\n\n{evidence}\n\n# 질문\n\n{q}\n\n답변:"
+        raw = ollama_generate(model, prompt, temperature=0.2, timeout=300) or ""
+        text = _THINK_BLOCK.sub("", raw).strip()
+        sc = evaluator.evaluate(text, {"title": item["title"], "body": evidence})
+        answers.append(
+            {
+                "item_id": item["item_id"],
+                "kind": item["kind"],
+                "target_in_evidence": item["item_id"] in [c["chunk_id"] for c, _ in hits],
+                "grounded_ratio": round(sc["grounded_ratio"], 4),
+                "numbers_total": int(sc["numbers_total"]),
+                "numbers_grounded": int(sc["numbers_grounded"]),
+                "answer_chars": int(sc["summary_chars"]),
+                "refused": "확인되지 않습니다" in text,
+            }
+        )
+
+    n = len(answers) or 1
+    return {
+        "questions": len(pairs),
+        "lexical_overlap_mean": round(overlap, 4),
+        "retrieval": retrieval,
+        "answer": {
+            "target_in_evidence_rate": round(
+                sum(a["target_in_evidence"] for a in answers) / n, 3
+            ),
+            "grounded_ratio_mean": round(sum(a["grounded_ratio"] for a in answers) / n, 4),
+            "numbers_total": int(sum(a["numbers_total"] for a in answers)),
+            "numbers_grounded": int(sum(a["numbers_grounded"] for a in answers)),
+            "refused": sum(1 for a in answers if a["refused"]),
+            "answer_chars_mean": round(sum(a["answer_chars"] for a in answers) / n, 1),
+        },
+        "cases": answers,
+        "elapsed_sec": round(time.perf_counter() - t0, 2),
+        "question_cache": str(cache),
+    }
+
+
 def report(rep: dict[str, Any]) -> None:
     """콘솔 출력. 제명·본문은 찍지 않는다."""
     typer.echo(f"[t5] {rep['source']}")
@@ -257,5 +400,25 @@ def report(rep: dict[str, Any]) -> None:
     else:
         typer.echo("")
         typer.echo(f"  요약: {s.get('skipped', '미실행')}")
+    q = rep.get("qa", {})
+    if "retrieval" in q:
+        a = q["answer"]
+        typer.echo("")
+        typer.echo(
+            f"  질의응답 RAG — 자연어 질문 {q['questions']}개"
+            f" (제명과 낱말 겹침 {q['lexical_overlap_mean']:.1%})"
+        )
+        typer.echo(f"    {'방식':10} {'top-1':>7} {'top-3':>7}")
+        for name, m in q["retrieval"].items():
+            typer.echo(f"    {name:10} {m['self_at1']:6.1%} {m['self_at3']:6.1%}")
+        typer.echo(
+            f"    정답 안건이 근거에 포함된 비율 {a['target_in_evidence_rate']:.1%}"
+        )
+        typer.echo(
+            f"    답변 숫자 근거율 {a['grounded_ratio_mean']:.1%}"
+            f"  ({a['numbers_grounded']}/{a['numbers_total']})"
+            f" | 평균 {a['answer_chars_mean']:.0f}자 | 거절 {a['refused']}건"
+        )
+
     typer.echo("")
     typer.echo(f"  → {rep['results_path']}  ({rep['elapsed_sec']}s)")

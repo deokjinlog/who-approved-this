@@ -1,0 +1,706 @@
+{
+  "track": "t5",
+  "run_at": "2026-09-09T18:42:15",
+  "source": "관보 (gwanbo.go.kr) — 목차가 정답 제명과 시작 페이지를 준다",
+  "issues": [
+    "제21315호_관보(정호)20260904",
+    "제21316호_관보(정호)20260907",
+    "제21317호_관보(정호)20260908"
+  ],
+  "items_total": 268,
+  "items_indexed": 268,
+  "kinds": {
+    "대통령령": 23,
+    "부령": 4,
+    "고시": 106,
+    "공고": 103,
+    "규칙": 1,
+    "법률": 29,
+    "총리령": 2
+  },
+  "sample": 24,
+  "embed_model": "bge-m3",
+  "model": "qwen3:8b",
+  "retrieval": {
+    "bm25": {
+      "cases": 24,
+      "self_at1": 0.75,
+      "self_at3": 0.917,
+      "same_kind_at3": 1.0,
+      "elapsed_sec": 0.03
+    },
+    "vector": {
+      "cases": 24,
+      "self_at1": 0.792,
+      "self_at3": 0.917,
+      "same_kind_at3": 1.0,
+      "elapsed_sec": 0.6
+    },
+    "hybrid": {
+      "cases": 24,
+      "self_at1": 0.792,
+      "self_at3": 0.917,
+      "same_kind_at3": 1.0,
+      "elapsed_sec": 0.58
+    }
+  },
+  "summary": {
+    "cases": [
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-300",
+        "kind": "고시",
+        "body_chars": 37686,
+        "title_words": 1.0,
+        "title_hits": 0.0,
+        "title_recall": 0.0,
+        "numbers_total": 5.0,
+        "numbers_grounded": 4.0,
+        "grounded_ratio": 0.8,
+        "compression": 0.0222,
+        "summary_chars": 89.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#공고2026-159",
+        "kind": "공고",
+        "body_chars": 3962,
+        "title_words": 3.0,
+        "title_hits": 3.0,
+        "title_recall": 1.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0341,
+        "summary_chars": 135.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#규칙665",
+        "kind": "규칙",
+        "body_chars": 1977,
+        "title_words": 3.0,
+        "title_hits": 2.0,
+        "title_recall": 0.6667,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0642,
+        "summary_chars": 127.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36645",
+        "kind": "대통령령",
+        "body_chars": 1470,
+        "title_words": 1.0,
+        "title_hits": 1.0,
+        "title_recall": 1.0,
+        "numbers_total": 2.0,
+        "numbers_grounded": 2.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.1,
+        "summary_chars": 147.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21886",
+        "kind": "법률",
+        "body_chars": 6377,
+        "title_words": 3.0,
+        "title_hits": 0.0,
+        "title_recall": 0.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0367,
+        "summary_chars": 147.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#부령2026-483",
+        "kind": "부령",
+        "body_chars": 205769,
+        "title_words": 1.0,
+        "title_hits": 1.0,
+        "title_recall": 1.0,
+        "numbers_total": 1.0,
+        "numbers_grounded": 1.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.023,
+        "summary_chars": 92.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#총리령2154",
+        "kind": "총리령",
+        "body_chars": 4074,
+        "title_words": 1.0,
+        "title_hits": 1.0,
+        "title_recall": 1.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.03,
+        "summary_chars": 120.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-12",
+        "kind": "고시",
+        "body_chars": 28359,
+        "title_words": 6.0,
+        "title_hits": 4.0,
+        "title_recall": 0.6667,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0245,
+        "summary_chars": 98.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#공고2026-167",
+        "kind": "공고",
+        "body_chars": 4842,
+        "title_words": 5.0,
+        "title_hits": 1.0,
+        "title_recall": 0.2,
+        "numbers_total": 3.0,
+        "numbers_grounded": 3.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0318,
+        "summary_chars": 127.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36665",
+        "kind": "대통령령",
+        "body_chars": 1160,
+        "title_words": 2.0,
+        "title_hits": 2.0,
+        "title_recall": 1.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.1069,
+        "summary_chars": 124.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21884",
+        "kind": "법률",
+        "body_chars": 1910,
+        "title_words": 1.0,
+        "title_hits": 1.0,
+        "title_recall": 1.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0545,
+        "summary_chars": 104.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#부령1620",
+        "kind": "부령",
+        "body_chars": 1253,
+        "title_words": 2.0,
+        "title_hits": 0.0,
+        "title_recall": 0.0,
+        "numbers_total": 3.0,
+        "numbers_grounded": 3.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.15,
+        "summary_chars": 188.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#총리령2153",
+        "kind": "총리령",
+        "body_chars": 1134,
+        "title_words": 2.0,
+        "title_hits": 2.0,
+        "title_recall": 1.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.1252,
+        "summary_chars": 142.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#고시2026-30",
+        "kind": "고시",
+        "body_chars": 487,
+        "title_words": 3.0,
+        "title_hits": 1.0,
+        "title_recall": 0.3333,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.23,
+        "summary_chars": 112.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#공고2026-449",
+        "kind": "공고",
+        "body_chars": 1247,
+        "title_words": 5.0,
+        "title_hits": 4.0,
+        "title_recall": 0.8,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0826,
+        "summary_chars": 103.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36648",
+        "kind": "대통령령",
+        "body_chars": 3289,
+        "title_words": 1.0,
+        "title_hits": 1.0,
+        "title_recall": 1.0,
+        "numbers_total": 3.0,
+        "numbers_grounded": 3.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0553,
+        "summary_chars": 182.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21902",
+        "kind": "법률",
+        "body_chars": 12988,
+        "title_words": 1.0,
+        "title_hits": 1.0,
+        "title_recall": 1.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.036,
+        "summary_chars": 144.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#부령20",
+        "kind": "부령",
+        "body_chars": 3409,
+        "title_words": 1.0,
+        "title_hits": 0.0,
+        "title_recall": 0.0,
+        "numbers_total": 3.0,
+        "numbers_grounded": 3.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0402,
+        "summary_chars": 137.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-236",
+        "kind": "고시",
+        "body_chars": 8791,
+        "title_words": 2.0,
+        "title_hits": 1.0,
+        "title_recall": 0.5,
+        "numbers_total": 3.0,
+        "numbers_grounded": 2.0,
+        "grounded_ratio": 0.6667,
+        "compression": 0.0305,
+        "summary_chars": 122.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#공고2026-606",
+        "kind": "공고",
+        "body_chars": 481,
+        "title_words": 3.0,
+        "title_hits": 2.0,
+        "title_recall": 0.6667,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.1726,
+        "summary_chars": 83.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36660",
+        "kind": "대통령령",
+        "body_chars": 1716,
+        "title_words": 1.0,
+        "title_hits": 0.0,
+        "title_recall": 0.0,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0693,
+        "summary_chars": 119.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21898",
+        "kind": "법률",
+        "body_chars": 24694,
+        "title_words": 6.0,
+        "title_hits": 3.0,
+        "title_recall": 0.5,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0305,
+        "summary_chars": 122.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#부령819",
+        "kind": "부령",
+        "body_chars": 725,
+        "title_words": 2.0,
+        "title_hits": 2.0,
+        "title_recall": 1.0,
+        "numbers_total": 1.0,
+        "numbers_grounded": 1.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.1448,
+        "summary_chars": 105.0,
+        "empty": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-33",
+        "kind": "고시",
+        "body_chars": 3352,
+        "title_words": 2.0,
+        "title_hits": 1.0,
+        "title_recall": 0.5,
+        "numbers_total": 0.0,
+        "numbers_grounded": 0.0,
+        "grounded_ratio": 1.0,
+        "compression": 0.0385,
+        "summary_chars": 129.0,
+        "empty": false
+      }
+    ],
+    "summary": {
+      "cases": 24,
+      "title_recall_mean": 0.6181,
+      "grounded_ratio_mean": 0.9778,
+      "numbers_total": 24,
+      "numbers_grounded": 22,
+      "compression_mean": 0.0722,
+      "empty_outputs": 0,
+      "elapsed_sec": 193.86
+    },
+    "by_kind": {
+      "고시": {
+        "cases": 5,
+        "title_recall": 0.4,
+        "grounded_ratio": 0.8933
+      },
+      "공고": {
+        "cases": 4,
+        "title_recall": 0.6667,
+        "grounded_ratio": 1.0
+      },
+      "규칙": {
+        "cases": 1,
+        "title_recall": 0.6667,
+        "grounded_ratio": 1.0
+      },
+      "대통령령": {
+        "cases": 4,
+        "title_recall": 0.75,
+        "grounded_ratio": 1.0
+      },
+      "법률": {
+        "cases": 4,
+        "title_recall": 0.625,
+        "grounded_ratio": 1.0
+      },
+      "부령": {
+        "cases": 4,
+        "title_recall": 0.5,
+        "grounded_ratio": 1.0
+      },
+      "총리령": {
+        "cases": 2,
+        "title_recall": 1.0,
+        "grounded_ratio": 1.0
+      }
+    }
+  },
+  "qa": {
+    "questions": 24,
+    "lexical_overlap_mean": 0.2138,
+    "retrieval": {
+      "bm25": {
+        "self_at1": 0.792,
+        "self_at3": 0.917
+      },
+      "vector": {
+        "self_at1": 0.875,
+        "self_at3": 0.958
+      },
+      "hybrid": {
+        "self_at1": 0.833,
+        "self_at3": 0.958
+      }
+    },
+    "answer": {
+      "target_in_evidence_rate": 0.958,
+      "grounded_ratio_mean": 1.0,
+      "numbers_total": 22,
+      "numbers_grounded": 22,
+      "refused": 1,
+      "answer_chars_mean": 96.3
+    },
+    "cases": [
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-300",
+        "kind": "고시",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 2,
+        "numbers_grounded": 2,
+        "answer_chars": 246,
+        "refused": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#공고2026-159",
+        "kind": "공고",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 62,
+        "refused": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#규칙665",
+        "kind": "규칙",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 100,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36645",
+        "kind": "대통령령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 104,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21886",
+        "kind": "법률",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 127,
+        "refused": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#부령2026-483",
+        "kind": "부령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 2,
+        "numbers_grounded": 2,
+        "answer_chars": 128,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#총리령2154",
+        "kind": "총리령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 91,
+        "refused": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-12",
+        "kind": "고시",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 84,
+        "refused": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#공고2026-167",
+        "kind": "공고",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 1,
+        "numbers_grounded": 1,
+        "answer_chars": 72,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36665",
+        "kind": "대통령령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 1,
+        "numbers_grounded": 1,
+        "answer_chars": 122,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21884",
+        "kind": "법률",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 1,
+        "numbers_grounded": 1,
+        "answer_chars": 59,
+        "refused": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#부령1620",
+        "kind": "부령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 2,
+        "numbers_grounded": 2,
+        "answer_chars": 175,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#총리령2153",
+        "kind": "총리령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 30,
+        "refused": false
+      },
+      {
+        "item_id": "제21315호_관보(정호)20260904#고시2026-30",
+        "kind": "고시",
+        "target_in_evidence": false,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 66,
+        "refused": true
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#공고2026-449",
+        "kind": "공고",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 65,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36648",
+        "kind": "대통령령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 1,
+        "numbers_grounded": 1,
+        "answer_chars": 80,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21902",
+        "kind": "법률",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 3,
+        "numbers_grounded": 3,
+        "answer_chars": 112,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#부령20",
+        "kind": "부령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 2,
+        "numbers_grounded": 2,
+        "answer_chars": 68,
+        "refused": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-236",
+        "kind": "고시",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 28,
+        "refused": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#공고2026-606",
+        "kind": "공고",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 4,
+        "numbers_grounded": 4,
+        "answer_chars": 107,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#대통령령36660",
+        "kind": "대통령령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 61,
+        "refused": false
+      },
+      {
+        "item_id": "제21317호_관보(정호)20260908#법률21898",
+        "kind": "법률",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 1,
+        "numbers_grounded": 1,
+        "answer_chars": 81,
+        "refused": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#부령819",
+        "kind": "부령",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 2,
+        "numbers_grounded": 2,
+        "answer_chars": 103,
+        "refused": false
+      },
+      {
+        "item_id": "제21316호_관보(정호)20260907#고시2026-33",
+        "kind": "고시",
+        "target_in_evidence": true,
+        "grounded_ratio": 1.0,
+        "numbers_total": 0,
+        "numbers_grounded": 0,
+        "answer_chars": 140,
+        "refused": false
+      }
+    ],
+    "elapsed_sec": 308.63,
+    "question_cache": "/Users/user/data/who-approved-this/t5/questions.json"
+  },
+  "note": "결과에는 제명·본문을 담지 않는다. 점수만.",
+  "elapsed_sec": 503.7
+}

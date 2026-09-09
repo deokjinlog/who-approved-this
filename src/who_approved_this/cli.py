@@ -48,6 +48,7 @@ def run(
     embed_model: str | None = typer.Option(None, "--embed-model", help="t1d 임베딩 모델"),
     drafts: int = typer.Option(3, "--drafts", help="t1d 케이스당 초안 개수"),
     resample: int = typer.Option(0, "--resample", help="t1c 재표집 검증 라운드 수"),
+    qa: bool = typer.Option(False, "--qa", help="t5 자연어 질의응답 RAG 실행"),
 ) -> None:
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
@@ -55,7 +56,9 @@ def run(
 
     if track == "t5":
         t5_gazette_summary.report(
-            TRACKS[track](model=model, embed_model=embed_model, sample=docs or 24)
+            TRACKS[track](
+                model=model, embed_model=embed_model, sample=docs or 24, qa=qa
+            )
         )
         return
 
