@@ -193,13 +193,26 @@ class FieldTextLayerParser(Parser):
 
     name = "textlayer-rules"
 
+    def __init__(self, crop_dir: Path | None = None) -> None:
+        #: 결재란 영역 계산용(텍스트 레이어만 쓰므로 렌더링은 하지 않는다).
+        self.crop_dir = crop_dir or Path(".")
+
     def parse(self, pdf_path: Path) -> dict[str, Any]:
-        """``pdf_path`` 첫 페이지에서 필드와 결재선을 뽑는다."""
+        """``pdf_path`` 첫 페이지에서 필드와 결재선을 뽑는다.
+
+        결재선은 T1b 의 :class:`~who_approved_this.parse.approval_ocr.ApprovalLineParser`
+        (텍스트 레이어)를 그대로 쓴다. ``담당자`` 는 포털 정의상 **기안자**이고
+        기안자는 결재란 **첫 칸**의 사람이므로, 별도 규칙을 두지 않고 거기서 끌어온다.
+        """
+        from who_approved_this.parse.approval_ocr import ApprovalLineParser
+
+        line = ApprovalLineParser(
+            self.crop_dir, source="textlayer"
+        ).parse(pdf_path)["cells"]
+        drafter = next((c["name"] for c in line if c["role"] == "기안"), "")
+
         with pymupdf.open(pdf_path) as doc:
-            page = doc[0]
-            text = page.get_text(sort=True)
-            line = extract_approval_line(page)
-            drafter = extract_person(page)
+            text = doc[0].get_text(sort=True)
 
         doc_no = extract_doc_no(text)
         return {

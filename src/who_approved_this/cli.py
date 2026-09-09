@@ -8,7 +8,11 @@ from __future__ import annotations
 
 import typer
 
-from who_approved_this.tracks import t1_approval_line, t4_gazette_ocr
+from who_approved_this.tracks import (
+    t1_approval_line,
+    t1c_approval_predict,
+    t4_gazette_ocr,
+)
 
 app = typer.Typer(
     help="who-approved-this — 공개 공공데이터 문서 파싱 벤치마크",
@@ -16,7 +20,11 @@ app = typer.Typer(
 )
 
 #: 트랙 이름 → 실행 함수. 트랙이 늘면 여기에 한 줄만 추가한다.
-TRACKS = {"t1": t1_approval_line.run, "t4": t4_gazette_ocr.run}
+TRACKS = {
+    "t1": t1_approval_line.run,
+    "t1c": t1c_approval_predict.run,
+    "t4": t4_gazette_ocr.run,
+}
 
 
 @app.callback()
@@ -32,10 +40,15 @@ def run(
     docs: int | None = typer.Option(None, "--docs", help="훑을 문서 수"),
     only: str | None = typer.Option(None, "--only", help="파일명에 이 문자열이 든 PDF만 (예: 21317)"),
     select: str = typer.Option("first", "--select", help="페이지 고르기: first | mixed(유형 섞기)"),
+    model: str | None = typer.Option(None, "--model", help="t1c 에서 쓸 ollama 모델 이름"),
 ) -> None:
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
         raise typer.BadParameter(f"모르는 트랙: {track} (가능: {', '.join(TRACKS)})")
+
+    if track == "t1c":
+        t1c_approval_predict.report(TRACKS[track](model=model, max_docs=docs))
+        return
 
     if track == "t1":
         t1_approval_line.report(TRACKS[track](max_docs=docs))

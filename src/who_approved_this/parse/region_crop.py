@@ -97,17 +97,19 @@ def crop_approval(
     out_dir: Path,
     dpi: int = 200,
     overrides: dict[str, tuple[float, float]] | None = None,
-) -> tuple[Path, pymupdf.Rect, str]:
+    render: bool = True,
+) -> tuple[Path | None, pymupdf.Rect, str]:
     """1페이지 결재란 영역을 ``dpi`` 로 렌더링해 PNG로 저장한다.
 
     돌려주는 값은 ``(png 경로, 잘라낸 영역, 영역 종류)``. 영역은 OCR 좌표를
-    원본 페이지 좌표로 되돌릴 때 쓴다.
+    원본 페이지 좌표로 되돌릴 때 쓴다. ``render=False`` 면 PNG를 만들지 않고
+    영역만 돌려준다(텍스트 레이어만 쓸 때 불필요한 렌더링을 피한다).
     """
-    out_dir.mkdir(parents=True, exist_ok=True)
     png = out_dir / f"{pdf_path.stem}-approval.png"
     with pymupdf.open(pdf_path) as doc:
         page = doc[0]
         rect, kind = approval_rect(page, overrides, pdf_path.stem)
-        if not png.exists():
+        if render and not png.exists():
+            out_dir.mkdir(parents=True, exist_ok=True)
             page.get_pixmap(dpi=dpi, clip=rect).save(png)
-    return png, rect, kind
+    return (png if render else None), rect, kind

@@ -1,0 +1,640 @@
+{
+  "track": "t1c",
+  "run_at": "2026-09-09T10:22:26",
+  "method": "leave-one-out (같은 담당부서 3건 중 2건을 참고로 1건 예측)",
+  "ground_truth": "approval_gold.tsv (사람이 직접 만든 정답, 리포 밖)",
+  "note": "프롬프트에 들어간 제목·본문·실명은 저장하지 않는다. 점수와 개수만.",
+  "prompt_template": "src/who_approved_this/tracks/t1c_prompt.md",
+  "model": null,
+  "groups": {
+    "경기도서관": 3,
+    "총무과": 3
+  },
+  "predictors": {
+    "baseline_copy": {
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "refs": 2,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "refs": 2,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "refs": 2,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "총무과",
+          "doc_id": "법무부_총무과-7941",
+          "refs": 2,
+          "gold_cells": 9,
+          "pred_cells": 5,
+          "title_accuracy": 0.2222,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 4 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "총무과",
+          "doc_id": "법무부_총무과-5908",
+          "refs": 2,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        },
+        {
+          "group": "총무과",
+          "doc_id": "법무부_총무과-6989",
+          "refs": 2,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 6,
+        "title_accuracy_mean": 0.3926,
+        "name_accuracy_mean": 0.1444,
+        "cell_count_match_mean": 0.7083,
+        "cases_title_perfect": 0
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 3,
+          "title_accuracy_mean": 0.5778,
+          "name_accuracy_mean": 0.2889,
+          "cell_count_match_mean": 0.9167,
+          "cases_title_perfect": 0
+        },
+        "총무과": {
+          "cases": 3,
+          "title_accuracy_mean": 0.2074,
+          "name_accuracy_mean": 0.0,
+          "cell_count_match_mean": 0.5,
+          "cases_title_perfect": 0
+        }
+      },
+      "elapsed_sec": 0.0
+    },
+    "baseline_vote": {
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "refs": 2,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "refs": 2,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "refs": 2,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "총무과",
+          "doc_id": "법무부_총무과-7941",
+          "refs": 2,
+          "gold_cells": 9,
+          "pred_cells": 5,
+          "title_accuracy": 0.2222,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 4 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "총무과",
+          "doc_id": "법무부_총무과-5908",
+          "refs": 2,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        },
+        {
+          "group": "총무과",
+          "doc_id": "법무부_총무과-6989",
+          "refs": 2,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 6,
+        "title_accuracy_mean": 0.3926,
+        "name_accuracy_mean": 0.1444,
+        "cell_count_match_mean": 0.7083,
+        "cases_title_perfect": 0
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 3,
+          "title_accuracy_mean": 0.5778,
+          "name_accuracy_mean": 0.2889,
+          "cell_count_match_mean": 0.9167,
+          "cases_title_perfect": 0
+        },
+        "총무과": {
+          "cases": 3,
+          "title_accuracy_mean": 0.2074,
+          "name_accuracy_mean": 0.0,
+          "cell_count_match_mean": 0.5,
+          "cases_title_perfect": 0
+        }
+      },
+      "elapsed_sec": 0.0
+    }
+  },
+  "elapsed_sec": 0.0
+}

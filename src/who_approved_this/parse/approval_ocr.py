@@ -258,7 +258,13 @@ class ApprovalLineParser(Parser):
 
     def parse(self, pdf_path: Path) -> dict[str, Any]:
         """``pdf_path`` 1페이지 결재란에서 결재선을 뽑는다."""
-        png, rect, kind = crop_approval(pdf_path, self.crop_dir, self.dpi, self.overrides)
+        png, rect, kind = crop_approval(
+            pdf_path,
+            self.crop_dir,
+            self.dpi,
+            self.overrides,
+            render=self.source != "textlayer",
+        )
         if self.source == "ocr":
             words = _words_ocr(png, rect)
         elif self.source == "paddle":
