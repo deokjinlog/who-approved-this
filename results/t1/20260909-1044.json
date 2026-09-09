@@ -1,0 +1,4313 @@
+{
+  "track": "t1",
+  "run_at": "2026-09-09T10:44:15",
+  "parser": "textlayer-rules",
+  "evaluator": "field-match",
+  "ground_truth": "open.go.kr metadata.tsv (T1a) / 정답 없음 (T1b)",
+  "note": "결과에는 값(제목·이름)을 저장하지 않는다. 일치 여부·개수·직위만.",
+  "documents": [
+    {
+      "doc_id": "법무부_총무과-7941",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.3333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 9,
+        "roles": {
+          "기안": 1,
+          "검토": 5,
+          "결재": 1,
+          "협조": 2
+        },
+        "titles": [
+          "교위",
+          "교감",
+          "서기관",
+          "서기관",
+          "부소장",
+          "안양교도소장",
+          "과학기술서기관",
+          "민원과장",
+          "복지과장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-5908",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 3,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "출입국관리서기",
+          "출입국관리주사보",
+          "출입국관리주사",
+          "총무과장",
+          "청장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-6989",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.8333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 3,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "교위",
+          "교감",
+          "총무사무관",
+          "총무과장",
+          "청장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "기후에너지환경부_정보관리팀-995",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.8333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 2,
+          "결재": 1,
+          "협조": 1
+        },
+        "titles": [
+          "전문위원",
+          "환경사무관",
+          "팀장",
+          "온실가스종합정보센터장",
+          "주무관"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "기후에너지환경부_생물소재활용과-1332",
+      "fields": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "제목",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산기관",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 3,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "환경연구사",
+          "환경연구관",
+          "생물소재활용과장",
+          "생물자원활용부장",
+          "국립생물자원관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12039",
+      "fields": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "제목",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "독서문화진흥팀장",
+          "경기도서관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12016",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "도서관정책팀장",
+          "경기도서관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12012",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.5,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 2
+        },
+        "titles": [
+          "주무관",
+          "도서관정책팀장",
+          "경기도서관장",
+          "주무관",
+          "경리팀장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "제주특별자치도_일자리에너지과-40914",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.5,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 3,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "일자리지원팀장",
+          "경제일자리국장",
+          "일자리에너지과장",
+          "부시장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "제주특별자치도_보건환경연구원-17732",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 4,
+        "roles": {
+          "기안": 1,
+          "검토": 2,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "행정운영팀장",
+          "총괄운영과장",
+          "보건환경연구원장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-6477",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.3333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 3,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "교감",
+          "교감",
+          "서기관",
+          "부소장",
+          "안양교도소장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-6743",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.3333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 4,
+        "roles": {
+          "기안": 1,
+          "검토": 2,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "교위",
+          "총무사무관",
+          "총무과장",
+          "청장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-9845",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 3,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "교위",
+          "교감",
+          "총무사무관",
+          "과장",
+          "청장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-5451",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.8333,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 5,
+        "roles": {
+          "기안": 1,
+          "검토": 3,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "출입국관리주사",
+          "팀장",
+          "총무과장",
+          "지원국장",
+          "보청장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "법무부_총무과-11097",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당부서",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "교감",
+          "총무사무관",
+          "청장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-10185",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.5,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 4,
+        "roles": {
+          "기안": 1,
+          "검토": 2,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "도서관운영팀장",
+          "도서관정책팀장",
+          "경기도서관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-11698",
+      "fields": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "제목",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "도서관운영팀장",
+          "경기도서관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-8872",
+      "fields": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "제목",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "도서관운영팀장",
+          "경기도서관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-8942",
+      "fields": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "fields_exact": {
+        "제목": true,
+        "생산기관": false,
+        "담당부서": false,
+        "담당자": false,
+        "생산일자": false,
+        "문서번호": false
+      },
+      "field_accuracy": 0.1667,
+      "failures": [
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        },
+        {
+          "field": "담당부서",
+          "reason": "불일치"
+        },
+        {
+          "field": "담당자",
+          "reason": "불일치"
+        },
+        {
+          "field": "생산일자",
+          "reason": "불일치"
+        },
+        {
+          "field": "문서번호",
+          "reason": "불일치"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "도서관운영팀장",
+          "경기도서관장"
+        ],
+        "has_text": true
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-8938",
+      "fields": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": true,
+        "문서번호": true
+      },
+      "fields_exact": {
+        "제목": false,
+        "생산기관": false,
+        "담당부서": true,
+        "담당자": true,
+        "생산일자": false,
+        "문서번호": true
+      },
+      "field_accuracy": 0.6667,
+      "failures": [
+        {
+          "field": "제목",
+          "reason": "미추출"
+        },
+        {
+          "field": "생산기관",
+          "reason": "미추출"
+        }
+      ],
+      "approval_line": {
+        "count": 3,
+        "roles": {
+          "기안": 1,
+          "검토": 1,
+          "결재": 1,
+          "협조": 0
+        },
+        "titles": [
+          "주무관",
+          "도서관운영팀장",
+          "경기도서관장"
+        ],
+        "has_text": true
+      }
+    }
+  ],
+  "summary": {
+    "documents": 20,
+    "field_accuracy_mean": 0.5417,
+    "by_field": {
+      "제목": 0.75,
+      "생산기관": 0.0,
+      "담당부서": 0.75,
+      "담당자": 0.65,
+      "생산일자": 0.5,
+      "문서번호": 0.6
+    },
+    "approval_line_text_docs": 20,
+    "title_histogram": {
+      "교위": 4,
+      "교감": 6,
+      "서기관": 3,
+      "부소장": 2,
+      "안양교도소장": 2,
+      "과학기술서기관": 1,
+      "민원과장": 1,
+      "복지과장": 1,
+      "출입국관리서기": 1,
+      "출입국관리주사보": 1,
+      "출입국관리주사": 2,
+      "총무과장": 4,
+      "청장": 5,
+      "총무사무관": 4,
+      "전문위원": 1,
+      "환경사무관": 1,
+      "팀장": 2,
+      "온실가스종합정보센터장": 1,
+      "주무관": 12,
+      "환경연구사": 1,
+      "환경연구관": 1,
+      "생물소재활용과장": 1,
+      "생물자원활용부장": 1,
+      "국립생물자원관장": 1,
+      "독서문화진흥팀장": 1,
+      "경기도서관장": 8,
+      "도서관정책팀장": 3,
+      "경리팀장": 1,
+      "일자리지원팀장": 1,
+      "경제일자리국장": 1,
+      "일자리에너지과장": 1,
+      "부시장": 1,
+      "행정운영팀장": 1,
+      "총괄운영과장": 1,
+      "보건환경연구원장": 1,
+      "과장": 1,
+      "지원국장": 1,
+      "보청장": 1,
+      "도서관운영팀장": 5
+    },
+    "elapsed_sec": 0.25
+  },
+  "t1b": {
+    "gold_docs": 20,
+    "sources": {
+      "textlayer": {
+        "parser": "approval-textlayer@200dpi",
+        "documents": [
+          {
+            "doc_id": "법무부_총무과-7941",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 4,
+                "pred": 5,
+                "count_match": false,
+                "title_hits": 4,
+                "name_hits": 2,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 3,
+                "pred": 2,
+                "count_match": false,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 3
+              }
+            },
+            "title_accuracy": 0.6667,
+            "name_accuracy": 0.5,
+            "cell_count_match": 0.5,
+            "unreadable_cells": 1,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 4 / 추출 5)"
+              },
+              {
+                "role": "검토",
+                "reason": "4번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "칸 수 불일치 (gold 3 / 추출 2)"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 직위 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "3번 칸 누락"
+              },
+              {
+                "role": "협조",
+                "reason": "3번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-5908",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-6989",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "기후에너지환경부_정보관리팀-995",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 1.0,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": []
+          },
+          {
+            "doc_id": "기후에너지환경부_생물소재활용과-1332",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 1.0,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": []
+          },
+          {
+            "doc_id": "경기도_경기도서관-12039",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-12016",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-12012",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "제주특별자치도_일자리에너지과-40914",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.6,
+            "name_accuracy": 0.4,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "2번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "제주특별자치도_보건환경연구원-17732",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.75,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-6477",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 1.0,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": []
+          },
+          {
+            "doc_id": "법무부_총무과-6743",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.75,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-9845",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-5451",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.6,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-11097",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-10185",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 1,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 0
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.3333,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 1,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-11698",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8872",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8942",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.3333,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8938",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "documents": 20,
+          "title_accuracy_mean": 0.9433,
+          "name_accuracy_mean": 0.7033,
+          "cell_count_match_mean": 0.975,
+          "docs_all_cells_matched": 19,
+          "unreadable_cells": 2,
+          "elapsed_sec": 0.16
+        }
+      },
+      "ocr": {
+        "parser": "approval-ocr@200dpi",
+        "documents": [
+          {
+            "doc_id": "법무부_총무과-7941",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 4,
+                "pred": 5,
+                "count_match": false,
+                "title_hits": 4,
+                "name_hits": 2,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 3,
+                "pred": 2,
+                "count_match": false,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 3
+              }
+            },
+            "title_accuracy": 0.6667,
+            "name_accuracy": 0.5,
+            "cell_count_match": 0.5,
+            "unreadable_cells": 1,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 4 / 추출 5)"
+              },
+              {
+                "role": "검토",
+                "reason": "4번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "칸 수 불일치 (gold 3 / 추출 2)"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 직위 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "3번 칸 누락"
+              },
+              {
+                "role": "협조",
+                "reason": "3번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-5908",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-6989",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "기후에너지환경부_정보관리팀-995",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 0,
+                "count_match": false,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              }
+            },
+            "title_accuracy": 0.4,
+            "name_accuracy": 0.4,
+            "cell_count_match": 0.75,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "기후에너지환경부_생물소재활용과-1332",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 1.0,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": []
+          },
+          {
+            "doc_id": "경기도_경기도서관-12039",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 0,
+                "count_match": false,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.6667,
+            "name_accuracy": 0.3333,
+            "cell_count_match": 0.75,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 1 / 추출 0)"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-12016",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-12012",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 0,
+                "count_match": false,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 2,
+                "pred": 1,
+                "count_match": false,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 2
+              }
+            },
+            "title_accuracy": 0.6,
+            "name_accuracy": 0.4,
+            "cell_count_match": 0.5,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 1 / 추출 0)"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 누락"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "제주특별자치도_일자리에너지과-40914",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 1,
+                "count_match": false,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.4,
+            "name_accuracy": 0.2,
+            "cell_count_match": 0.75,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 3 / 추출 1)"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "제주특별자치도_보건환경연구원-17732",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 0,
+                "count_match": false,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.25,
+            "name_accuracy": 0.0,
+            "cell_count_match": 0.75,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-6477",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 1.0,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": []
+          },
+          {
+            "doc_id": "법무부_총무과-6743",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.5,
+            "name_accuracy": 0.5,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-9845",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-5451",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 2,
+                "count_match": false,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.0,
+            "name_accuracy": 0.2,
+            "cell_count_match": 0.75,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 3 / 추출 2)"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-11097",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.3333,
+            "name_accuracy": 0.3333,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-10185",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 0
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 1,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-11698",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 0,
+                "count_match": false,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.6667,
+            "name_accuracy": 0.3333,
+            "cell_count_match": 0.75,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 1 / 추출 0)"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8872",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8942",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.3333,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8938",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "documents": 20,
+          "title_accuracy_mean": 0.7242,
+          "name_accuracy_mean": 0.53,
+          "cell_count_match_mean": 0.875,
+          "docs_all_cells_matched": 12,
+          "unreadable_cells": 2,
+          "elapsed_sec": 3.5
+        }
+      },
+      "paddle": {
+        "parser": "approval-paddle@200dpi",
+        "documents": [
+          {
+            "doc_id": "법무부_총무과-7941",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 4,
+                "pred": 5,
+                "count_match": false,
+                "title_hits": 4,
+                "name_hits": 2,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 3,
+                "pred": 2,
+                "count_match": false,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 3
+              }
+            },
+            "title_accuracy": 0.6667,
+            "name_accuracy": 0.5,
+            "cell_count_match": 0.5,
+            "unreadable_cells": 1,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 4 / 추출 5)"
+              },
+              {
+                "role": "검토",
+                "reason": "4번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "칸 수 불일치 (gold 3 / 추출 2)"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 직위 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "협조",
+                "reason": "3번 칸 누락"
+              },
+              {
+                "role": "협조",
+                "reason": "3번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-5908",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-6989",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "기후에너지환경부_정보관리팀-995",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              }
+            },
+            "title_accuracy": 0.8,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "기후에너지환경부_생물소재활용과-1332",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 1.0,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": []
+          },
+          {
+            "doc_id": "경기도_경기도서관-12039",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-12016",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-12012",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "제주특별자치도_일자리에너지과-40914",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.6,
+            "name_accuracy": 0.4,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "검토",
+                "reason": "2번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 직위 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "3번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "제주특별자치도_보건환경연구원-17732",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 1,
+                "count_match": false,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.5,
+            "name_accuracy": 0.25,
+            "cell_count_match": 0.75,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              },
+              {
+                "role": "검토",
+                "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 누락"
+              },
+              {
+                "role": "검토",
+                "reason": "2번 칸 이름 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-6477",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 1.0,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": []
+          },
+          {
+            "doc_id": "법무부_총무과-6743",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.75,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-9845",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-5451",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 3,
+                "pred": 3,
+                "count_match": true,
+                "title_hits": 3,
+                "name_hits": 3,
+                "name_scored": 3
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 0.6,
+            "name_accuracy": 0.8,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 직위 틀림"
+              },
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "법무부_총무과-11097",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-10185",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 2,
+                "pred": 2,
+                "count_match": true,
+                "title_hits": 2,
+                "name_hits": 2,
+                "name_scored": 2
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 0
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 1,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-11698",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8872",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8942",
+            "region": "bottom",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "기안",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          },
+          {
+            "doc_id": "경기도_경기도서관-8938",
+            "region": "top",
+            "cells": {
+              "기안": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "검토": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 1,
+                "name_scored": 1
+              },
+              "결재": {
+                "gold": 1,
+                "pred": 1,
+                "count_match": true,
+                "title_hits": 1,
+                "name_hits": 0,
+                "name_scored": 1
+              },
+              "협조": {
+                "gold": 0,
+                "pred": 0,
+                "count_match": true,
+                "title_hits": 0,
+                "name_hits": 0,
+                "name_scored": 0
+              }
+            },
+            "title_accuracy": 1.0,
+            "name_accuracy": 0.6667,
+            "cell_count_match": 1.0,
+            "unreadable_cells": 0,
+            "failures": [
+              {
+                "role": "결재",
+                "reason": "1번 칸 이름 틀림"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "documents": 20,
+          "title_accuracy_mean": 0.9083,
+          "name_accuracy_mean": 0.7017,
+          "cell_count_match_mean": 0.9625,
+          "docs_all_cells_matched": 18,
+          "unreadable_cells": 2,
+          "elapsed_sec": 76.3
+        }
+      }
+    }
+  },
+  "skipped": []
+}

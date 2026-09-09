@@ -43,6 +43,17 @@ def normalize_token(value: str) -> str:
     return _STRIP.sub("", unicodedata.normalize("NFC", str(value))).strip()
 
 
+def load_orgs(path: Path) -> dict[str, str]:
+    """``approval_gold.tsv`` 의 ``org`` 열을 ``{저장파일명: 조직}`` 으로 읽는다.
+
+    포털 메타데이터의 ``담당부서`` 는 기관 간에 재사용되므로("총무과"는 거의 모든
+    기관에 있다) 조직을 식별하지 못한다. 그래서 문서 하단 주소·발신기관을 보고
+    사람이 붙인 조직 키를 gold 에 함께 둔다.
+    """
+    with path.open(encoding="utf-8", newline="") as fh:
+        return {r["저장파일명"]: r.get("org", "") for r in csv.DictReader(fh, delimiter="\t")}
+
+
 def load_gold(path: Path) -> dict[str, dict[str, list[dict[str, str]]]]:
     """``approval_gold.tsv`` 를 ``{저장파일명: {역할: [칸, ...]}}`` 로 읽는다."""
     gold: dict[str, dict[str, list[dict[str, str]]]] = {}

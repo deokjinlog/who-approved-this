@@ -36,7 +36,11 @@ import typer
 
 from who_approved_this.collect.opengokr_local import OpenGoKrLocalCollector
 from who_approved_this.config import track_data_dir, track_results_dir
-from who_approved_this.evaluate.approval_match import ApprovalMatchEvaluator, load_gold
+from who_approved_this.evaluate.approval_match import (
+    ApprovalMatchEvaluator,
+    load_gold,
+    load_orgs,
+)
 from who_approved_this.tracks.t1c_predictors import (
     BaselineCopy,
     BaselineVote,
@@ -46,13 +50,17 @@ from who_approved_this.tracks.t1c_predictors import (
 
 TRACK = "t1c"
 
-#: leave-one-out 묶음 최소 크기. 참고 2건 + 대상 1건.
-MIN_GROUP = 3
+#: leave-one-out 묶음 최소 크기. 참고 1건 + 대상 1건.
+MIN_GROUP = 2
+
+#: 참고 문서를 몇 건까지 주는지 바꿔가며 재는 값("과거 몇 건이면 충분한가").
+REF_SWEEP = (1, 3, 7)
 
 
 def _load_docs(data_dir: Path) -> list[dict[str, Any]]:
     """PDF 본문(텍스트 레이어)과 gold 결재선을 문서별로 모은다."""
     gold = load_gold(data_dir / "approval_gold.tsv")
+    orgs = load_orgs(data_dir / "approval_gold.tsv")
     docs: list[dict[str, Any]] = []
     for pdf_path, row in OpenGoKrLocalCollector(data_dir).items():
         key = row["저장파일명"]
@@ -65,15 +73,24 @@ def _load_docs(data_dir: Path) -> list[dict[str, Any]]:
             for role, items in gold[key].items()
             for c in items
         ]
-        docs.append({**row, "body": body, "cells": cells, "pdf": pdf_path})
+        docs.append(
+            {**row, "org": orgs.get(key, ""), "body": body, "cells": cells, "pdf": pdf_path}
+        )
     return docs
 
 
 def _groups(docs: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
-    """담당부서로 묶는다. 3건 미만 묶음은 leave-one-out 이 안 되므로 뺀다."""
+    """**실제 조직**으로 묶는다(담당부서명이 아니라).
+
+    포털의 ``담당부서`` 로 묶으면 법무부 "총무과" 8건이 한 묶음이 되는데, 실제로는
+    안양교도소·대구합동청사·서울출입국청 등 **6개 조직**이 섞여 있다. 직위 체계부터
+    달라 예측이 성립하지 않는다. 조직 키는 문서 하단 주소를 보고 gold 에 적어 둔 값이다.
+
+    조직당 1건뿐이면 참고할 과거 문서가 없으므로 예측 대상에서 뺀다.
+    """
     out: dict[str, list[dict[str, Any]]] = {}
     for d in docs:
-        out.setdefault(d["담당부서"], []).append(d)
+        out.setdefault(d["org"] or d["담당부서"], []).append(d)
     return {k: v for k, v in out.items() if len(v) >= MIN_GROUP}
 
 
@@ -131,6 +148,8 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
             "elapsed_sec": round(time.perf_counter() - t0, 2),
         }
 
+    sweep = _ref_sweep(groups, evaluator)
+
     now = datetime.now()
     report = {
         "track": TRACK,
@@ -142,6 +161,7 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
         "model": model,
         "groups": {g: len(v) for g, v in sorted(groups.items())},
         "predictors": results,
+        "ref_sweep": sweep,
         "elapsed_sec": round(time.perf_counter() - started, 2),
     }
     out_path = results_dir / f"{now:%Y%m%d-%H%M}.json"
@@ -152,6 +172,49 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
     )
     report["results_path"] = str(out_path)
     return report
+
+
+def _ref_sweep(
+    groups: dict[str, list[dict[str, Any]]], evaluator: ApprovalMatchEvaluator
+) -> dict[str, Any]:
+    """참고 문서 수를 바꿔가며 baseline_vote 점수 변화를 본다.
+
+    "과거 문서 몇 건이면 충분한가"에 대한 답. 참고가 1건이면 vote 는 복사와 같아진다.
+
+    **같은 케이스 집합으로만 비교한다.** 참고를 최대 개수까지 줄 수 있는 묶음만 쓴다.
+    참고 1건일 때만 작은 묶음이 끼면 케이스가 달라져 추세가 오염된다.
+    """
+    eligible = {
+        k: v for k, v in groups.items() if len(v) - 1 >= max(REF_SWEEP)
+    }
+    out: dict[str, Any] = {"groups": sorted(eligible)}
+    for n_refs in REF_SWEEP:
+        cases: list[dict[str, Any]] = []
+        for dept, members in sorted(eligible.items()):
+            for target in members:
+                refs = _recent_first_docs(
+                    [d for d in members if d["doc_id"] != target["doc_id"]]
+                )[:n_refs]
+                scores = evaluator.evaluate(
+                    {"cells": BaselineVote().predict(refs, target)}, target
+                )
+                cases.append(
+                    {
+                        "group": dept,
+                        "title_accuracy": round(scores["title_accuracy"], 4),
+                        "name_accuracy": round(scores["name_accuracy"], 4),
+                        "cell_count_match": round(scores["cell_count_match"], 4),
+                    }
+                )
+        out[str(n_refs)] = _summarize(cases)
+    return out
+
+
+def _recent_first_docs(docs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """생산일자 내림차순. 참고 문서를 최근 것부터 자르기 위해."""
+    return sorted(
+        docs, key=lambda d: (d.get("생산일자", ""), d.get("문서번호", "")), reverse=True
+    )
 
 
 def _summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
@@ -188,5 +251,21 @@ def report(rep: dict[str, Any]) -> None:
                 f" | 이름 {s['name_accuracy_mean']:6.1%} | 칸수 {s['cell_count_match_mean']:6.1%}"
                 f" ({s['cases_title_perfect']}/{s['cases']})"
             )
+    sweep = rep.get("ref_sweep", {})
+    if sweep:
+        typer.echo("")
+        typer.echo(
+            f"  참고 문서 수별 baseline_vote — {', '.join(sweep.get('groups', []))} 만"
+            " (같은 케이스 집합)"
+        )
+        for n, s in sweep.items():
+            if n == "groups" or not s["cases"]:
+                continue
+            typer.echo(
+                f"    참고 {n:>2}건: 직위 {s['title_accuracy_mean']:6.1%}"
+                f" | 이름 {s['name_accuracy_mean']:6.1%}"
+                f" | 칸수 {s['cell_count_match_mean']:6.1%}  ({s['cases']}케이스)"
+            )
+
     typer.echo("")
     typer.echo(f"  → {rep['results_path']}  ({rep['elapsed_sec']}s)")
