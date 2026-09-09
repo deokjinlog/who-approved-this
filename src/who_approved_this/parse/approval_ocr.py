@@ -33,34 +33,51 @@ from ocrmac import ocrmac
 from who_approved_this.parse.base import Parser
 from who_approved_this.parse.region_crop import TITLE_HINTS, crop_approval
 
-#: 이름을 찾을 세로 거리(원본 페이지 포인트). 시행문형은 직위 바로 아래 줄이지만,
-#: 격자형은 표 머리행과 이름행 사이가 훨씬 넓어 영역 종류별로 다르게 잡는다.
-NAME_Y_REACH = {"bottom": 26.0, "top": 90.0, "override": 90.0}
+#: 직위 대비 이름이 놓이는 자리. 양식마다 다르므로 영역 종류별로 창을 따로 준다.
+#: ``(dx_min, dx_max, dy_min, dy_max)`` — 원본 페이지 포인트, y는 아래가 +.
+#:
+#: * ``bottom`` 시행문형 — 이름이 직위 **오른쪽 같은 줄**에 온다("주무관  허○○").
+#:   OCR은 두 글자의 위쪽 모서리를 거의 같게 잡으므로 dy 아래끝을 음수까지 연다.
+#: * ``top`` 격자형 — 이름이 직위 **바로 아래 칸**, 같은 열에 온다.
+PAIR_WINDOW = {
+    "bottom": (0.0, 95.0, -8.0, 30.0),
+    "top": (-45.0, 45.0, 8.0, 95.0),
+    "override": (-45.0, 95.0, -8.0, 95.0),
+}
 
-#: 이름을 찾을 가로 어긋남(포인트).
-NAME_X_TOLERANCE = 70.0
+#: 두 줄로 접힌 직위를 이을 때의 가로 어긋남 상한.
+#: 양식마다 정렬이 다르다 — 시행문형은 **왼쪽 정렬**이라 왼쪽 모서리가 맞고,
+#: 격자형 표는 칸 안에서 **가운데 정렬**이라 중심이 맞는다. 둘 중 하나만 보면
+#: 다른 양식이 깨지므로 두 기준 중 하나라도 맞으면 같은 열로 본다.
+#: 값은 격자형 열 간격(약 50pt)보다 작아야 옆 칸을 끌어오지 않는다.
+TITLE_WRAP_LEFT_X = 14.0
+TITLE_WRAP_CENTER_X = 22.0
 
 #: 두 줄로 접힌 직위를 잇기 위한 세로 거리.
-TITLE_WRAP_Y = 16.0
+#: 격자형 표의 머리행 두 줄 간격이 18pt 라 그보다 넉넉히 잡는다.
+TITLE_WRAP_Y = 26.0
 
 ROLE_COOP = "협조자"
 
+#: 단어 하나: ``(x중심, y상단, 글자, x왼쪽)``.
+Word = tuple[float, float, str, float]
 
-def _words_textlayer(page: pymupdf.Page, rect: pymupdf.Rect) -> list[tuple[float, float, str]]:
-    """텍스트 레이어 단어를 ``(x중심, y상단, 글자)`` 로."""
+
+def _words_textlayer(page: pymupdf.Page, rect: pymupdf.Rect) -> list[Word]:
+    """텍스트 레이어 단어를 ``(x중심, y상단, 글자, x왼쪽)`` 로."""
     return [
-        ((w[0] + w[2]) / 2, w[1], w[4].strip())
+        ((w[0] + w[2]) / 2, w[1], w[4].strip(), w[0])
         for w in page.get_text("words")
         if pymupdf.Rect(w[:4]).intersects(rect) and w[4].strip()
     ]
 
 
-def _words_ocr(png: Path, rect: pymupdf.Rect) -> list[tuple[float, float, str]]:
+def _words_ocr(png: Path, rect: pymupdf.Rect) -> list[Word]:
     """OCR 결과를 원본 페이지 좌표로 되돌려 ``(x중심, y상단, 글자)`` 로.
 
     ocrmac 좌표는 잘라낸 이미지 기준의 **좌하단 원점 정규화 좌표**다.
     """
-    out: list[tuple[float, float, str]] = []
+    out: list[Word] = []
     for text, _conf, (x, y, w, h) in ocrmac.OCR(
         str(png), recognition_level="accurate", language_preference=["ko-KR", "en-US"]
     ).recognize():
@@ -73,23 +90,36 @@ def _words_ocr(png: Path, rect: pymupdf.Rect) -> list[tuple[float, float, str]]:
         offset = 0
         for token in text.split():
             offset = text.find(token, offset)
-            frac = (offset + len(token) / 2) / n_chars
-            out.append((rect.x0 + (x + w * frac) * rect.width, top, token))
+            mid = (offset + len(token) / 2) / n_chars
+            left = offset / n_chars
+            out.append(
+                (
+                    rect.x0 + (x + w * mid) * rect.width,
+                    top,
+                    token,
+                    rect.x0 + (x + w * left) * rect.width,
+                )
+            )
             offset += len(token)
     return out
 
 
-def _merge_wrapped_titles(words: list[tuple[float, float, str]]) -> list[tuple[float, float, str]]:
+def _merge_wrapped_titles(words: list[Word]) -> list[Word]:
     """두 줄로 접힌 직위를 잇는다("출입국관리서" + "기" → "출입국관리서기")."""
-    merged: list[tuple[float, float, str]] = []
+    merged: list[Word] = []
     used: set[int] = set()
-    for i, (x, y, t) in enumerate(sorted(words, key=lambda w: (w[1], w[0]))):
+    ordered = sorted(words, key=lambda w: (w[1], w[0]))
+    for i, (x, y, t, x0) in enumerate(ordered):
         if i in used:
             continue
-        for j, (x2, y2, t2) in enumerate(sorted(words, key=lambda w: (w[1], w[0]))):
+        for j, (x2, y2, t2, x0b) in enumerate(ordered):
             if j <= i or j in used:
                 continue
-            if not (0 < y2 - y <= TITLE_WRAP_Y and abs(x2 - x) <= NAME_X_TOLERANCE):
+            same_column = (
+                abs(x0b - x0) <= TITLE_WRAP_LEFT_X  # 왼쪽 정렬(시행문형)
+                or abs(x2 - x) <= TITLE_WRAP_CENTER_X  # 가운데 정렬(격자형)
+            )
+            if not (0 < y2 - y <= TITLE_WRAP_Y and same_column):
                 continue
             # 윗줄이 이미 완성된 직위면(예: "총무사무관") 아랫줄은 이름이므로 잇지 않는다.
             # 윗줄이 2~3자면 사람 이름일 가능성이 커서(예: "정유미" + "주무관") 잇지 않는다.
@@ -102,34 +132,40 @@ def _merge_wrapped_titles(words: list[tuple[float, float, str]]) -> list[tuple[f
             joined = t + t2
             if any(h in joined for h in TITLE_HINTS) and len(t2) <= 5:
                 # 접힌 직위의 위치는 **아랫줄** 기준으로 잡아야 다른 칸과 줄이 맞는다.
-                merged.append((x, y2, joined))
+                merged.append((x, y2, joined, x0))
                 used.add(j)
                 break
         else:
-            merged.append((x, y, t))
+            merged.append((x, y, t, x0))
     return merged
 
 
-def extract_cells(
-    words: list[tuple[float, float, str]], region: str = "bottom"
-) -> list[dict[str, str]]:
+def extract_cells(words: list[Word], region: str = "bottom") -> list[dict[str, str]]:
     """단어 목록에서 ``[{"role", "title", "name"}]`` 를 뽑는다."""
-    reach = NAME_Y_REACH.get(region, 26.0)
     words = _merge_wrapped_titles(words)
-    coop_y = next((y for _x, y, t in words if ROLE_COOP in t), None)
+    coop_y = next((y for _x, y, t, _x0 in words if ROLE_COOP in t), None)
 
+    dx_min, dx_max, dy_min, dy_max = PAIR_WINDOW.get(region, PAIR_WINDOW["bottom"])
+
+    titles = [(x, y, t) for x, y, t, _x0 in words if any(h in t for h in TITLE_HINTS)]
+    used_names: set[int] = set()
     cells: list[tuple[float, float, str, str]] = []
-    for x, y, token in words:
-        if not any(h in token for h in TITLE_HINTS):
-            continue
-        name = ""
-        best = reach + 1
-        for x2, y2, t2 in words:
-            gap = y2 - y
-            if 0 < gap <= reach and abs(x2 - x) <= NAME_X_TOLERANCE and gap < best:
-                cand = "".join(c for c in t2 if "가" <= c <= "힣")
-                if 2 <= len(cand) <= 4 and not any(h in cand for h in TITLE_HINTS):
-                    name, best = cand, gap
+    for x, y, token in titles:
+        name, best, pick = "", None, None
+        for k, (x2, y2, t2, _x0b) in enumerate(words):
+            if k in used_names:
+                continue
+            dx, dy = x2 - x, y2 - y
+            if not (dx_min <= dx <= dx_max and dy_min <= dy <= dy_max):
+                continue
+            cand = "".join(c for c in t2 if "가" <= c <= "힣")
+            if not (2 <= len(cand) <= 4) or any(h in cand for h in TITLE_HINTS):
+                continue
+            dist = abs(dx) + abs(dy) * 2  # 같은 열/줄을 우선한다
+            if best is None or dist < best:
+                name, best, pick = cand, dist, k
+        if pick is not None:
+            used_names.add(pick)  # 한 이름이 두 직위에 붙지 않게 한다
         cells.append((y, x, token, name))
 
     cells.sort(key=lambda c: (round(c[0] / 12), c[1]))

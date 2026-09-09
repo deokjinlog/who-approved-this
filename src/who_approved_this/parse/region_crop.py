@@ -29,13 +29,46 @@ TITLE_HINTS = (
 TOP_BAND = 0.30
 
 #: 하단 후보 — 이 비율부터 이 비율까지. 주소·전화번호 줄은 뺀다.
+#: 회색 구분 띠를 찾으면 그 아래부터 "시행" 줄 위까지로 더 좁힌다.
 BOTTOM_BAND = (0.70, 0.93)
+
+#: 결재 줄 위에 그려지는 가로 회색 띠. 페이지 폭의 이 비율 이상이고 얇아야 한다.
+BAR_MIN_WIDTH_RATIO = 0.60
+BAR_MAX_HEIGHT = 12.0
+
+#: 띠를 못 찾았을 때 띠 아래로 볼 기본 높이.
+BAND_FALLBACK_HEIGHT = 80.0
 
 
 def _count_titles(page: pymupdf.Page, rect: pymupdf.Rect) -> int:
     """영역 안에서 직위 문자열이 몇 개 잡히는지 센다."""
     text = page.get_text(clip=rect)
     return sum(1 for t in TITLE_HINTS if t in text)
+
+
+def _bottom_rect(page: pymupdf.Page) -> pymupdf.Rect:
+    """시행문형 결재 줄 영역.
+
+    결재 줄 바로 위에는 페이지 폭을 가로지르는 **회색 띠**가 그려진다. 그 아래부터
+    ``시행`` 줄 직전까지가 결재·협조 칸이다. 띠를 기준으로 잡지 않고 비율로만
+    자르면 위쪽 발신명의("경기도서관장")가 딸려 들어와 가짜 칸이 생긴다.
+    """
+    w, h = page.rect.width, page.rect.height
+    bars = [
+        d["rect"].y0
+        for d in page.get_drawings()
+        if d["rect"].width > w * BAR_MIN_WIDTH_RATIO
+        and d["rect"].height < BAR_MAX_HEIGHT
+        and d["rect"].y0 > h * 0.5
+    ]
+    y0 = min(bars) + 2 if bars else h * BOTTOM_BAND[0]
+
+    # "시행" 줄 위까지. 못 찾으면 기본 높이만큼만 본다.
+    y1 = y0 + BAND_FALLBACK_HEIGHT
+    for word in page.get_text("words"):
+        if word[4].strip().startswith("시행") and word[1] > y0:
+            y1 = min(y1, word[1] - 2)
+    return pymupdf.Rect(0, y0, w, min(y1, h * BOTTOM_BAND[1]))
 
 
 def approval_rect(
@@ -52,7 +85,7 @@ def approval_rect(
         return pymupdf.Rect(0, h * y0, w, h * y1), "override"
 
     top = pymupdf.Rect(0, 0, w, h * TOP_BAND)
-    bottom = pymupdf.Rect(0, h * BOTTOM_BAND[0], w, h * BOTTOM_BAND[1])
+    bottom = _bottom_rect(page)
     return (
         (top, "top") if _count_titles(page, top) > _count_titles(page, bottom)
         else (bottom, "bottom")
