@@ -20,7 +20,6 @@ from __future__ import annotations
 
 import json
 import re
-import subprocess
 import time
 from collections import Counter
 from datetime import datetime
@@ -33,6 +32,7 @@ import typer
 from who_approved_this.collect.opengokr_local import OpenGoKrLocalCollector
 from who_approved_this.config import DATA_ROOT, track_data_dir, track_results_dir
 from who_approved_this.evaluate.approval_match import load_orgs
+from who_approved_this.tracks.t1c_predictors import _THINK_BLOCK, ollama_generate
 from who_approved_this.tracks.t1d_retrieval import (
     BM25Retriever,
     HybridRetriever,
@@ -178,20 +178,14 @@ def score_draft(actual: str, draft: str) -> dict[str, float]:
     }
 
 
-def generate(model: str, prompt: str, temperature: float, timeout: int = 300) -> str:
-    """ollama 로 초안 하나를 만든다."""
-    try:
-        done = subprocess.run(
-            ["ollama", "run", model, "--format", "", ],
-            input=prompt,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-            env={**__import__("os").environ, "OLLAMA_TEMPERATURE": str(temperature)},
-        )
-        return done.stdout.strip()
-    except (OSError, subprocess.TimeoutExpired):
-        return ""
+def generate(model: str, prompt: str, temperature: float, timeout: int = 600) -> str:
+    """ollama 로 초안 하나를 만든다.
+
+    CLI 로는 temperature 를 줄 수 없어 :func:`~who_approved_this.tracks.t1c_predictors.ollama_generate`
+    (HTTP API)를 그대로 쓴다. 초안은 사고 과정이 섞이면 안 되므로 thinking 도 끈다.
+    """
+    raw = ollama_generate(model, prompt, temperature=temperature, timeout=timeout)
+    return _THINK_BLOCK.sub("", raw or "").strip()
 
 
 SYSTEM = """너는 한국 행정기관의 공문서 작성자다. 제목과 같은 조직의 기존 문서를 참고해 문서 초안을 쓴다.

@@ -18,7 +18,8 @@ from __future__ import annotations
 
 import json
 import re
-import subprocess
+import urllib.error
+import urllib.request
 from collections import Counter
 from typing import Any, Protocol
 
@@ -111,29 +112,92 @@ class LocalLLM:
     ollama 는 로컬에서 돌고 외부로 나가지 않는다. 프롬프트 자체는 저장하지 않는다.
     """
 
-    def __init__(self, model: str, timeout: int = 180) -> None:
+    def __init__(self, model: str, timeout: int = 600) -> None:
         self.model = model
         self.timeout = timeout
         self.name = f"llm_local({model})"
-        #: 마지막 호출의 원문 응답 — 파싱 실패 진단용. 저장하지 않는다.
+        #: 마지막 호출의 실패 사유 — 진단용. 값은 저장하지 않는다.
         self.last_error = ""
+        #: JSON 파싱에 실패해 재시도한 횟수 / 재시도까지 실패한 횟수.
+        self.retries = 0
+        self.failures = 0
 
     def predict(
         self, refs: list[dict[str, Any]], target: dict[str, Any]
     ) -> list[dict[str, str]]:
+        """한 번 물어보고, JSON 파싱에 실패하면 **한 번만** 다시 물어본다.
+
+        두 번째도 실패하면 빈 목록을 돌려주고 :attr:`failures` 에 센다.
+        빈 결과는 "칸 수 0"으로 채점되므로 실패가 점수에 그대로 드러난다.
+        """
         prompt = build_prompt(refs, target)
-        try:
-            done = subprocess.run(
-                ["ollama", "run", self.model],
-                input=prompt,
-                capture_output=True,
-                text=True,
-                timeout=self.timeout,
+        for attempt in (1, 2):
+            self.last_error = ""
+            raw = ollama_generate(
+                self.model, prompt, temperature=0.0, timeout=self.timeout
             )
-        except (OSError, subprocess.TimeoutExpired) as exc:
-            self.last_error = f"호출 실패: {type(exc).__name__}"
-            return []
-        return parse_cells(done.stdout, self)
+            if raw is None:
+                self.last_error = "ollama 호출 실패"
+            else:
+                cells = parse_cells(raw, self)
+                if cells:
+                    return cells
+            if attempt == 1:
+                self.retries += 1
+        self.failures += 1
+        return []
+
+
+#: Qwen3 계열은 기본이 thinking 모드라 답 앞에 사고 과정이 붙는다.
+#: ollama 가 ``think`` 를 지원하면 끄고, 지원하지 않으면 프롬프트 지시로 대신한다.
+_THINK_BLOCK = re.compile(r"<think>.*?</think>", re.S)
+
+
+def ollama_generate(
+    model: str,
+    prompt: str,
+    temperature: float = 0.0,
+    timeout: int = 300,
+    think: bool = False,
+) -> str | None:
+    """ollama ``/api/generate`` 로 한 번 생성한다. 실패하면 ``None``.
+
+    CLI(``ollama run``)로는 temperature 를 줄 수 없어 HTTP API 를 쓴다.
+    """
+    payload: dict[str, Any] = {
+        "model": model,
+        "prompt": prompt,
+        "stream": False,
+        "options": {"temperature": temperature},
+    }
+    if not think:
+        payload["think"] = False
+    data = json.dumps(payload).encode()
+    req = urllib.request.Request(
+        "http://localhost:11434/api/generate",
+        data=data,
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read()).get("response", "")
+    except urllib.error.HTTPError:
+        # think 파라미터를 모르는 구버전이면 빼고 한 번 더.
+        if not think:
+            payload.pop("think", None)
+            try:
+                req = urllib.request.Request(
+                    "http://localhost:11434/api/generate",
+                    data=json.dumps(payload).encode(),
+                    headers={"Content-Type": "application/json"},
+                )
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    return json.loads(resp.read()).get("response", "")
+            except (urllib.error.URLError, OSError, TimeoutError):
+                return None
+        return None
+    except (urllib.error.URLError, OSError, TimeoutError):
+        return None
 
 
 SYSTEM = """너는 한국 행정기관의 전자결재 시스템이다. 문서의 결재선(기안·검토·결재·협조)을 예측한다.
@@ -169,25 +233,46 @@ def build_prompt(refs: list[dict[str, Any]], target: dict[str, Any]) -> str:
     )
 
 
-_JSON_ARRAY = re.compile(r"\[.*\]", re.S)
+def _json_arrays(text: str) -> list[str]:
+    """괄호 균형을 세어 완결된 ``[...]`` 덩어리를 모두 찾는다.
+
+    사고 과정에도 대괄호가 섞이므로 "첫 [ 부터 마지막 ] 까지" 로 자르면 깨진다.
+    """
+    out: list[str] = []
+    depth = start = 0
+    for i, ch in enumerate(text):
+        if ch == "[":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "]" and depth:
+            depth -= 1
+            if depth == 0:
+                out.append(text[start : i + 1])
+    return out
 
 
 def parse_cells(raw: str, owner: LocalLLM | None = None) -> list[dict[str, str]]:
     """모델 출력에서 JSON 배열을 건져 칸 목록으로 만든다.
 
-    설명이 앞뒤로 붙거나 코드블록으로 감싸도 배열만 뽑는다. 실패하면 빈 목록.
+    설명이 앞뒤로 붙거나 코드블록으로 감싸도, thinking 블록이 섞여도 배열만 뽑는다.
+    후보가 여럿이면 **dict 를 담은 가장 긴 배열**을 답으로 본다. 실패하면 빈 목록.
     """
-    match = _JSON_ARRAY.search(raw)
-    if not match:
+    text = _THINK_BLOCK.sub("", raw)
+    best: Any = None
+    for chunk in _json_arrays(text):
+        try:
+            parsed = json.loads(chunk)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(parsed, list) and any(isinstance(x, dict) for x in parsed):
+            if best is None or len(parsed) > len(best):
+                best = parsed
+    if best is None:
         if owner is not None:
             owner.last_error = "JSON 배열 없음"
         return []
-    try:
-        data = json.loads(match.group())
-    except json.JSONDecodeError:
-        if owner is not None:
-            owner.last_error = "JSON 파싱 실패"
-        return []
+    data = best
     out: list[dict[str, str]] = []
     for item in data if isinstance(data, list) else []:
         if not isinstance(item, dict):

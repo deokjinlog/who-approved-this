@@ -119,12 +119,15 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
         for dept, members in sorted(groups.items()):
             for target in members:
                 refs = [d for d in members if d["doc_id"] != target["doc_id"]]
+                c0 = time.perf_counter()
                 predicted = predictor.predict(refs, target)
+                case_sec = round(time.perf_counter() - c0, 2)
                 scores = evaluator.evaluate({"cells": predicted}, target)
                 cases.append(
                     {
                         "group": dept,
                         "doc_id": target["doc_id"],
+                        "elapsed_sec": case_sec,
                         "refs": len(refs),
                         # 값은 담지 않는다 — 개수와 일치율만.
                         "gold_cells": int(sum(scores[f"role_{r}_gold_cells"] for r in
@@ -139,6 +142,8 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
                     }
                 )
         results[predictor.name] = {
+            "json_retries": getattr(predictor, "retries", 0),
+            "json_failures": getattr(predictor, "failures", 0),
             "cases": cases,
             "summary": _summarize(cases),
             "by_group": {
@@ -226,6 +231,9 @@ def _summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "name_accuracy_mean": round(sum(c["name_accuracy"] for c in cases) / n, 4),
         "cell_count_match_mean": round(sum(c["cell_count_match"] for c in cases) / n, 4),
         "cases_title_perfect": sum(1 for c in cases if c["title_accuracy"] == 1.0),
+        "sec_per_case_mean": round(
+            sum(c.get("elapsed_sec", 0.0) for c in cases) / n, 2
+        ),
     }
 
 
@@ -240,7 +248,12 @@ def report(rep: dict[str, Any]) -> None:
         typer.echo(
             f"  {name:22} {s['title_accuracy_mean']:6.1%} {s['name_accuracy_mean']:6.1%}"
             f" {s['cell_count_match_mean']:6.1%}   {s['cases_title_perfect']}/{s['cases']}"
-            f"   ({data['elapsed_sec']}s)"
+            f"   케이스당 {s['sec_per_case_mean']:5.1f}s"
+            + (
+                f"  (JSON 재시도 {data['json_retries']}, 실패 {data['json_failures']})"
+                if data.get("json_retries") or data.get("json_failures")
+                else ""
+            )
         )
     typer.echo("")
     typer.echo("  묶음별 (성격이 달라 따로 본다)")
