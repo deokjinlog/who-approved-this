@@ -10,6 +10,8 @@ requires-python = ">=3.12"
 dependencies = [
     "jiwer>=4.0.0",
     "ocrmac>=1.0.1",
+    "paddleocr>=3.7.0",
+    "paddlepaddle>=3.3.1",
     "pillow>=12.3.0",
     "pymupdf>=1.28.2",
     "pyobjc-framework-vision>=12.2.2",

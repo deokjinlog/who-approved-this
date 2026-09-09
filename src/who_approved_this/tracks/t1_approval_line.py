@@ -140,7 +140,7 @@ def run(max_docs: int | None = None) -> dict[str, Any]:
     if not documents:
         raise FileNotFoundError(f"{data_dir} 에 채점할 문서가 없다. 건너뜀: {collector.skipped}")
 
-    t1b = _run_t1b(data_dir, ("textlayer", "ocr"), max_docs)
+    t1b = _run_t1b(data_dir, ("textlayer", "ocr", "paddle"), max_docs)
 
     now = datetime.now()
     report = {

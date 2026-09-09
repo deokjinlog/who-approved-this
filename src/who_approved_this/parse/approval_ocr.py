@@ -2,8 +2,13 @@
 
 같은 함수가 두 입력을 다룬다.
 
-* ``source="ocr"`` — 결재란을 잘라 200dpi로 렌더링하고 Apple Vision(ocrmac)으로 읽는다.
 * ``source="textlayer"`` — 같은 영역의 pymupdf 텍스트 레이어 단어를 그대로 쓴다.
+* ``source="ocr"`` — 결재란을 잘라 200dpi로 렌더링하고 Apple Vision(ocrmac)으로 읽는다.
+* ``source="paddle"`` — 같은 이미지를 PaddleOCR(PP-OCRv5, korean)로 읽는다.
+
+  Vision 은 표의 여러 칸을 한 관측으로 묶어 주는 일이 잦아 칸별 x 좌표가 뭉개진다.
+  PaddleOCR 은 줄(칸) 단위로 따로 검출해 칸 구조가 그대로 남는다. 대신 모델을
+  내려받아야 하고(최초 1회, ``~/.paddlex``) 느리다. 원문은 로컬을 벗어나지 않는다.
 
 칸 짜맞추기 규칙 (양식 의존)
 ----------------------------
@@ -29,6 +34,7 @@ from typing import Any
 
 import pymupdf
 from ocrmac import ocrmac
+from PIL import Image
 
 from who_approved_this.parse.base import Parser
 from who_approved_this.parse.region_crop import TITLE_HINTS, crop_approval
@@ -180,6 +186,54 @@ def extract_cells(words: list[Word], region: str = "bottom") -> list[dict[str, s
     return out
 
 
+#: PaddleOCR 인스턴스는 만들 때 모델을 올리므로 한 번만 만들어 재사용한다.
+_PADDLE: Any = None
+
+
+def _paddle_engine() -> Any:
+    """PaddleOCR(PP-OCRv5, korean) 엔진을 지연 생성한다."""
+    global _PADDLE
+    if _PADDLE is None:
+        from paddleocr import PaddleOCR
+
+        _PADDLE = PaddleOCR(
+            lang="korean",
+            use_doc_orientation_classify=False,
+            use_doc_unwarping=False,
+            use_textline_orientation=False,
+        )
+    return _PADDLE
+
+
+def _words_paddle(png: Path, rect: pymupdf.Rect) -> list[Word]:
+    """PaddleOCR 결과를 원본 페이지 좌표로 되돌린다.
+
+    좌표는 **잘라낸 이미지의 픽셀** 이므로 이미지 폭·높이로 나눠 비율로 바꾼 뒤
+    영역 좌표에 얹는다. 크기는 반드시 PIL 로 잰다 — pymupdf 로 PNG를 열면
+    페이지 크기를 72dpi 포인트로 돌려주므로(200dpi 이미지면 2.78배 어긋난다)
+    좌표가 통째로 틀어져 이름 짝짓기가 전멸한다.
+    """
+    result = _paddle_engine().predict(str(png))
+    if not result:
+        return []
+    res = result[0]
+    with Image.open(png) as img:
+        iw, ih = img.size
+
+    out: list[Word] = []
+    for text, poly in zip(res["rec_texts"], res["rec_polys"]):
+        token = text.strip()
+        if not token:
+            continue
+        xs = [pt[0] for pt in poly]
+        ys = [pt[1] for pt in poly]
+        left = rect.x0 + (min(xs) / iw) * rect.width
+        right = rect.x0 + (max(xs) / iw) * rect.width
+        top = rect.y0 + (min(ys) / ih) * rect.height
+        out.append(((left + right) / 2, top, token, left))
+    return out
+
+
 class ApprovalLineParser(Parser):
     """결재란에서 결재선을 뽑는다. OCR / 텍스트 레이어 중 하나를 고른다.
 
@@ -207,6 +261,8 @@ class ApprovalLineParser(Parser):
         png, rect, kind = crop_approval(pdf_path, self.crop_dir, self.dpi, self.overrides)
         if self.source == "ocr":
             words = _words_ocr(png, rect)
+        elif self.source == "paddle":
+            words = _words_paddle(png, rect)
         else:
             with pymupdf.open(pdf_path) as doc:
                 words = _words_textlayer(doc[0], rect)
