@@ -1,0 +1,72 @@
+"""API 요청·응답 스키마.
+
+개인정보
+    ``/docs/{id}`` 는 **실명을 돌려주지 않는다**(직위와 유무만).
+    예측·생성 결과에는 이름이 들어간다 — 로컬 데모 화면에서 눈으로 확인하기 위해서다.
+"""
+
+from __future__ import annotations
+
+from pydantic import BaseModel, Field
+
+
+class ApprovalCell(BaseModel):
+    """결재란 한 칸."""
+
+    role: str = Field(description="기안 | 검토 | 결재 | 협조")
+    title: str = Field(description="직위")
+    name: str = Field(default="", description="이름. 모르면 빈 문자열")
+
+
+class PredictRequest(BaseModel):
+    org: str = Field(description="조직 키 (예: 경기도서관)")
+    title: str
+    body: str = Field(default="", description="본문. 규칙 기반 예측기는 쓰지 않는다")
+
+
+class PredictResponse(BaseModel):
+    org: str
+    predictor: str
+    cells: list[ApprovalCell]
+    reference_doc_ids: list[str] = Field(description="예측에 참고한 문서 id")
+    reference_count: int
+
+
+class DraftRequest(BaseModel):
+    org: str
+    title: str
+    n: int = Field(default=3, ge=1, le=5, description="초안 개수")
+
+
+class RetrievedChunk(BaseModel):
+    chunk_id: str
+    doc_id: str
+    org: str
+    doc_type: str
+    score: float
+
+
+class DraftResponse(BaseModel):
+    org: str
+    title: str
+    retriever: str
+    model: str | None
+    drafts: list[str]
+    references: list[RetrievedChunk]
+    note: str | None = None
+
+
+class DocInfo(BaseModel):
+    """문서 메타. **실명은 담지 않는다.**"""
+
+    doc_id: str
+    org: str
+    doc_type: str
+    문서번호: str
+    생산일자: str
+    담당부서: str
+    page_count: int
+    body_chars: int
+    has_gold_approval_line: bool
+    gold_cell_count: int
+    gold_titles: list[str] = Field(description="직위만. 이름은 제외한다")

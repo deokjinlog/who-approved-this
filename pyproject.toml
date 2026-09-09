@@ -8,6 +8,8 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "fastapi>=0.141.1",
+    "gradio>=6.26.0",
     "jiwer>=4.0.0",
     "ocrmac>=1.0.1",
     "paddleocr>=3.7.0",
@@ -17,6 +19,7 @@ dependencies = [
     "pyobjc-framework-vision>=12.2.2",
     "rank-bm25>=0.2.2",
     "typer>=0.27.2",
+    "uvicorn[standard]>=0.52.4",
 ]
 
 [project.scripts]

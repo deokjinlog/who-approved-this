@@ -56,10 +56,45 @@ docs/          계획서·진행 로그
 
 ## 실행
 
+### 벤치마크 실행
+
 ```bash
 uv sync
-uv run wat run t4 --pages 3 --only 21317
+uv run wat run t4 --pages 3 --only 21317   # 관보 OCR
+uv run wat run t1                          # 결재문서 필드·결재선
+uv run wat run t1c                         # 결재선 예측
+uv run wat run t1d                         # 품의서 초안
 ```
+
+### 데모 서비스 (제품 아님)
+
+두 기능을 눈으로 보는 로컬 데모. **인증 없음, localhost 전용.**
+
+```bash
+uv run wat serve      # http://127.0.0.1:8000/swagger
+uv run wat ui         # http://127.0.0.1:7860
+```
+
+| 경로 | 하는 일 |
+|---|---|
+| `POST /approval-line/predict` | 조직·제목·본문 → 예측 결재선 + 참고한 문서 id |
+| `POST /draft/generate` | 조직·제목 → 초안 n개 + 검색된 참고 문서 id·점수 |
+| `GET /docs`, `GET /docs/{id}` | 문서 메타와 gold 결재선 유무 (**실명 제외**) |
+| `GET /orgs` | 조직 목록 |
+
+Gradio 화면은 탭 두 개다. **결재선** 탭은 왼쪽 gold / 오른쪽 예측을 칸 단위로 놓고
+틀린 칸에 빨간 배경을 준다. **초안** 탭은 왼쪽 실제 문서 / 가운데 초안 3개 / 오른쪽
+검색된 참고 문서를 보여준다. 고른 문서는 참고에서 제외한다(leave-one-out).
+
+로컬 모델을 붙이면 규칙 기반 대신 LLM 이 답한다.
+
+```bash
+WAT_LLM_MODEL=qwen3:8b WAT_EMBED_MODEL=bge-m3 uv run wat ui
+```
+
+모델을 지정하지 않으면 결재선은 다수결 baseline, 초안은 **검색 결과만** 나온다.
+API 는 계산을 새로 하지 않고 `tracks/` 코드를 그대로 호출한다
+(`api/models` · `api/services` · `api/routers` 세 계층).
 
 | 옵션 | 뜻 |
 |---|---|

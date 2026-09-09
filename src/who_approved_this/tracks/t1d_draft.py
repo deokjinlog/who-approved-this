@@ -75,7 +75,7 @@ _STOP = {
 }
 
 
-def _load_docs(data_dir: Path) -> list[dict[str, Any]]:
+def load_docs(data_dir: Path) -> list[dict[str, Any]]:
     """20건 전체의 본문·조직·유형을 모은다."""
     orgs = load_orgs(data_dir / "approval_gold.tsv")
     docs: list[dict[str, Any]] = []
@@ -94,7 +94,7 @@ def _load_docs(data_dir: Path) -> list[dict[str, Any]]:
     return docs
 
 
-def _ollama_embed(model: str) -> Any:
+def ollama_embed(model: str) -> Any:
     """ollama 임베딩 함수를 만든다. 실패하면 ``None``."""
     import urllib.error
     import urllib.request
@@ -162,7 +162,7 @@ def _sections(text: str) -> list[str]:
     return out
 
 
-def _score_draft(actual: str, draft: str) -> dict[str, float]:
+def score_draft(actual: str, draft: str) -> dict[str, float]:
     """실제 문서를 기준으로 초안을 잰다. 정답이 없으므로 '닮은 정도'만 본다."""
     want = _sections(actual)
     got = " ".join(_sections(draft))
@@ -178,7 +178,7 @@ def _score_draft(actual: str, draft: str) -> dict[str, float]:
     }
 
 
-def _generate(model: str, prompt: str, temperature: float, timeout: int = 300) -> str:
+def generate(model: str, prompt: str, temperature: float, timeout: int = 300) -> str:
     """ollama 로 초안 하나를 만든다."""
     try:
         done = subprocess.run(
@@ -205,7 +205,7 @@ SYSTEM = """너는 한국 행정기관의 공문서 작성자다. 제목과 같�
 출력은 문서 본문만. 설명이나 머리말을 붙이지 않는다."""
 
 
-def _build_prompt(target: dict[str, Any], refs: list[dict[str, Any]]) -> str:
+def build_prompt(target: dict[str, Any], refs: list[dict[str, Any]]) -> str:
     blocks = [
         f"## 참고문서 {i}(유형: {c['doc_type']})\n본문:\n{c['text']}"
         for i, c in enumerate(refs, start=1)
@@ -223,14 +223,14 @@ def run(model: str | None = None, embed_model: str | None = None) -> dict[str, A
     out_dir = DATA_ROOT / TRACK
     results_dir = track_results_dir(TRACK)
 
-    docs = _load_docs(data_dir)
+    docs = load_docs(data_dir)
     chunks = chunk_documents(docs)
     targets = [d for d in docs if d["org"] == TARGET_ORG]
 
     bm25 = BM25Retriever(chunks)
     retrievers: list[Any] = [bm25]
     if embed_model:
-        vector = VectorRetriever(chunks, _ollama_embed(embed_model))
+        vector = VectorRetriever(chunks, ollama_embed(embed_model))
         retrievers += [vector, HybridRetriever(bm25, vector)]
 
     started = time.perf_counter()
@@ -307,15 +307,15 @@ def _generate_all(
             for c, _ in retriever.search(target["제목"], k=TOP_K * 3)
             if c["doc_id"] != target["doc_id"]
         ][:CONTEXT_K]
-        prompt = _build_prompt(target, refs)
+        prompt = build_prompt(target, refs)
 
         scored: list[tuple[dict[str, float], str, float]] = []
         for temp in TEMPERATURES:
-            draft = _generate(model, prompt, temp)
+            draft = generate(model, prompt, temp)
             (drafts_dir / f"{target['doc_id']}-t{temp}.md").write_text(
                 draft, encoding="utf-8"
             )
-            scored.append((_score_draft(target["body"], draft), draft, temp))
+            scored.append((score_draft(target["body"], draft), draft, temp))
 
         best = max(scored, key=lambda s: (s[0]["keyphrases_found"], s[0]["sections_found"]))
         (review_dir / f"{target['doc_id']}.md").write_text(

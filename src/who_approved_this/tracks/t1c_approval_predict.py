@@ -57,7 +57,7 @@ MIN_GROUP = 2
 REF_SWEEP = (1, 3, 7)
 
 
-def _load_docs(data_dir: Path) -> list[dict[str, Any]]:
+def load_docs(data_dir: Path) -> list[dict[str, Any]]:
     """PDF 본문(텍스트 레이어)과 gold 결재선을 문서별로 모은다."""
     gold = load_gold(data_dir / "approval_gold.tsv")
     orgs = load_orgs(data_dir / "approval_gold.tsv")
@@ -79,7 +79,7 @@ def _load_docs(data_dir: Path) -> list[dict[str, Any]]:
     return docs
 
 
-def _groups(docs: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def groups_of(docs: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     """**실제 조직**으로 묶는다(담당부서명이 아니라).
 
     포털의 ``담당부서`` 로 묶으면 법무부 "총무과" 8건이 한 묶음이 되는데, 실제로는
@@ -103,8 +103,8 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
     if not gold_path.is_file():
         raise FileNotFoundError(f"gold 가 없다: {gold_path}")
 
-    docs = _load_docs(data_dir)
-    groups = _groups(docs)
+    docs = load_docs(data_dir)
+    groups = groups_of(docs)
     evaluator = ApprovalMatchEvaluator(load_gold(gold_path))
 
     predictors: list[Predictor] = [BaselineCopy(), BaselineVote()]

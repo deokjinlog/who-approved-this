@@ -110,5 +110,28 @@ def run(
     typer.echo(f"  → {report['results_path']}")
 
 
+@app.command()
+def serve(
+    host: str = typer.Option("127.0.0.1", help="바인드 주소. 기본은 localhost 전용"),
+    port: int = typer.Option(8000, help="포트"),
+) -> None:
+    """데모 API를 띄운다. Swagger 는 /swagger 에 있다."""
+    import uvicorn
+
+    typer.echo(f"Swagger: http://{host}:{port}/swagger")
+    uvicorn.run("who_approved_this.api.app:app", host=host, port=port, log_level="info")
+
+
+@app.command()
+def ui(
+    host: str = typer.Option("127.0.0.1", help="바인드 주소. 기본은 localhost 전용"),
+    port: int = typer.Option(7860, help="포트"),
+) -> None:
+    """Gradio 데모 화면을 띄운다."""
+    from who_approved_this import ui as ui_module
+
+    ui_module.main(host, port)
+
+
 if __name__ == "__main__":
     app()

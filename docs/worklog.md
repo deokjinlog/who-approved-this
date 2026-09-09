@@ -360,3 +360,29 @@
     정형 서식을 가정하면 안 되고, 항목 재현율은 지출 문서에서만 의미가 있다.
 
 다음 단계: 임베딩·생성 모델 확정 후 vector/hybrid 검색 비교 + 8케이스 초안 생성.
+
+■ 과제 12: 데모 서비스 — FastAPI + Gradio
+무엇을 했는지:
+  - src/who_approved_this/api/ 를 models / services / routers 세 계층으로.
+    services 는 tracks/ 코드를 호출만 한다(복붙 없음). 이를 위해 t1c·t1d 의
+    로더·프롬프트·생성 함수를 공개 이름으로 바꿨다(load_docs, build_prompt, generate 등).
+  - 경로 4개: POST /approval-line/predict, POST /draft/generate,
+    GET /docs·/docs/{id}, GET /orgs. 인증 없음, localhost 전용.
+  - src/who_approved_this/ui.py — Gradio 탭 2개.
+    결재선 탭은 gold vs 예측을 칸 단위 표로, 틀린 칸 빨간 배경.
+    초안 탭은 실제 문서 / 초안 3개 / 검색 참고문서.
+  - cli 에 serve, ui 추가.
+
+막힌 지점 / 해결:
+  1. Swagger 기본 경로 /docs 가 문서 목록 API 경로와 충돌 → Swagger 를 /swagger 로 옮겼다.
+  2. include_router 후 app.routes 에 라우트가 안 보였다. 최신 FastAPI 가 _IncludedRouter
+     로 지연 등록하는 정상 동작이었고, 실제 기동해 요청을 보내 확인했다.
+  3. curl 로 POST 할 때 제목의 아포스트로피('26년)와 한글 query 파라미터 때문에
+     요청이 깨졌다. 코드 문제가 아니라 셸 인용·URL 인코딩 문제였다.
+     클라이언트는 한글 doc_id 를 URL 인코딩해야 한다.
+
+확인: API 4경로 전부 200. UI 두 탭 콜백 정상(드롭다운 20건, 결재선 표 10행 생성,
+  초안 탭은 모델 미지정이라 검색 결과만 — 참고문서 5건 점수와 함께 표시).
+  모델을 붙이면 WAT_LLM_MODEL / WAT_EMBED_MODEL 로 LLM 경로가 켜진다.
+
+다음 단계: 모델 확정 후 UI 에서 초안까지 채워 보기.
