@@ -11,6 +11,7 @@ import typer
 from who_approved_this.tracks import (
     t1_approval_line,
     t1c_approval_predict,
+    t1d_draft,
     t4_gazette_ocr,
 )
 
@@ -23,6 +24,7 @@ app = typer.Typer(
 TRACKS = {
     "t1": t1_approval_line.run,
     "t1c": t1c_approval_predict.run,
+    "t1d": t1d_draft.run,
     "t4": t4_gazette_ocr.run,
 }
 
@@ -40,11 +42,16 @@ def run(
     docs: int | None = typer.Option(None, "--docs", help="훑을 문서 수"),
     only: str | None = typer.Option(None, "--only", help="파일명에 이 문자열이 든 PDF만 (예: 21317)"),
     select: str = typer.Option("first", "--select", help="페이지 고르기: first | mixed(유형 섞기)"),
-    model: str | None = typer.Option(None, "--model", help="t1c 에서 쓸 ollama 모델 이름"),
+    model: str | None = typer.Option(None, "--model", help="t1c/t1d 에서 쓸 ollama 생성 모델"),
+    embed_model: str | None = typer.Option(None, "--embed-model", help="t1d 임베딩 모델"),
 ) -> None:
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
         raise typer.BadParameter(f"모르는 트랙: {track} (가능: {', '.join(TRACKS)})")
+
+    if track == "t1d":
+        t1d_draft.report(TRACKS[track](model=model, embed_model=embed_model))
+        return
 
     if track == "t1c":
         t1c_approval_predict.report(TRACKS[track](model=model, max_docs=docs))
