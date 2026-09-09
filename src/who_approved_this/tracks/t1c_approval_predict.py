@@ -46,6 +46,7 @@ from who_approved_this.tracks.t1c_predictors import (
     BaselineVote,
     LocalLLM,
     Predictor,
+    VoteTitlesLLMNames,
 )
 
 TRACK = "t1c"
@@ -110,6 +111,7 @@ def run(model: str | None = None, max_docs: int | None = None) -> dict[str, Any]
     predictors: list[Predictor] = [BaselineCopy(), BaselineVote()]
     if model:
         predictors.append(LocalLLM(model))
+        predictors.append(VoteTitlesLLMNames(model))
 
     started = time.perf_counter()
     results: dict[str, Any] = {}

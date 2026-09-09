@@ -105,6 +105,51 @@ def _vote(values: list[str]) -> str:
     return values[0]
 
 
+class VoteTitlesLLMNames:
+    """직위는 다수결, 이름은 LLM — 각자 잘하는 쪽만 쓴다.
+
+    12케이스 실측에서 baseline_vote 는 **직위**(66.2% vs 48.2%)와 칸 수에서 이기고,
+    LLM 은 **이름**(64.2% vs 42.1%)에서 크게 이겼다. 이유도 갈렸다.
+    다수결은 표기를 정확히 복사하되 사람을 못 고르고, LLM 은 문서 내용을 읽어
+    사람을 고르되 직위 칸에 팀 이름을 적는다.
+
+    그래서 칸 구조와 직위는 다수결이 만든 것을 쓰고, 같은 자리의 이름만 LLM 것으로
+    바꾼다. LLM 이 그 자리에 답을 못 내면 다수결 이름을 그대로 둔다.
+    """
+
+    def __init__(self, model: str, timeout: int = 600) -> None:
+        self.vote = BaselineVote()
+        self.llm = LocalLLM(model, timeout)
+        self.name = f"vote_titles+llm_names({model})"
+
+    @property
+    def retries(self) -> int:
+        return self.llm.retries
+
+    @property
+    def failures(self) -> int:
+        return self.llm.failures
+
+    def predict(
+        self, refs: list[dict[str, Any]], target: dict[str, Any]
+    ) -> list[dict[str, str]]:
+        skeleton = self.vote.predict(refs, target)
+        names = self.llm.predict(refs, target)
+        # 역할별로 순서를 맞춰 이름만 옮긴다.
+        by_role: dict[str, list[str]] = {}
+        for cell in names:
+            by_role.setdefault(cell["role"], []).append(cell["name"])
+        used: dict[str, int] = {}
+        out: list[dict[str, str]] = []
+        for cell in skeleton:
+            i = used.get(cell["role"], 0)
+            used[cell["role"]] = i + 1
+            pool = by_role.get(cell["role"], [])
+            name = pool[i] if i < len(pool) and pool[i] else cell["name"]
+            out.append({**cell, "name": name})
+        return out
+
+
 class LocalLLM:
     """ollama 로컬 모델에 결재선을 물어본다.
 

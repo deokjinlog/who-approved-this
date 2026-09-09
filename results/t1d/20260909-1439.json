@@ -1,0 +1,282 @@
+{
+  "track": "t1d",
+  "run_at": "2026-09-09T14:39:59",
+  "target_org": "경기도서관",
+  "documents": 20,
+  "chunks": 43,
+  "doc_types": {
+    "결과보고": 7,
+    "기타": 1,
+    "계획": 3,
+    "알림": 5,
+    "지출": 4
+  },
+  "prompt_template": "src/who_approved_this/tracks/t1d_prompt.md",
+  "embed_model": "bge-m3",
+  "model": "qwen3:8b",
+  "retrieval": {
+    "bm25": {
+      "cases": [
+        {
+          "doc_id": "경기도_경기도서관-12039",
+          "same_org_in_top3": 2,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-12016",
+          "same_org_in_top3": 2,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-12012",
+          "same_org_in_top3": 2,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-10185",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-11698",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-8872",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 0,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-8942",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 0,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-8938",
+          "same_org_in_top3": 1,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        }
+      ],
+      "summary": {
+        "cases": 8,
+        "same_org_in_top3_mean": 2.375,
+        "same_type_in_top3_rate": 0.75,
+        "distinct_docs_in_top5_mean": 4.625,
+        "elapsed_sec": 0.01
+      }
+    },
+    "vector": {
+      "cases": [
+        {
+          "doc_id": "경기도_경기도서관-12039",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-12016",
+          "same_org_in_top3": 0,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-12012",
+          "same_org_in_top3": 2,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-10185",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-11698",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 0,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-8872",
+          "same_org_in_top3": 2,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-8942",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 0,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-8938",
+          "same_org_in_top3": 0,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        }
+      ],
+      "summary": {
+        "cases": 8,
+        "same_org_in_top3_mean": 2.0,
+        "same_type_in_top3_rate": 0.75,
+        "distinct_docs_in_top5_mean": 4.625,
+        "elapsed_sec": 0.18
+      }
+    },
+    "hybrid": {
+      "cases": [
+        {
+          "doc_id": "경기도_경기도서관-12039",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-12016",
+          "same_org_in_top3": 0,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-12012",
+          "same_org_in_top3": 2,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-10185",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-11698",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-8872",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 0,
+          "distinct_docs_in_top5": 4
+        },
+        {
+          "doc_id": "경기도_경기도서관-8942",
+          "same_org_in_top3": 3,
+          "same_type_in_top3": 0,
+          "distinct_docs_in_top5": 5
+        },
+        {
+          "doc_id": "경기도_경기도서관-8938",
+          "same_org_in_top3": 1,
+          "same_type_in_top3": 1,
+          "distinct_docs_in_top5": 5
+        }
+      ],
+      "summary": {
+        "cases": 8,
+        "same_org_in_top3_mean": 2.25,
+        "same_type_in_top3_rate": 0.75,
+        "distinct_docs_in_top5_mean": 4.375,
+        "elapsed_sec": 0.17
+      }
+    }
+  },
+  "generation": {
+    "cases": [
+      {
+        "doc_id": "경기도_경기도서관-12039",
+        "best_temperature": 0.2,
+        "sections_expected": 0.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 16.0,
+        "keyphrases_found": 10.0,
+        "length_ratio": 1.121
+      },
+      {
+        "doc_id": "경기도_경기도서관-12016",
+        "best_temperature": 0.2,
+        "sections_expected": 0.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 20.0,
+        "keyphrases_found": 12.0,
+        "length_ratio": 1.101
+      },
+      {
+        "doc_id": "경기도_경기도서관-12012",
+        "best_temperature": 0.2,
+        "sections_expected": 7.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 20.0,
+        "keyphrases_found": 11.0,
+        "length_ratio": 1.634
+      },
+      {
+        "doc_id": "경기도_경기도서관-10185",
+        "best_temperature": 0.2,
+        "sections_expected": 7.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 20.0,
+        "keyphrases_found": 9.0,
+        "length_ratio": 0.653
+      },
+      {
+        "doc_id": "경기도_경기도서관-11698",
+        "best_temperature": 0.2,
+        "sections_expected": 0.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 17.0,
+        "keyphrases_found": 11.0,
+        "length_ratio": 0.64
+      },
+      {
+        "doc_id": "경기도_경기도서관-8872",
+        "best_temperature": 0.2,
+        "sections_expected": 0.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 15.0,
+        "keyphrases_found": 11.0,
+        "length_ratio": 1.862
+      },
+      {
+        "doc_id": "경기도_경기도서관-8942",
+        "best_temperature": 0.2,
+        "sections_expected": 2.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 20.0,
+        "keyphrases_found": 9.0,
+        "length_ratio": 0.298
+      },
+      {
+        "doc_id": "경기도_경기도서관-8938",
+        "best_temperature": 0.2,
+        "sections_expected": 0.0,
+        "sections_found": 0.0,
+        "keyphrases_expected": 16.0,
+        "keyphrases_found": 11.0,
+        "length_ratio": 0.926
+      }
+    ],
+    "summary": {
+      "cases": 8,
+      "section_recall": 0.0,
+      "keyphrase_recall": 0.583,
+      "length_ratio_mean": 1.029,
+      "elapsed_sec": 111.06
+    },
+    "output_dir": "/Users/user/data/who-approved-this/t1d"
+  },
+  "note": "초안·참고 본문은 리포 밖 DATA_ROOT/t1d 에 둔다. 여기에는 숫자만.",
+  "elapsed_sec": 111.42
+}

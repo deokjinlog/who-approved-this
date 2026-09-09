@@ -31,7 +31,7 @@ import typer
 
 from who_approved_this.collect.opengokr_local import OpenGoKrLocalCollector
 from who_approved_this.config import DATA_ROOT, track_data_dir, track_results_dir
-from who_approved_this.evaluate.approval_match import load_orgs
+from who_approved_this.evaluate.approval_match import load_gold, load_orgs
 from who_approved_this.tracks.t1c_predictors import _THINK_BLOCK, ollama_generate
 from who_approved_this.tracks.t1d_retrieval import (
     BM25Retriever,
@@ -55,6 +55,9 @@ TEMPERATURES = (0.2, 0.6, 1.0)
 
 #: 내용 평가에 쓸 명사구 개수.
 KEYPHRASE_N = 20
+
+#: 초안 컨텍스트에서 사람 이름을 가릴 때 쓰는 대체 문자열.
+NAME_MASK = "○○○"
 
 #: 항목 머리글: "1. 목적", "2. 추진내용" 같은 번호 항목.
 #: 날짜("2026. 6. 29.")가 같은 모양이라 오탐하기 쉬워, 머리글에 **한글 2자 이상**이
@@ -199,9 +202,26 @@ SYSTEM = """너는 한국 행정기관의 공문서 작성자다. 제목과 같�
 출력은 문서 본문만. 설명이나 머리말을 붙이지 않는다."""
 
 
-def build_prompt(target: dict[str, Any], refs: list[dict[str, Any]]) -> str:
+def mask_names(text: str, names: set[str]) -> str:
+    """참고 본문의 사람 이름을 가린다.
+
+    초안 단계에서 사람 이름을 미리 채우는 건 대체로 원하는 동작이 아니고,
+    실측에서 24개 초안 중 14개에 참고 문서의 실명이 그대로 복사됐다.
+    가릴 이름은 gold 에 적힌 명단을 쓴다(본문에서 이름을 추정하지 않는다).
+    """
+    out = text
+    for name in sorted(names, key=len, reverse=True):
+        if len(name) >= 2:
+            out = out.replace(name, NAME_MASK)
+    return out
+
+
+def build_prompt(
+    target: dict[str, Any], refs: list[dict[str, Any]], names: set[str] | None = None
+) -> str:
     blocks = [
-        f"## 참고문서 {i}(유형: {c['doc_type']})\n본문:\n{c['text']}"
+        f"## 참고문서 {i}(유형: {c['doc_type']})\n본문:\n"
+        + (mask_names(c["text"], names) if names else c["text"])
         for i, c in enumerate(refs, start=1)
     ]
     return (
@@ -211,13 +231,20 @@ def build_prompt(target: dict[str, Any], refs: list[dict[str, Any]]) -> str:
     )
 
 
-def run(model: str | None = None, embed_model: str | None = None) -> dict[str, Any]:
+def run(
+    model: str | None = None,
+    embed_model: str | None = None,
+    n_drafts: int = len(TEMPERATURES),
+) -> dict[str, Any]:
     """T1d를 돌린다. ``embed_model`` 이 없으면 bm25 만, ``model`` 이 없으면 검색까지만."""
     data_dir = track_data_dir("t1")
     out_dir = DATA_ROOT / TRACK
     results_dir = track_results_dir(TRACK)
 
     docs = load_docs(data_dir)
+    gold = load_gold(data_dir / "approval_gold.tsv")
+    for d in docs:
+        d["cells"] = [c for items in gold.get(d["저장파일명"], {}).values() for c in items]
     chunks = chunk_documents(docs)
     targets = [d for d in docs if d["org"] == TARGET_ORG]
 
@@ -250,8 +277,18 @@ def run(model: str | None = None, embed_model: str | None = None) -> dict[str, A
             },
         }
 
-    generation: dict[str, Any] = {"skipped": "모델 미지정"} if not model else _generate_all(
-        model, targets, chunks, retrievers[-1], out_dir
+    gold_names = {
+        c["name"]
+        for d in docs
+        for c in d.get("cells", [])
+        if c.get("name") and c["name"] not in ("-", "?")
+    }
+    generation: dict[str, Any] = (
+        {"skipped": "모델 미지정"}
+        if not model
+        else _generate_all(
+            model, targets, chunks, retrievers[-1], out_dir, gold_names, n_drafts
+        )
     )
 
     now = datetime.now()
@@ -286,8 +323,15 @@ def _generate_all(
     chunks: list[dict[str, Any]],
     retriever: Any,
     out_dir: Path,
+    names: set[str] | None = None,
+    n_drafts: int = len(TEMPERATURES),
 ) -> dict[str, Any]:
-    """대상마다 초안 3개를 만들고 실제 문서와 대조한다."""
+    """대상마다 초안을 만들고 실제 문서와 대조한다.
+
+    참고 문서는 **같은 조직으로 제한**한다. 검색 지표는 조직을 안 걸고 재지만
+    (그게 검색 품질이다), 생성 컨텍스트에 다른 기관 문서가 들어가면 초안이
+    그 기관 머리글을 그대로 베낀다 — 실측에서 초안 3개가 그렇게 오염됐다.
+    """
     drafts_dir = out_dir / "drafts"
     review_dir = out_dir / "review"
     drafts_dir.mkdir(parents=True, exist_ok=True)
@@ -298,13 +342,13 @@ def _generate_all(
     for target in targets:
         refs = [
             c
-            for c, _ in retriever.search(target["제목"], k=TOP_K * 3)
-            if c["doc_id"] != target["doc_id"]
+            for c, _ in retriever.search(target["제목"], k=TOP_K * 6)
+            if c["doc_id"] != target["doc_id"] and c["org"] == target["org"]
         ][:CONTEXT_K]
-        prompt = build_prompt(target, refs)
+        prompt = build_prompt(target, refs, names)
 
         scored: list[tuple[dict[str, float], str, float]] = []
-        for temp in TEMPERATURES:
+        for temp in TEMPERATURES[:n_drafts]:
             draft = generate(model, prompt, temp)
             (drafts_dir / f"{target['doc_id']}-t{temp}.md").write_text(
                 draft, encoding="utf-8"

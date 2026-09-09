@@ -44,13 +44,16 @@ def run(
     select: str = typer.Option("first", "--select", help="페이지 고르기: first | mixed(유형 섞기)"),
     model: str | None = typer.Option(None, "--model", help="t1c/t1d 에서 쓸 ollama 생성 모델"),
     embed_model: str | None = typer.Option(None, "--embed-model", help="t1d 임베딩 모델"),
+    drafts: int = typer.Option(3, "--drafts", help="t1d 케이스당 초안 개수"),
 ) -> None:
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
         raise typer.BadParameter(f"모르는 트랙: {track} (가능: {', '.join(TRACKS)})")
 
     if track == "t1d":
-        t1d_draft.report(TRACKS[track](model=model, embed_model=embed_model))
+        t1d_draft.report(
+            TRACKS[track](model=model, embed_model=embed_model, n_drafts=drafts)
+        )
         return
 
     if track == "t1c":
