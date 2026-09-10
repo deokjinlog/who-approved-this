@@ -1,0 +1,24 @@
+# 요약 템플릿 — 본문·첨부를 정해진 칸으로 요약한다 (회사 기능 ③).
+#
+# 칸은 성격이 셋이다.
+#   extract   원문에서 정규식으로 그대로 옮긴다. LLM 을 거치지 않아 지어낼 수 없다.
+#   generate  LLM 이 쓴다. 쓴 뒤 원문 근거를 검사해, 근거 없는 숫자·문서번호가 든 항목은 버린다.
+#   system    코드가 채운다.
+#
+# T5 에서 근거를 주고 줄이게 하면 숫자 근거율 99~100% 였고, T1d 에서 근거 없이 쓰게 하면
+# 문서번호를 6/7 지어냈다. 그래서 숫자가 핵심인 칸은 전부 extract 로 둔다.
+
+name: summary
+version: 1
+rules:
+  - 원문에 있는 내용만 쓴다. 원문에 없는 숫자·날짜·금액·문서번호·기관명·법령명을 만들지 않는다.
+  - 사람 이름은 쓰지 않는다. 필요하면 직위로 부른다.
+  - 원문에 없으면 칸을 비운다. 추측으로 채우지 않는다.
+slots:
+  - {key: one_line,        label: 한줄요약,       source: generate, required: true, max_chars: 80}
+  - {key: key_points,      label: 핵심,           source: generate, max_items: 3, max_chars: 90}
+  - {key: amounts,         label: 금액,           source: extract,  pattern: amount}
+  - {key: dates,           label: 일정,           source: extract,  pattern: date}
+  - {key: doc_refs,        label: 관련 문서,      source: extract,  pattern: doc_no}
+  - {key: approver_checks, label: 결재자 확인사항, source: generate, max_items: 3, max_chars: 90}
+  - {key: locations,       label: 원문 위치,      source: system}

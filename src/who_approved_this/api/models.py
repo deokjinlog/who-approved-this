@@ -73,3 +73,16 @@ class DocInfo(BaseModel):
     has_gold_approval_line: bool
     gold_cell_count: int
     gold_titles: list[str] = Field(description="직위만. 이름은 제외한다")
+
+
+class AgentRequest(BaseModel):
+    """전자결재 에이전트 요청. 기안자는 이름 또는 (조직, 직위) 둘 중 하나로 준다."""
+
+    user_name: str | None = Field(default=None, description="로그인 사용자 이름(명부 조회)")
+    org: str | None = Field(default=None, description="이름 대신 조직을 직접 줄 때")
+    title_of_user: str | None = Field(default=None, description="이름 대신 직위를 직접 줄 때")
+    title: str = Field(description="작성할 문서 제목")
+    body: str | None = Field(default=None, description="이미 쓴 본문이 있으면")
+    attachments: list[str] | None = Field(default=None, description="첨부에서 뽑은 텍스트 목록")
+    linked_docs: list[str] | None = Field(default=None, description="관련(선행) 문서번호")
+    exclude_doc_id: str | None = Field(default=None, description="평가용 — 참고에서 뺄 문서")

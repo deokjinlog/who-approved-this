@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException
 
 from who_approved_this.api import services
 from who_approved_this.api.models import (
+    AgentRequest,
     DocInfo,
     DraftRequest,
     DraftResponse,
@@ -54,3 +55,12 @@ def draft(req: DraftRequest, exclude_doc_id: str | None = None) -> DraftResponse
     return DraftResponse(
         **services.generate_draft(req.org, req.title, req.n, exclude_doc_id)
     )
+
+
+@router.post("/agent", summary="전자결재 에이전트 — 결재선·초안·요약·확인 필요 목록")
+def agent(req: AgentRequest, mask: bool = True) -> dict:
+    """사용자 식별 → 업무항목 → 결재선 → 템플릿 초안 → 요약 → 확인 필요.
+
+    ``mask`` 는 응답의 사람 이름을 가린다(기본 켬).
+    """
+    return services.agent_handle(req.model_dump(exclude_none=True), mask)

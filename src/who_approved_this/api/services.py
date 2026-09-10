@@ -218,3 +218,21 @@ def actual_body(doc_id: str) -> str:
     """실제 문서 본문. 로컬 데모 화면 비교용."""
     doc = next((d for d in _docs() if d["doc_id"] == doc_id), None)
     return doc["body"] if doc else ""
+
+
+@lru_cache(maxsize=1)
+def _agent() -> Any:
+    """에이전트는 규칙·명부·템플릿을 읽어 두므로 한 번만 만든다."""
+    from who_approved_this.agent import ApprovalAgent
+
+    return ApprovalAgent(LLM_MODEL, docs=_docs())
+
+
+def agent_handle(request: dict[str, Any], mask: bool = True) -> dict[str, Any]:
+    """에이전트 한 번 호출. ``mask`` 면 결과 전체에서 사람 이름을 가린다(기본 켬)."""
+    from who_approved_this.agent import to_public
+
+    agent = _agent()
+    result = agent.handle(request)
+    result["masked"] = mask
+    return to_public(result, agent.known_names) if mask else result

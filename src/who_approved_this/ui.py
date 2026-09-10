@@ -112,6 +112,58 @@ def run_draft(choice: str) -> tuple[str, str, str, str, str, str]:
     return header, services.actual_body(doc_id), drafts[0], drafts[1], drafts[2], refs
 
 
+def run_agent(choice: str, attach_text: str, linked: str, show_names: bool):
+    """에이전트 탭 — 고른 문서의 제목과 기안자 직위로 새 문서를 기안하는 상황을 흉내 낸다."""
+    doc_id = _doc_id(choice)
+    if not doc_id:
+        return "문서를 고르세요.", "", "", "", "", ""
+    doc = next(d for d in services.list_docs() if d["doc_id"] == doc_id)
+    drafter = next((c["title"] for c in services.gold_cells(doc_id) if c["role"] == "기안"), "주무관")
+    request = {
+        "org": doc["org"],
+        "title_of_user": drafter,
+        "title": doc.get("제목", ""),
+        "exclude_doc_id": doc_id,
+    }
+    if attach_text.strip():
+        request["attachments"] = [attach_text]
+    if linked.strip():
+        request["linked_docs"] = [x.strip() for x in linked.split(",") if x.strip()]
+    r = services.agent_handle(request, mask=not show_names)
+
+    wt = r.get("work_type", {})
+    info = (
+        f"**기안자** {r['user'].get('org')} · {r['user'].get('title')} ({r['user'].get('source')})  \n"
+        f"**업무항목** {wt.get('value')} ({wt.get('source')})  \n"
+        f"**시간** {r.get('timings')}"
+    )
+    rows = "".join(
+        f"<tr><td style='padding:4px 8px'>{c['role']}</td><td style='padding:4px 8px'>{c['title']}</td>"
+        f"<td style='padding:4px 8px'>{c.get('name') or '—'}</td>"
+        f"<td style='padding:4px 8px;color:#666'>{c['evidence']}</td></tr>"
+        for c in r["approval_line"]["cells"]
+    )
+    line_html = (
+        "<table style='border-collapse:collapse;font-size:14px'><tr>"
+        + "".join(f"<th style='padding:4px 8px;text-align:left'>{h}</th>" for h in ("역할", "직위", "이름", "근거"))
+        + f"</tr>{rows}</table>"
+    )
+    sections = "\n".join(
+        f"- **{s['label']}** `{s['source']}` → {s['status']}" for s in r["draft"]["sections"]
+    ) + f"\n\n검사: {r['draft']['checks']}  \n참고 문서: {', '.join(r['draft']['references']) or '없음'}"
+    summ = r.get("summary")
+    summary_md = "(첨부·본문이 없어 요약하지 않음)" if not summ else (
+        f"**한줄요약** {summ['slots']['one_line']}  \n"
+        + "**핵심**  \n" + "\n".join(f"- {x}" for x in summ["slots"]["key_points"])
+        + f"  \n**금액** {', '.join(summ['slots']['amounts']) or '—'}  \n"
+        + f"**일정** {', '.join(summ['slots']['dates']) or '—'}  \n"
+        + "**결재자 확인사항**  \n" + "\n".join(f"- {x}" for x in summ["slots"]["approver_checks"])
+        + f"  \n검사: {summ['checks']}"
+    )
+    needs = "\n".join(f"- **{n['what']}** — {n['why']}" for n in r["needs_confirmation"]) or "없음"
+    return info, line_html, r["draft"]["markdown"], sections, summary_md, needs
+
+
 def build() -> gr.Blocks:
     """화면 조립. 탭 두 개."""
     with gr.Blocks(title="who-approved-this 데모") as demo:
@@ -143,6 +195,31 @@ def build() -> gr.Blocks:
                         d3 = gr.Textbox(label="", lines=20, max_lines=20)
                 refs = gr.Markdown(label="검색된 참고 문서")
             go2.click(run_draft, inputs=pick2, outputs=[info2, actual, d1, d2, d3, refs])
+
+        with gr.Tab("에이전트"):
+            gr.Markdown(
+                "고른 문서의 **제목과 기안자 직위만** 넣고 새 문서를 기안하는 상황을 흉내 낸다. "
+                "첨부 텍스트를 붙여 넣으면 초안의 첨부 칸과 요약이 채워진다."
+            )
+            pick3 = gr.Dropdown(_doc_choices(), label="문서", value=None)
+            attach = gr.Textbox(label="첨부 텍스트 (선택)", lines=4)
+            linked = gr.Textbox(label="관련 문서번호 (선택, 쉼표 구분)")
+            show = gr.Checkbox(label="실명 표시 (로컬 확인용)", value=False)
+            go3 = gr.Button("에이전트 실행", variant="primary")
+            info3 = gr.Markdown()
+            with gr.Row():
+                line3 = gr.HTML(label="결재선")
+                needs3 = gr.Markdown(label="확인 필요")
+            with gr.Row():
+                draft3 = gr.Textbox(label="초안", lines=18, max_lines=18)
+                with gr.Column():
+                    sections3 = gr.Markdown(label="초안 칸")
+                    summary3 = gr.Markdown(label="요약")
+            go3.click(
+                run_agent,
+                inputs=[pick3, attach, linked, show],
+                outputs=[info3, line3, draft3, sections3, summary3, needs3],
+            )
 
     return demo
 

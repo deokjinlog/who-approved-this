@@ -1,0 +1,14 @@
+# 회의·심의 초안 템플릿.
+# gold 회의·심의 4건 중 3건이 "관련근거"로 시작해 선행 문서를 인용한다(연결문서 칸이 실재).
+# 그 외 공통 항목은 없어서 본문은 생성에 맡긴다. provenance: induced(약함).
+
+work_type: 회의·심의
+provenance: induced
+source_docs: [총무과-7941, 총무과-6989, 총무과-6743, 총무과-11097]
+sections:
+  - {key: basis,       label: 관련근거, source: linked_doc, style: item, required: false}
+  - {key: body,        label: 본문,     source: generate,   style: paragraph, required: true,
+     hint: "어떤 위원회·회의를 언제 왜 여는지, 또는 무엇을 심의했는지"}
+  - {key: result,      label: 결과,     source: generate,   style: item, required: false,
+     hint: "심의·회의 결과나 요청 사항. 모르면 비운다"}
+  - {key: attachments, label: 붙임,     source: attachment, style: attachment, required: false}

@@ -1,0 +1,24 @@
+# 회계지출 초안 템플릿.
+# gold 회계지출 문서 2건(경기도서관-10185, -12012)의 번호 항목에서 귀납했다.
+# 기관의 실제 지출 서식이 오면 이 파일을 그 서식으로 교체한다.
+#
+# source 의 뜻
+#   input       사용자가 입력한 값(제목)
+#   linked_doc  선행 문서. 사용자가 관련 문서번호를 주지 않으면 [연결문서 필요]
+#   attachment  첨부(명세서·영수증·엑셀)에서 옮김. 첨부가 없으면 [첨부 필요]
+#   generate    같은 조직 기존 문서를 형식 참고로 LLM 이 씀
+
+work_type: 회계지출
+provenance: induced
+source_docs: [경기도서관-10185, 경기도서관-12012]
+sections:
+  - {key: basis,       label: 관련근거, source: linked_doc, style: item,  required: false}
+  - {key: body,        label: 본문,     source: generate,   style: paragraph, required: true,
+     hint: "무엇을 왜 지출하는지 한두 문장. 금액·날짜는 쓰지 않는다"}
+  - {key: amount,      label: 지급액,   source: attachment, style: item,  required: true}
+  - {key: breakdown,   label: 산출내역, source: attachment, style: item,  required: false}
+  - {key: period,      label: 기간,     source: attachment, style: item,  required: false}
+  - {key: payee,       label: 지급대상, source: attachment, style: item,  required: true}
+  - {key: method,      label: 결제방법, source: attachment, style: item,  required: false}
+  - {key: budget,      label: 예산과목, source: attachment, style: item,  required: true}
+  - {key: attachments, label: 붙임,     source: attachment, style: attachment, required: false}

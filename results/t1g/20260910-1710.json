@@ -1,0 +1,268 @@
+{
+  "track": "t1g",
+  "run_at": "2026-09-10T17:10:05",
+  "org": "경기도서관",
+  "model": "qwen3:8b",
+  "condition": "제목만 입력(본문·첨부 없음), 기안자 조직·직위는 입력, leave-one-out",
+  "documents": 8,
+  "summary": {
+    "work_type_accuracy": 0.875,
+    "title_accuracy_mean": 0.95,
+    "name_accuracy_mean": 0.6334,
+    "cell_count_match_mean": 0.9688,
+    "draft_status_total": {
+      "needs_input": 28,
+      "generated": 8
+    },
+    "invented_refs": 0,
+    "invented_laws": 0,
+    "org_contamination": 0,
+    "keyphrase_recall": 0.2361,
+    "needs_confirmation_mean": 1.75,
+    "sec_per_step": {
+      "identify": 0.0,
+      "classify": 2.0,
+      "approval_line": 0.0,
+      "draft": 5.74
+    }
+  },
+  "baseline_t1d_free_generation": {
+    "invented_refs": "인용 7개 중 6개 허구",
+    "org_contamination": "3/24"
+  },
+  "cases": [
+    {
+      "doc_id": "경기도_경기도서관-12039",
+      "work_type": "계약·검사",
+      "work_type_ok": true,
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "draft_template": "*",
+      "draft_status": {
+        "needs_input": 2,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 0.0,
+      "keyphrases_expected": 16.0,
+      "needs_confirmation": 1,
+      "timings": {
+        "identify": 0.0,
+        "classify": 3.722,
+        "approval_line": 0.0,
+        "draft": 9.958
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12016",
+      "work_type": "대외제출·통보",
+      "work_type_ok": true,
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "draft_template": "*",
+      "draft_status": {
+        "needs_input": 2,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 9.0,
+      "keyphrases_expected": 20.0,
+      "needs_confirmation": 1,
+      "timings": {
+        "identify": 0.0,
+        "classify": 4.574,
+        "approval_line": 0.0,
+        "draft": 13.019
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-12012",
+      "work_type": "회계지출",
+      "work_type_ok": true,
+      "title_accuracy": 0.6,
+      "name_accuracy": 0.4,
+      "cell_count_match": 0.75,
+      "draft_template": "회계지출",
+      "draft_status": {
+        "needs_input": 8,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 8.0,
+      "keyphrases_expected": 20.0,
+      "needs_confirmation": 4,
+      "timings": {
+        "identify": 0.0,
+        "classify": 5.857,
+        "approval_line": 0.0,
+        "draft": 1.094
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-10185",
+      "work_type": "회계지출",
+      "work_type_ok": true,
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "draft_template": "회계지출",
+      "draft_status": {
+        "needs_input": 8,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 7.0,
+      "keyphrases_expected": 20.0,
+      "needs_confirmation": 4,
+      "timings": {
+        "identify": 0.0,
+        "classify": 0.396,
+        "approval_line": 0.0,
+        "draft": 4.916
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-11698",
+      "work_type": "결과보고",
+      "work_type_ok": false,
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "draft_template": "*",
+      "draft_status": {
+        "needs_input": 2,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 1.0,
+      "keyphrases_expected": 17.0,
+      "needs_confirmation": 1,
+      "timings": {
+        "identify": 0.0,
+        "classify": 0.371,
+        "approval_line": 0.0,
+        "draft": 5.478
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-8872",
+      "work_type": "사업계획",
+      "work_type_ok": true,
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "draft_template": "*",
+      "draft_status": {
+        "needs_input": 2,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 0.0,
+      "keyphrases_expected": 15.0,
+      "needs_confirmation": 1,
+      "timings": {
+        "identify": 0.0,
+        "classify": 0.336,
+        "approval_line": 0.0,
+        "draft": 2.599
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-8942",
+      "work_type": "계약·검사",
+      "work_type_ok": true,
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "draft_template": "*",
+      "draft_status": {
+        "needs_input": 2,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 9.0,
+      "keyphrases_expected": 20.0,
+      "needs_confirmation": 1,
+      "timings": {
+        "identify": 0.0,
+        "classify": 0.409,
+        "approval_line": 0.0,
+        "draft": 4.613
+      }
+    },
+    {
+      "doc_id": "경기도_경기도서관-8938",
+      "work_type": "결과보고",
+      "work_type_ok": true,
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "draft_template": "*",
+      "draft_status": {
+        "needs_input": 2,
+        "generated": 1
+      },
+      "draft_checks": {
+        "invented_refs": 0,
+        "invented_laws": 0,
+        "org_contamination": 0,
+        "names_masked": 0,
+        "json_ok": true
+      },
+      "keyphrases_found": 0.0,
+      "keyphrases_expected": 16.0,
+      "needs_confirmation": 1,
+      "timings": {
+        "identify": 0.0,
+        "classify": 0.359,
+        "approval_line": 0.0,
+        "draft": 4.282
+      }
+    }
+  ],
+  "elapsed_sec": 61.99
+}

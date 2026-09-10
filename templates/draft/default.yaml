@@ -1,0 +1,13 @@
+# 기본 공문 템플릿 — 유형별 템플릿이 없을 때 쓴다.
+# 공문의 최소 구조(관련근거 / 본문 / 붙임)만 가정했다. provenance: assumed.
+# 20건에서 계약·검사, 사업계획, 결과보고, 인사·복무, 대외제출·통보는 공통 항목이
+# 귀납되지 않았다(대부분 1~2문단). 기관 서식이 오면 유형별 파일을 추가한다.
+
+work_type: "*"
+provenance: assumed
+source_docs: []
+sections:
+  - {key: basis,       label: 관련근거, source: linked_doc, style: item, required: false}
+  - {key: body,        label: 본문,     source: generate,   style: paragraph, required: true,
+     hint: "제목의 사안을 두세 문장으로. 금액·날짜·문서번호는 쓰지 않는다"}
+  - {key: attachments, label: 붙임,     source: attachment, style: attachment, required: false}
