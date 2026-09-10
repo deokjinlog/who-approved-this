@@ -36,6 +36,16 @@ _QUOTES = {
     "‘": "'", "’": "'", "‚": "'", "‛": "'",
 }
 
+#: 괄호 변종을 대표 글자로 모은다.
+#: 관보는 법령명에 ``「 」``, 편 제목에 ``【 】`` 를 쓰는데 OCR 은 이를
+#: ``[ ]`` · ``『 』`` 등으로 읽는 일이 잦다. 같은 기호를 다르게 적은 것뿐이라
+#: 표기 관습으로 보고 통일한다(실측 12페이지에서 「」→『』 5건, 【】→[] 7건).
+_BRACKETS = {
+    "【": "[", "】": "]", "〔": "[", "〕": "]", "［": "[", "］": "]",
+    "「": "[", "」": "]", "『": "[", "』": "]",
+    "〈": "<", "〉": ">", "《": "<", "》": ">",
+}
+
 #: 가운뎃점 변종을 ``·``(U+00B7) 하나로 모은다.
 #: ``ᆞ``(U+119E)는 관보 텍스트 레이어가 실제로 쓰는 아래아이고,
 #: ``•``(U+2022)는 OCR이 같은 자리에서 내놓는 글자다.
@@ -46,15 +56,20 @@ _LEADERS = re.compile(f"[{_INTERPUNCTS}\\s]*[{_INTERPUNCTS}]{{3,}}[{_INTERPUNCTS
 
 #: 기본 정규화. 리더 제거는 **포함하지 않는다** — 지표를 유리하게 만드는 조작이
 #: 기본값에 숨지 않도록, 리더를 뺀 값은 ``cer_no_leader`` 로 따로 기록한다.
-NORMALIZATION = "nfc + quotes + interpunct + whitespace-collapse"
+NORMALIZATION = "nfc + quotes + brackets + interpunct + whitespace-collapse"
 
 #: 리더 제거까지 적용한 정규화(``cer_no_leader`` 용).
 NORMALIZATION_NO_LEADER = NORMALIZATION + " + leaders-removed"
 
 
 def unify_punct(text: str) -> str:
-    """따옴표·가운뎃점 변종을 대표 글자 하나로 모은다."""
+    """따옴표·괄호·가운뎃점 변종을 대표 글자 하나로 모은다.
+
+    **모양이 다른 같은 기호**만 모은다. ``○`` → ``·`` 처럼 OCR 이 실제로 잘못 읽은
+    것은 손대지 않는다 — 그건 재려는 대상이지 표기 관습이 아니다.
+    """
     out = text.translate(str.maketrans(_QUOTES))
+    out = out.translate(str.maketrans(_BRACKETS))
     return out.translate(str.maketrans(_INTERPUNCTS, "·" * len(_INTERPUNCTS)))
 
 
