@@ -1,0 +1,177 @@
+{
+  "track": "t1f",
+  "run_at": "2026-09-10T16:15:57",
+  "org": "경기도서관",
+  "model": "qwen3:8b",
+  "rules": "rules/approval.yaml",
+  "method": "기안자 직위는 입력. ①업무항목(LLM) → ②금액 → ③전결표 → ④조직도 경로",
+  "documents": 8,
+  "summary": {
+    "work_type_accuracy": 1.0,
+    "title_accuracy_mean": 0.8875,
+    "name_accuracy_mean": 0.55,
+    "cell_count_match_mean": 0.9375,
+    "cases_title_perfect": 6,
+    "sec_per_case": 1.56
+  },
+  "evidence_totals": {
+    "input": 8,
+    "team": 8,
+    "delegation": 8
+  },
+  "cases": [
+    {
+      "doc_id": "경기도_경기도서관-12039",
+      "work_type": "계약·검사",
+      "work_type_gold": "계약·검사",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": null,
+      "team": "독서문화진흥팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 2.95
+    },
+    {
+      "doc_id": "경기도_경기도서관-12016",
+      "work_type": "대외제출·통보",
+      "work_type_gold": "대외제출·통보",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": null,
+      "team": "도서관정책팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 1.45
+    },
+    {
+      "doc_id": "경기도_경기도서관-12012",
+      "work_type": "회계지출",
+      "work_type_gold": "회계지출",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": 10474360,
+      "team": "도서관정책팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 0.6,
+      "name_accuracy": 0.4,
+      "cell_count_match": 0.75,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 1.89
+    },
+    {
+      "doc_id": "경기도_경기도서관-10185",
+      "work_type": "회계지출",
+      "work_type_gold": "회계지출",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": 181800,
+      "team": "도서관정책팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 0.5,
+      "name_accuracy": 0.0,
+      "cell_count_match": 0.75,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 1.89
+    },
+    {
+      "doc_id": "경기도_경기도서관-11698",
+      "work_type": "계약·검사",
+      "work_type_gold": "계약·검사",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": null,
+      "team": "도서관운영팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 0.9
+    },
+    {
+      "doc_id": "경기도_경기도서관-8872",
+      "work_type": "사업계획",
+      "work_type_gold": "사업계획",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": null,
+      "team": "도서관운영팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 0.69
+    },
+    {
+      "doc_id": "경기도_경기도서관-8942",
+      "work_type": "계약·검사",
+      "work_type_gold": "계약·검사",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": 222000000,
+      "team": "도서관운영팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 1.97
+    },
+    {
+      "doc_id": "경기도_경기도서관-8938",
+      "work_type": "결과보고",
+      "work_type_gold": "결과보고",
+      "work_type_ok": true,
+      "work_type_source": "llm",
+      "amount": null,
+      "team": "도서관운영팀",
+      "final_title": "경기도서관장",
+      "title_accuracy": 1.0,
+      "name_accuracy": 0.6667,
+      "cell_count_match": 1.0,
+      "evidence": {
+        "input": 1,
+        "team": 1,
+        "delegation": 1
+      },
+      "elapsed_sec": 0.74
+    }
+  ],
+  "elapsed_sec": 12.49
+}

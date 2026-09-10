@@ -13,6 +13,7 @@ from who_approved_this.tracks import (
     t1c_approval_predict,
     t1d_draft,
     t1e_worktype,
+    t1f_agent,
     t5_gazette_summary,
     t4_gazette_ocr,
 )
@@ -28,6 +29,7 @@ TRACKS = {
     "t1c": t1c_approval_predict.run,
     "t1d": t1d_draft.run,
     "t1e": t1e_worktype.run,
+    "t1f": t1f_agent.run,
     "t4": t4_gazette_ocr.run,
     "t5": t5_gazette_summary.run,
 }
@@ -62,6 +64,10 @@ def run(
                 model=model, embed_model=embed_model, sample=docs or 24, qa=qa
             )
         )
+        return
+
+    if track == "t1f":
+        t1f_agent.report(TRACKS[track](model=model, max_docs=docs))
         return
 
     if track == "t1e":

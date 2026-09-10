@@ -1,78 +1,89 @@
-# 결재선 규칙 — 스키마만. 값은 근거 문서(위임전결규정·조직도)가 오면 채운다.
+# 위임전결 규칙 — 결재선 자동 지정용.
 #
-# 이 파일의 목적은 "규칙이 뼈대, LLM 은 후보 안에서 선택"의 **뼈대**를 담는 것이다.
-# 같은 스키마로 두 벌을 만든다.
-#   rules/approval.induced.yaml   gold 이력에서 귀납한 것 (비교군)
-#   rules/approval.official.yaml  위임전결규정 문서를 파싱한 것 (정본)
-# 둘의 차이를 evaluate/rules_diff.py 가 낸다 — "규정 없이 이력만으로 가면 어디서 틀리나".
+# 두 축이 서로 다르다는 게 이 파일의 핵심이다.
+#   전결표 축   업무항목 + 금액  → **최종 결재 직위**
+#   조직도 축   사업 주제        → **담당 팀(검토자)**
+# 전결표만으로는 검토 팀장을 못 정하고, 조직도만으로는 결재 종점을 못 정한다.
+#
+# provenance 는 그 값을 어디서 얻었는지다. 실제 규정이 오면 induced 를 official 로 바꾼다.
+#   official  기관이 공개한 규정·조직도에서
+#   induced   gold 이력에서 귀납 (근거 문서가 없어 관측으로 채운 것)
+#   assumed   근거 없이 가정 (실데이터로 반드시 확인해야 함)
 
 meta:
-  schema_version: 1
-  source: ""          # induced | official
-  source_docs: []     # official 일 때 근거 문서 파일명·쪽수
-  generated_at: ""
+  schema_version: 2
+  generated_at: "2026-09-10"
+  source_docs: ["approval_gold.tsv (20문서 104행)", "rules/worktype.yaml"]
 
-# 1층 — 명부. 조직 → 직위 → 이름.
-# 실명이 들어가므로 **리포 밖**에 두고 여기서는 경로만 가리킨다.
 roster:
-  path: "~/data/who-approved-this/t1/roster.tsv"   # 조직 \t 직위 \t 이름 \t 유효기간
-  # 명부에 없는 이름을 LLM 이 내면 reject 한다(환각 방어).
-  reject_unknown_names: true
+  path: "~/data/who-approved-this/t1/roster.tsv"   # 조직 \t 직위 \t 이름
+  reject_unknown_names: true      # 명부에 없는 이름은 예측에 쓰지 않는다
 
 organizations:
-  # 조직 키는 gold 의 org 열과 같다(문서 하단 발신명의 기준).
-  - key: ""                    # 예: 경기도서관
-    parent: ""                 # 상위 기관. 예: 경기도
-    # 1층 — 기본 결재 계층. 아래에서 위로 올라가는 순서.
-    # 각 단계는 "직위"만 적는다. 사람은 roster 에서 붙인다.
+  - key: 경기도서관
+    parent: 경기도
+    provenance: induced
+
+    # --- 조직도 축 ---
     chain:
-      draft: ""                # 기안 직위. 예: 주무관
-      review: []               # 검토 직위 순서. 예: [도서관운영팀장, 도서관정책팀장]
-      approve: ""              # 최종 결재 직위(전결 적용 전). 예: 경기도서관장
+      draft: 주무관                # gold 8건 전부. provenance: induced
+      approve: 경기도서관장          # gold 8건 전부. provenance: induced
 
-    # 2층 — 전결·대결.
-    # 전결(delegation): 규정상 최종 결재권이 아래 직위로 내려간 상태.
-    #   이때 원 결재권자 칸은 **인쇄되지만 이름이 비는** 경우가 있다(관보/공문 관행).
-    #   실측 사례: 경기도서관-10185 — 관장 칸에 "전결"만 찍히고 이름 없음,
-    #   정책팀장 칸에 "대결"과 날짜. gold 에서는 이름을 "?"로 두고 채점 제외했다.
-    # 대결(acting): 결재권자 부재 시 대신 결재한 사람. 전결과 별개로 표시된다.
+    teams:                         # 팀과 담당 주제. 조직도 담당업무 열에 해당
+      - name: 도서관운영팀
+        lead: 도서관운영팀장
+        keywords: [스튜디오, 프로그램, 운영, 투어, 협업, 프로젝트, AI, 기성검사,
+                   정수기, 렌탈, 물품, 시설]
+        provenance: induced        # gold 5건에서 관측
+      - name: 도서관정책팀
+        lead: 도서관정책팀장
+        # **사업 주제만** 넣는다. "지출·예산·회계"는 주제가 아니라 예산 경유 조건이라
+        # extra_review 가 처리한다. 여기에 넣었더니 정수기 렌탈료(운영 소관)까지
+        # 정책팀으로 끌려와 운영팀장 검토가 통째로 빠졌다(10185).
+        keywords: [수당, 복무, 인사, 자료제출, 의원, 정책, 서무, 회계과]
+        provenance: induced        # gold 3건에서 관측
+      - name: 독서문화진흥팀
+        lead: 독서문화진흥팀장
+        keywords: [독서, 코칭, 어린이, 문화진흥]
+        provenance: induced        # gold 1건에서 관측. 표본 1건이라 약하다
+      - name: 경리팀
+        lead: 경리팀장
+        keywords: [인건비, 초과근무, 급여]
+        provenance: induced
+
+    # --- 전결표 축 ---
     delegation:
-      default_final: ""        # 평상시 최종 결재 직위
-      rules: []                # 아래 delegation_rule 목록
-      # 칸 표현 규칙 — 예측기가 칸을 만들 때 따라야 한다.
+      default_final: 경기도서관장
+      rules:
+        # gold 8건의 최종 결재가 전부 관장이다. 금액 구간이 갈리는 사례가 없어
+        # 아래 구간은 **관측되지 않았다**. 실제 규정으로 반드시 교체해야 한다.
+        - {work_type: "*", amount_min: null, amount_max: null,
+           final_title: 경기도서관장, provenance: induced,
+           note: "gold 8건 전부 관장 전결. 금액 181,800원~222,000,000원 전 구간 동일"}
       cell_policy:
-        delegated_cell:
-          printed: true        # 원 결재권자 칸을 인쇄하는가
-          name_empty: true     # 그 칸의 이름을 비우는가
-          mark: "전결"
-        acting_cell:
-          mark: "대결"
-          carries_date: true
+        delegated_cell: {printed: true, name_empty: true, mark: 전결}
+        acting_cell: {mark: 대결, carries_date: true}
+      note: |
+        관측 범위에서 금액이 결재 종점을 바꾸지 않았다(18만원과 2억2천만원이 같은 결재선).
+        실제 전결규정에는 금액 구간이 있을 것이므로 이 항목은 **미검증**이다.
 
-    # 3층 — 문서 유형별 협조.
-    cooperation: []            # 아래 cooperation_rule 목록
+    # --- 업무항목별 추가 경유 ---
+    extra_review:
+      # 지출은 예산 담당(정책팀)을 한 번 더 거친다. gold 회계지출 2건 모두에서 관측.
+      # 지출은 주제 담당 팀장을 거친 **뒤** 예산 담당(정책팀)을 한 번 더 거친다.
+      # 주제 팀이 이미 정책팀이면 중복이라 한 번만 들어간다.
+      - {work_type: 회계지출, title: 도서관정책팀장, provenance: induced,
+         note: "예산 경유"}
 
-    # 4층 이력 다수결, 5층 LLM 선택은 코드 쪽 기본값이라 여기 적지 않는다.
+    cooperation:
+      # 협조는 gold 8건 중 1건(초과근무수당)에만 있다. 표본이 1건이라 규칙이 약하다.
+      # 인건비 성격의 지출만 경리 협조가 붙는다. 물품 구입에는 안 붙는다.
+      # **관측 1건이라 규칙이 약하다.** 실데이터로 반드시 확인해야 한다.
+      - {work_type: 회계지출, titles: [경리팀장], required: false,
+         trigger_keywords: [초과근무, 수당, 급여, 인건비, 보수],
+         provenance: induced,
+         note: "12012(초과근무수당)에서만 관측. 정수기 렌탈료(10185)에는 없었다"}
 
-# --- 아래는 위에서 참조하는 목록의 형태 정의(문서용). 실제 값은 organizations 안에 들어간다. ---
-
-_shapes:
-  delegation_rule:
-    doc_type: ""             # 지출 | 계약 | 계획 | 결과보고 | 알림 | 기타
-    amount_min: null         # 금액 구간. 없으면 null. 단위: 원
-    amount_max: null
-    final_title: ""          # 이 구간의 전결권자 직위
-    note: ""                 # 규정 조문·별표 번호
-
-  cooperation_rule:
-    doc_type: ""             # 예: 지출
-    trigger: ""              # 조건. 예: "예산 집행" | "계약 체결" | "always"
-    titles: []               # 협조 칸에 들어갈 직위 목록. 예: [경리팀장]
-    required: true           # 필수 협조인지
-    note: ""                 # 근거 조문
-
-# 규칙이 커버하지 못하는 칸은 4층(이력 다수결) → 5층(LLM 선택) 순으로 내려간다.
-# 칸마다 근거 태그를 단다: roster | rule | vote | llm
 fallback:
   order: [rule, vote, llm]
-  tag_field: "evidence"
+  tag_field: evidence
