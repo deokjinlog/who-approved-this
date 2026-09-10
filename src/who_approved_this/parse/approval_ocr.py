@@ -128,7 +128,7 @@ def _merge_wrapped_titles(words: list[Word]) -> list[Word]:
             if not (0 < y2 - y <= TITLE_WRAP_Y and same_column):
                 continue
             # 윗줄이 이미 완성된 직위면(예: "총무사무관") 아랫줄은 이름이므로 잇지 않는다.
-            # 윗줄이 2~3자면 사람 이름일 가능성이 커서(예: "정유미" + "주무관") 잇지 않는다.
+            # 윗줄이 2~3자면 사람 이름일 가능성이 커서(예: "홍길동" + "주무관") 잇지 않는다.
             # 한글로만 이뤄진 조각끼리만 잇는다(날짜 "2026." 등이 붙는 걸 막는다).
             hangul = lambda w: bool(w) and all("가" <= c <= "힣" for c in w)
             if any(h in t for h in TITLE_HINTS) or 2 <= len(t) <= 3:

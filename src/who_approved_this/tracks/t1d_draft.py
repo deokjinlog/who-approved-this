@@ -262,7 +262,7 @@ def mask_names(text: str, names: set[str]) -> str:
     for name in sorted(names, key=len, reverse=True):
         if len(name) < 2:
             continue
-        # "허채윤" 뿐 아니라 "허 채 윤", "허\n채\n윤" 처럼 글자 사이가 벌어진 표기도 잡는다.
+        # "홍길동" 뿐 아니라 "홍 길 동", "홍\n길\n동" 처럼 글자 사이가 벌어진 표기도 잡는다.
         # 공문은 자간을 공백으로 벌려 찍는 일이 잦다(E2E D-4).
         spaced = r"\s*".join(re.escape(ch) for ch in name)
         out = re.sub(spaced, NAME_MASK, out)
