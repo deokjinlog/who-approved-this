@@ -1,0 +1,67 @@
+# 가평군 결재선 규칙 — 슬롯 체인 + 직무대리 + 전결 별표.
+#
+# 경기도서관(approval.yaml)과 달리 여기선 **공식 규정이 있다**.
+#   별표1 전결대상업무   → ~/data/who-approved-this/rules/가평군/delegation_table.json
+#                         (parse/rules_xlsx.py 로 xlsx 에서 생성. provenance: official)
+#   조직도(부서→국)      → ~/data/who-approved-this/rules/가평군/org_chart.tsv (official)
+#
+# 결재선은 "사람"이 아니라 **슬롯**의 나열이다.
+#     기안 → 팀장 → 과장 → 국장 → 부군수 → 군수
+# 슬롯을 누가 채우는지는 날짜마다 다르다(직무대리·권한대행). 그건 인사 데이터이지
+# 전결 규정이 아니다. gold 30건에서 세 건의 대리 관계가 관측됐고, 회사에서는
+# 인사 시스템(발령 이력)에서 받을 값이다.
+#
+# provenance
+#   official  기관 공개 규정·조직도
+#   induced   gold 에서 귀납 (규정 근거 없음 — 표본 크기를 note 에 적는다)
+#   assumed   근거 없이 가정
+
+meta:
+  schema_version: 1
+  org: 가평군
+  generated_at: "2026-09-10"
+  delegation_table: "~/data/who-approved-this/rules/가평군/delegation_table.json"
+  org_chart: "~/data/who-approved-this/rules/가평군/org_chart.tsv"
+
+# 슬롯 레벨. rules_xlsx.LEVEL_NAMES 와 같다.
+levels: {주무관: 0, 팀장: 1, 과장: 2, 국장: 3, 부군수: 4, 군수: 5}
+
+chain:
+  # 부군수 슬롯을 건너뛰는 부서. 감사 부서는 독립성 때문에 단체장 직보가 흔하다.
+  skip_deputy:
+    - {dept: 감사담당관, provenance: induced, note: "gold 1건(#01). 규칙 본문 근거 미확인"}
+
+# 직무대리·권한대행 — **인사 데이터**. 슬롯 단위로 적는다.
+#   slot    대리되는 슬롯 (부군수 / 군수 / 국장:<국명>)
+#   by      실제로 칸에 찍히는 직위
+#   from/to 유효 기간(포함). 비우면 열린 구간
+#   mode    replace: 칸의 직위를 by 로 바꾼다
+#           annotate: 칸 직위는 그대로(권한 주체), 서명만 by 가 한다
+acting:
+  - {slot: 부군수, by: 행정안전국장, from: "2026-07-01", to: null, mode: replace,
+     provenance: induced,
+     note: "7~9월 gold 전부 부군수 칸에 행정안전국장. 6월(#02 #03 #09)엔 부군수 본인"}
+  - {slot: "국장:건설도시국", by: 건설과장, from: null, to: "2026-07-31", mode: replace,
+     provenance: induced,
+     note: "6~7월 #09 #10 #11 #28 건설과장, 8월 #18 #29 부터 건설도시국장"}
+  - {slot: 군수, by: 부군수, from: null, to: "2026-06-03", mode: annotate,
+     provenance: induced,
+     note: "#11 '권한 대결', #22 '권한 전결' 에 '대행 부군수'. 지방선거(6.3) 전 권한대행"}
+
+# 예산집행 품의 — 별표1 (공통사항) 금액 구간 행으로 보낸다. 분류만 키워드로 한다.
+#   집행 문서인지: 제목에 execute_keywords 중 하나
+#   어느 구간표인지: categories 를 위에서부터 대조
+execution:
+  execute_keywords: [품의, 계약의뢰, 계약 의뢰, 변경계약, 구매, 지급, 교부결정]
+  # 계획·보고·검토 문서는 '지급'이 들어가도 집행 품의가 아니다(포상금 지급 계획,
+  # 지급결과 보고). 품의·계약의뢰가 함께 있으면 집행으로 본다.
+  # **제목 끝**에서만 본다. "도시계획도로 ... 보상금 지급"의 '계획'은 고유명사다.
+  not_execution_suffix: '(계획|보고|검토|검토보고)(\(안\))?$'
+  execution_strong: [품의, 계약의뢰, 계약 의뢰]
+  categories:
+    - {key: 보조금, match: [보조금], table: "보조금 지급결정"}
+    - {key: 공사, match: [공사, 토지], table: "가.공사, 토지 매입"}
+    - {key: 용역, match: [용역, 제조], table: "나.제조·용역"}
+    - {key: 그외, match: [], table: "다. 그 외의 집행"}
+  # 금액 라벨 우선순위. 앞에 있을수록 먼저 쓴다. 관급액·예산액은 계약 금액이 아니라 뺀다.
+  amount_labels: [추정금액, 추정가격, 도급액, 계약금액, 보상액, 교부결정액, 사업금액, 사업비, 총사업비]

@@ -289,6 +289,44 @@ class ApprovalAgent:
 
     # --- 한 번의 요청 -------------------------------------------------------
 
+    def _handle_official(self, request: dict[str, Any]) -> dict[str, Any]:
+        """공식 전결 규정이 있는 조직(가평군). 부서·직위·팀이 입력이라 명부를 보지 않는다.
+
+        초안은 만들지 않는다 — 템플릿이 경기도서관 20건에서 귀납한 것이라 가평군 서식이
+        오기 전엔(Aside B) 칸 구조가 맞는다는 근거가 없다.
+        """
+        from who_approved_this.parse.official_line import official_builder
+
+        timings: dict[str, float] = {}
+        t = time.perf_counter()
+        builder = official_builder(self.model)
+        title = request.get("title", "")
+        body = request.get("body", "") or ""
+        attachments = request.get("attachments") or []
+        drafter = request.get("title_of_user") or "주무관"
+        line = builder.build(request["dept"], drafter, request.get("team"), title,
+                             body + "\n" + "\n".join(attachments), request.get("date"))
+        timings["approval_line"] = round(time.perf_counter() - t, 3)
+
+        summary = None
+        if attachments or body:
+            t = time.perf_counter()
+            summary = summarize(self.model, attachments or [body], self.summary_template,
+                                {}, self.known_names)
+            timings["summary"] = round(time.perf_counter() - t, 3)
+
+        needs = list(line["needs_confirmation"])
+        needs.append({"what": "초안", "why": f"{builder.org_name} 서식 미확보(Aside B) — 초안 생략"})
+        return {
+            "user": {"ok": True, "org": builder.org_name, "dept": request["dept"],
+                     "title": drafter, "team": request.get("team"), "source": "input"},
+            "approval_line": line,
+            "draft": None,
+            "summary": summary,
+            "needs_confirmation": needs,
+            "timings": timings,
+        }
+
     def handle(self, request: dict[str, Any]) -> dict[str, Any]:
         """요청 하나를 처리한다.
 
@@ -299,6 +337,9 @@ class ApprovalAgent:
         timings: dict[str, float] = {}
         t = time.perf_counter()
         needs: list[dict[str, str]] = []
+
+        if request.get("dept"):
+            return self._handle_official(request)
 
         user = self.identify(request.get("user_name"), request.get("org"),
                              request.get("title_of_user"))

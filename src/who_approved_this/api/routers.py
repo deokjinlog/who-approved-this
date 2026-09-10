@@ -10,6 +10,7 @@ from who_approved_this.api.models import (
     DocInfo,
     DraftRequest,
     DraftResponse,
+    OfficialLineRequest,
     PredictRequest,
     PredictResponse,
 )
@@ -64,3 +65,13 @@ def agent(req: AgentRequest, mask: bool = True) -> dict:
     ``mask`` 는 응답의 사람 이름을 가린다(기본 켬).
     """
     return services.agent_handle(req.model_dump(exclude_none=True), mask)
+
+
+@router.post("/approval-line/official", summary="공식 전결 규정 결재선 (가평군) — 규정·조직도·직무대리")
+def official_line(req: OfficialLineRequest) -> dict:
+    """별표1(3,325행)과 조직도로 결재선을 만든다. 이름은 다루지 않는다(직위만).
+
+    응답의 ``needs_confirmation`` 에 규정으로 확정 못 한 부분(금액 미상, 모델이 고른 전결 사무,
+    직무대리)을 올린다.
+    """
+    return services.official_line(req.model_dump())

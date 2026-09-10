@@ -236,3 +236,12 @@ def agent_handle(request: dict[str, Any], mask: bool = True) -> dict[str, Any]:
     result = agent.handle(request)
     result["masked"] = mask
     return to_public(result, agent.known_names) if mask else result
+
+
+def official_line(req: dict[str, Any]) -> dict[str, Any]:
+    """공식 전결 규정 결재선. 로직은 :mod:`~who_approved_this.parse.official_line` 에 있다."""
+    from who_approved_this.parse.official_line import official_builder
+
+    b = official_builder(LLM_MODEL)
+    return b.build(req["dept"], req.get("title_of_user") or "주무관", req.get("team"),
+                   req["title"], req.get("body") or "", req.get("date"))

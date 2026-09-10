@@ -86,3 +86,17 @@ class AgentRequest(BaseModel):
     attachments: list[str] | None = Field(default=None, description="첨부에서 뽑은 텍스트 목록")
     linked_docs: list[str] | None = Field(default=None, description="관련(선행) 문서번호")
     exclude_doc_id: str | None = Field(default=None, description="평가용 — 참고에서 뺄 문서")
+    dept: str | None = Field(default=None, description="공식 전결 규정 조직(가평군)의 부서. 주면 명부 대신 규정 경로")
+    team: str | None = Field(default=None, description="기안자 소속 팀 이름 또는 팀장 직위")
+    date: str | None = Field(default=None, description="기안일 YYYY-MM-DD (직무대리 판정). 없으면 오늘")
+
+
+class OfficialLineRequest(BaseModel):
+    """공식 전결 규정(가평군) 결재선 요청. 기안자는 로그인 사용자 — 부서·직위·팀이 입력이다."""
+
+    dept: str = Field(description="부서 (예: 안전총괄과)")
+    title_of_user: str = Field(default="주무관", description="기안자 직위")
+    team: str | None = Field(default=None, description="소속 팀 이름(예: 자연재난팀) 또는 팀장 직위")
+    title: str = Field(description="문서 제목")
+    body: str = Field(default="", description="본문 — 금액 구간 판정에 쓴다")
+    date: str | None = Field(default=None, description="기안일 YYYY-MM-DD. 없으면 오늘")
