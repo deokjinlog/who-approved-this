@@ -29,6 +29,32 @@ LLM_MODEL = os.environ.get("WAT_LLM_MODEL") or None
 EMBED_MODEL = os.environ.get("WAT_EMBED_MODEL") or None
 
 
+def warm_up() -> dict[str, Any]:
+    """서버 기동 시 한 번 호출해 첫 요청 지연을 없앤다.
+
+    문서·색인을 미리 만들고 모델을 한 번 깨운다. E2E 에서 첫 결재선 예측이
+    18.9초, 이후 4.5초였다 — 그 차이가 여기서 사라진다.
+    """
+    import time as _time
+
+    started = _time.perf_counter()
+    _docs()
+    _retriever()
+    if EMBED_MODEL:
+        t1d.ollama_embed(EMBED_MODEL)(["웜업"])
+    if LLM_MODEL:
+        # 짧은 "ping" 으로는 부족하다. 첫 요청이 느린 건 모델 로딩이 아니라
+        # **긴 프롬프트 처리**(참고 7건 × 본문)라, 실제와 같은 크기로 한 번 돌려야
+        # 프롬프트 캐시가 채워진다. 문서가 가장 많은 조직으로 웜업한다.
+        counts: dict[str, int] = {}
+        for d in _docs():
+            counts[d["org"]] = counts.get(d["org"], 0) + 1
+        if counts:
+            org = max(counts, key=lambda k: counts[k])
+            predict_approval_line(org, "웜업 요청", exclude_doc_id=None)
+    return {"elapsed_sec": round(_time.perf_counter() - started, 2)}
+
+
 @lru_cache(maxsize=1)
 def _docs() -> list[dict[str, Any]]:
     """20건 문서(본문·조직·유형·gold 결재선)를 한 번만 읽는다."""
@@ -95,12 +121,20 @@ def get_doc(doc_id: str) -> dict[str, Any] | None:
 
 
 def predict_approval_line(
-    org: str, title: str, body: str = "", exclude_doc_id: str | None = None
+    org: str,
+    title: str,
+    body: str = "",
+    exclude_doc_id: str | None = None,
+    mask: bool = True,
 ) -> dict[str, Any]:
     """같은 조직의 과거 문서를 참고해 결재선을 예측한다.
 
     모델이 지정돼 있으면 LLM, 아니면 다수결 baseline 을 쓴다.
     ``exclude_doc_id`` 는 leave-one-out 데모용 — 자기 자신을 참고에서 뺀다.
+
+    ``mask`` 는 응답의 **사람 이름**만 가린다(기본 켬). 직위는 가리지 않는다.
+    API 는 화면 밖으로 나가는 경로라 기본을 켜 둔다. 로컬 데모에서 gold 와
+    눈으로 비교할 때만 끈다.
     """
     refs = [
         d
@@ -112,7 +146,12 @@ def predict_approval_line(
     predictor = VoteTitlesLLMNames(LLM_MODEL) if LLM_MODEL else BaselineVote()
     target = {"제목": title, "body": body, "org": org}
     cells = predictor.predict(refs, target) if refs else []
+    if mask:
+        cells = [
+            {**c, "name": t1d.NAME_MASK if c.get("name") else ""} for c in cells
+        ]
     return {
+        "masked": mask,
         "org": org,
         "predictor": predictor.name,
         "cells": cells,

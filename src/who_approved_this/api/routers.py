@@ -35,10 +35,17 @@ def doc(doc_id: str) -> DocInfo:
     return DocInfo(**found)
 
 
-@router.post("/approval-line/predict", summary="결재선 예측")
-def predict(req: PredictRequest, exclude_doc_id: str | None = None) -> PredictResponse:
+@router.post("/approval-line/predict", summary="결재선 예측 (이름 마스킹 기본 켬)")
+def predict(
+    req: PredictRequest,
+    exclude_doc_id: str | None = None,
+    mask: bool = True,
+) -> PredictResponse:
+    """``mask`` 는 응답의 **사람 이름**만 가린다. 직위·조직은 그대로 둔다."""
     return PredictResponse(
-        **services.predict_approval_line(req.org, req.title, req.body, exclude_doc_id)
+        **services.predict_approval_line(
+            req.org, req.title, req.body, exclude_doc_id, mask
+        )
     )
 
 

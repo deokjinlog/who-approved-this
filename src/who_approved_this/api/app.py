@@ -26,6 +26,14 @@ def create_app() -> FastAPI:
         redoc_url=None,
     )
     app.include_router(router)
+
+    @app.on_event("startup")
+    def _startup() -> None:
+        """문서·색인·모델을 미리 깨워 첫 요청 지연을 없앤다."""
+        from who_approved_this.api import services
+
+        services.warm_up()
+
     return app
 
 

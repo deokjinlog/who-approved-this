@@ -146,7 +146,18 @@ class VoteTitlesLLMNames:
             used[cell["role"]] = i + 1
             pool = by_role.get(cell["role"], [])
             name = pool[i] if i < len(pool) and pool[i] else cell["name"]
-            out.append({**cell, "name": name})
+            out.append({**cell, "name": name, "evidence": "vote+llm"})
+
+        # 다수결이 **한 칸도 못 만든 역할**은 LLM 제안을 그대로 쓴다.
+        # 협조가 그렇다 — 조직 8건 중 1건에만 협조가 있으면 다수결은 항상 0칸을 내고,
+        # 실제로 협조가 있는 문서에서 그 행이 통째로 비었다(E2E D-6).
+        # 협조 유무는 문서 성격이 정하는 것이라(지출→경리 협조) 내용을 읽는 쪽이 낫다.
+        covered = {c["role"] for c in skeleton}
+        for role in ROLES:
+            if role in covered:
+                continue
+            for cell in (c for c in names if c["role"] == role):
+                out.append({**cell, "evidence": "llm-only"})
         return out
 
 
@@ -175,11 +186,11 @@ class LocalLLM:
         두 번째도 실패하면 빈 목록을 돌려주고 :attr:`failures` 에 센다.
         빈 결과는 "칸 수 0"으로 채점되므로 실패가 점수에 그대로 드러난다.
         """
-        prompt = build_prompt(refs, target)
+        prompt = build_prompt(refs, target, system_in_prompt=False)
         for attempt in (1, 2):
             self.last_error = ""
-            raw = ollama_generate(
-                self.model, prompt, temperature=0.0, timeout=self.timeout
+            raw = ollama_chat(
+                self.model, SYSTEM, prompt, temperature=0.0, timeout=self.timeout
             )
             if raw is None:
                 self.last_error = "ollama 호출 실패"
@@ -245,6 +256,56 @@ def ollama_generate(
         return None
 
 
+def ollama_chat(
+    model: str,
+    system: str,
+    user: str,
+    temperature: float = 0.0,
+    timeout: int = 600,
+    think: bool = False,
+) -> str | None:
+    """ollama ``/api/chat`` 으로 한 번 대화한다. 실패하면 ``None``.
+
+    ``/api/generate`` 대신 이걸 쓴다. generate 는 **이어쓰기** 엔드포인트라
+    프롬프트가 문서 모양이면 모델이 그 문서를 계속 이어 쓴다 — 실제로 초안에
+    ``## 참고문서 2``, ``본문:`` 같은 내부 마커와 참고 문서 본문이 그대로 복사돼 나왔다.
+    chat 은 system/user 역할이 분리돼 지시와 자료가 섞이지 않는다.
+    """
+    payload: dict[str, Any] = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        "stream": False,
+        "options": {"temperature": temperature},
+    }
+    if not think:
+        payload["think"] = False
+
+    def _post(body: dict[str, Any]) -> str | None:
+        req = urllib.request.Request(
+            "http://localhost:11434/api/chat",
+            data=json.dumps(body).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read()).get("message", {}).get("content", "")
+
+    try:
+        return _post(payload)
+    except urllib.error.HTTPError:
+        if not think:  # think 를 모르는 구버전이면 빼고 재시도
+            payload.pop("think", None)
+            try:
+                return _post(payload)
+            except (urllib.error.URLError, OSError, TimeoutError):
+                return None
+        return None
+    except (urllib.error.URLError, OSError, TimeoutError):
+        return None
+
+
 SYSTEM = """너는 한국 행정기관의 전자결재 시스템이다. 문서의 결재선(기안·검토·결재·협조)을 예측한다.
 
 규칙:
@@ -253,13 +314,21 @@ SYSTEM = """너는 한국 행정기관의 전자결재 시스템이다. 문서�
 - 직위(title)는 과거 문서에 나온 표기를 그대로 쓴다. 새 직위를 만들지 않는다.
 - 이름(name)도 과거 문서에 나온 사람 중에서 고른다. 모르면 빈 문자열로 둔다.
 - 문서 내용이 과거 문서와 다른 성격이면 칸 수나 직위가 달라질 수 있다.
+- **협조**는 다른 부서의 소관이 걸릴 때 붙는 칸이다. 지출·예산 집행 문서는 회계·경리
+  담당이, 계약은 계약 담당이 협조로 들어간다. 과거 문서 중 성격이 같은 것에
+  협조가 있으면 그 패턴을 따르고, 없으면 협조 칸을 만들지 않는다.
 
 출력은 JSON 배열 하나만. 설명·코드블록 없이 배열만 출력한다.
 [{"role": "기안|검토|결재|협조", "title": "직위", "name": "이름"}]"""
 
 
-def build_prompt(refs: list[dict[str, Any]], target: dict[str, Any]) -> str:
-    """프롬프트를 만든다. 템플릿은 ``t1c_prompt.md`` 와 같은 구조다."""
+def build_prompt(
+    refs: list[dict[str, Any]], target: dict[str, Any], system_in_prompt: bool = True
+) -> str:
+    """프롬프트를 만든다. 템플릿은 ``t1c_prompt.md`` 와 같은 구조다.
+
+    ``system_in_prompt=False`` 면 지시문을 빼고 자료만 담는다(chat 의 user 메시지용).
+    """
     blocks = []
     for i, ref in enumerate(_recent_first(refs), start=1):
         line = "\n".join(
@@ -270,8 +339,8 @@ def build_prompt(refs: list[dict[str, Any]], target: dict[str, Any]) -> str:
             f"결재선:\n{line}"
         )
     return (
-        f"{SYSTEM}\n\n"
-        f"# 같은 부서의 과거 결재문서 {len(refs)}건\n\n"
+        (f"{SYSTEM}\n\n" if system_in_prompt else "")
+        + f"# 같은 부서의 과거 결재문서 {len(refs)}건\n\n"
         + "\n\n".join(blocks)
         + f"\n\n# 결재선을 예측할 문서\n\n제목: {target['제목']}\n본문:\n"
         f"{target['body'][:BODY_CHARS]}\n\n위 문서의 결재선을 JSON 배열로 출력하라."

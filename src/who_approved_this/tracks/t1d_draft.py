@@ -32,7 +32,7 @@ import typer
 from who_approved_this.collect.opengokr_local import OpenGoKrLocalCollector
 from who_approved_this.config import DATA_ROOT, track_data_dir, track_results_dir
 from who_approved_this.evaluate.approval_match import load_gold, load_orgs
-from who_approved_this.tracks.t1c_predictors import _THINK_BLOCK, ollama_generate
+from who_approved_this.tracks.t1c_predictors import _THINK_BLOCK, ollama_chat
 from who_approved_this.tracks.t1d_retrieval import (
     BM25Retriever,
     HybridRetriever,
@@ -50,8 +50,22 @@ TARGET_ORG = "경기도서관"
 TOP_K = 5
 CONTEXT_K = 3
 
-#: 초안 3개를 서로 다른 temperature 로 뽑는다.
-TEMPERATURES = (0.2, 0.6, 1.0)
+#: 초안 3개를 서로 다른 **스타일**로 뽑는다.
+#: temperature 만 바꾸면 출력이 짧을 때 분포가 뾰족해 세 개가 바이트 단위로 같아졌다
+#: (E2E D-2). 내용이 아니라 형식 축으로 나누는 게 "3개 중 고르기"에 맞다.
+STYLES = (
+    ("요약형", "핵심만 간결하게. 항목은 최소한으로.", 0.2),
+    ("상세형", "항목을 나누어 자세히. 근거와 산출을 항목으로 편다.", 0.5),
+    ("격식형", "공문 격식을 갖춰. 두괄식으로 쓰고 문장을 정중하게.", 0.4),
+)
+TEMPERATURES = tuple(t for _n, _d, t in STYLES)
+
+#: 참고 본문을 프롬프트에 넣을 때의 길이 상한.
+#: 길게 넣으면 모델이 대상 제목이 아니라 참고 문서 내용을 이어 쓴다(E2E D-3).
+REF_CHARS = 800
+
+#: 출력에 이게 남아 있으면 프롬프트가 샌 것으로 보고 실패로 기록한다.
+PROMPT_MARKERS = ("## 참고문서", "# 작성할 문서", "본문:", "위 제목으로 문서 본문")
 
 #: 내용 평가에 쓸 명사구 개수.
 KEYPHRASE_N = 20
@@ -181,13 +195,48 @@ def score_draft(actual: str, draft: str) -> dict[str, float]:
     }
 
 
-def generate(model: str, prompt: str, temperature: float, timeout: int = 600) -> str:
-    """ollama 로 초안 하나를 만든다.
+DRAFT_SYSTEM = """너는 한국 행정기관의 공문서 작성자다. 주어진 참고 문서의 **형식**을 따라
+새 문서의 본문 초안을 쓴다.
 
-    CLI 로는 temperature 를 줄 수 없어 :func:`~who_approved_this.tracks.t1c_predictors.ollama_generate`
-    (HTTP API)를 그대로 쓴다. 초안은 사고 과정이 섞이면 안 되므로 thinking 도 끈다.
+규칙:
+- 참고 문서의 **내용을 옮기지 않는다.** 형식(항목 구성·번호 매김·말투)만 가져온다.
+- 작성할 문서의 제목이 다루는 사안만 쓴다.
+- 참고 문서에 없는 금액·날짜·수량·문서번호를 지어내지 않는다. 모르는 값은 (   ) 로 비운다.
+- 사람 이름을 새로 만들지 않는다.
+- 참고 문서의 머리글(기관명·수신)을 베끼지 않는다.
+
+출력은 새 문서의 본문만. 설명·머리말·참고문서 표시를 붙이지 않는다."""
+
+
+def has_prompt_leak(text: str) -> bool:
+    """출력에 내부 프롬프트 마커가 남았는지. 남으면 실패로 본다."""
+    return any(m in text for m in PROMPT_MARKERS)
+
+
+def on_topic(text: str, title: str, head: int = 200) -> bool:
+    """초안 앞부분이 대상 제목의 사안을 다루는지.
+
+    제목의 내용어가 앞 ``head`` 자에 하나도 없으면 다른 문서 내용을 이어 쓴 것으로 본다.
     """
-    raw = ollama_generate(model, prompt, temperature=temperature, timeout=timeout)
+    words = [w for w in re.findall(r"[가-힣]{2,}", title) if len(w) >= 2]
+    return not words or any(w in text[:head] for w in words)
+
+
+def generate(
+    model: str,
+    prompt: str,
+    temperature: float,
+    timeout: int = 600,
+    style: str = "",
+) -> str:
+    """ollama chat 으로 초안 하나를 만든다.
+
+    ``/api/generate`` 가 아니라 ``/api/chat`` 을 쓴다 — generate 는 이어쓰기라
+    프롬프트가 문서 모양이면 모델이 그 문서를 계속 이어 써서 내부 마커와
+    참고 본문이 그대로 새어 나왔다(E2E D-1).
+    """
+    system = DRAFT_SYSTEM + (f"\n\n이번 초안의 스타일: {style}" if style else "")
+    raw = ollama_chat(model, system, prompt, temperature=temperature, timeout=timeout)
     return _THINK_BLOCK.sub("", raw or "").strip()
 
 
@@ -211,8 +260,12 @@ def mask_names(text: str, names: set[str]) -> str:
     """
     out = text
     for name in sorted(names, key=len, reverse=True):
-        if len(name) >= 2:
-            out = out.replace(name, NAME_MASK)
+        if len(name) < 2:
+            continue
+        # "허채윤" 뿐 아니라 "허 채 윤", "허\n채\n윤" 처럼 글자 사이가 벌어진 표기도 잡는다.
+        # 공문은 자간을 공백으로 벌려 찍는 일이 잦다(E2E D-4).
+        spaced = r"\s*".join(re.escape(ch) for ch in name)
+        out = re.sub(spaced, NAME_MASK, out)
     return out
 
 
@@ -220,14 +273,19 @@ def build_prompt(
     target: dict[str, Any], refs: list[dict[str, Any]], names: set[str] | None = None
 ) -> str:
     blocks = [
-        f"## 참고문서 {i}(유형: {c['doc_type']})\n본문:\n"
-        + (mask_names(c["text"], names) if names else c["text"])
+        f"[형식 참고 {i} · 유형 {c['doc_type']}]\n"
+        + (mask_names(c["text"][:REF_CHARS], names) if names else c["text"][:REF_CHARS])
         for i, c in enumerate(refs, start=1)
     ]
+    title = target["제목"]
+    # 대상 제목을 **앞뒤로 두 번** 둔다. 참고 본문이 길면 모델이 마지막 문맥을
+    # 이어 쓰는 경향이 있어, 마지막에 다시 못박아야 사안이 흔들리지 않는다(E2E D-3).
     return (
-        f"{SYSTEM}\n\n# 같은 조직의 기존 문서 {len(refs)}건\n\n"
+        f"작성할 문서 제목: {title}\n\n"
+        f"아래는 같은 조직의 기존 문서 {len(refs)}건이다. **형식만** 참고한다.\n\n"
         + "\n\n".join(blocks)
-        + f"\n\n# 작성할 문서\n\n제목: {target['제목']}\n\n위 제목으로 문서 본문 초안을 작성하라."
+        + f"\n\n---\n\n이제 위 형식을 따라 **다음 제목의 문서 본문**을 작성하라.\n"
+        f"제목: {title}"
     )
 
 
@@ -338,6 +396,7 @@ def _generate_all(
     review_dir.mkdir(parents=True, exist_ok=True)
 
     cases: list[dict[str, Any]] = []
+    retries, leaks, off_topic = [0], [0], [0]
     t0 = time.perf_counter()
     for target in targets:
         refs = [
@@ -348,20 +407,36 @@ def _generate_all(
         prompt = build_prompt(target, refs, names)
 
         scored: list[tuple[dict[str, float], str, float]] = []
-        for temp in TEMPERATURES[:n_drafts]:
-            draft = generate(model, prompt, temp)
-            (drafts_dir / f"{target['doc_id']}-t{temp}.md").write_text(
+        for style_name, style_hint, temp in STYLES[:n_drafts]:
+            draft = generate(model, prompt, temp, style=f"{style_name} — {style_hint}")
+            # 프롬프트가 새거나 사안이 어긋나면 한 번만 다시 만든다.
+            if has_prompt_leak(draft) or not on_topic(draft, target["제목"]):
+                retries[0] += 1
+                draft = generate(model, prompt, temp, style=f"{style_name} — {style_hint}")
+            if has_prompt_leak(draft):
+                leaks[0] += 1
+            if not on_topic(draft, target["제목"]):
+                off_topic[0] += 1
+            (drafts_dir / f"{target['doc_id']}-{style_name}.md").write_text(
                 draft, encoding="utf-8"
             )
             scored.append((score_draft(target["body"], draft), draft, temp))
 
+        all_same = len({d for _sc, d, _t in scored}) == 1 and len(scored) > 1
         best = max(scored, key=lambda s: (s[0]["keyphrases_found"], s[0]["sections_found"]))
         (review_dir / f"{target['doc_id']}.md").write_text(
             f"# {target['doc_id']}\n\n## 실제 문서\n\n{target['body']}\n\n"
             f"---\n\n## 초안 (best, temperature={best[2]})\n\n{best[1]}\n",
             encoding="utf-8",
         )
-        cases.append({"doc_id": target["doc_id"], "best_temperature": best[2], **best[0]})
+        cases.append(
+            {
+                "doc_id": target["doc_id"],
+                "best_temperature": best[2],
+                "all_same": all_same,
+                **best[0],
+            }
+        )
 
     n = len(cases) or 1
     return {

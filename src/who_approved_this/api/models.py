@@ -25,6 +25,7 @@ class PredictRequest(BaseModel):
 
 
 class PredictResponse(BaseModel):
+    masked: bool = Field(default=True, description="사람 이름을 가렸는지")
     org: str
     predictor: str
     cells: list[ApprovalCell]
@@ -59,7 +60,7 @@ class DraftResponse(BaseModel):
 
 
 class DocInfo(BaseModel):
-    """문서 메타. **실명은 담지 않는다.**"""
+    """문서 메타. **사람 이름은 담지 않는다**(직위·조직·수치만)."""
 
     doc_id: str
     org: str
