@@ -1,0 +1,295 @@
+{
+  "track": "t1e",
+  "run_at": "2026-09-10T15:30:54",
+  "purpose": "문서 → 전결표 업무항목 분류 (결재선 자동 지정의 ① 단계)",
+  "rules": "who-approved-this/rules/worktype.yaml",
+  "types": [
+    "회계지출",
+    "계약·검사",
+    "사업계획",
+    "결과보고",
+    "인사·복무",
+    "회의·심의",
+    "대외제출·통보"
+  ],
+  "model": "qwen3:8b",
+  "note": "LLM 에는 제목을 주지 않고 본문만 준다. 제목에 답이 들어 있기 때문이다.",
+  "documents": 20,
+  "summary": {
+    "title_rule_accuracy": 1.0,
+    "llm_accuracy": 0.85,
+    "llm_off_menu": 0,
+    "sec_per_case": 1.94
+  },
+  "confusion": {
+    "결과보고": {
+      "n": 2,
+      "title_ok": 2,
+      "llm_ok": 2,
+      "llm_wrong_to": {}
+    },
+    "계약·검사": {
+      "n": 3,
+      "title_ok": 3,
+      "llm_ok": 3,
+      "llm_wrong_to": {}
+    },
+    "대외제출·통보": {
+      "n": 2,
+      "title_ok": 2,
+      "llm_ok": 2,
+      "llm_wrong_to": {}
+    },
+    "사업계획": {
+      "n": 3,
+      "title_ok": 3,
+      "llm_ok": 2,
+      "llm_wrong_to": {
+        "결과보고": 1
+      }
+    },
+    "인사·복무": {
+      "n": 2,
+      "title_ok": 2,
+      "llm_ok": 2,
+      "llm_wrong_to": {}
+    },
+    "회계지출": {
+      "n": 4,
+      "title_ok": 4,
+      "llm_ok": 4,
+      "llm_wrong_to": {}
+    },
+    "회의·심의": {
+      "n": 4,
+      "title_ok": 4,
+      "llm_ok": 2,
+      "llm_wrong_to": {
+        "결과보고": 2
+      }
+    }
+  },
+  "cases": [
+    {
+      "doc_id": "법무부_총무과-7941",
+      "문서번호": "총무과-7941",
+      "gold": "회의·심의",
+      "by_title": "회의·심의",
+      "by_llm": "결과보고",
+      "title_ok": true,
+      "llm_ok": false,
+      "llm_off_menu": false,
+      "elapsed_sec": 7.49
+    },
+    {
+      "doc_id": "법무부_총무과-5908",
+      "문서번호": "총무과-5908",
+      "gold": "인사·복무",
+      "by_title": "인사·복무",
+      "by_llm": "인사·복무",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.4
+    },
+    {
+      "doc_id": "법무부_총무과-6989",
+      "문서번호": "총무과-6989",
+      "gold": "회의·심의",
+      "by_title": "회의·심의",
+      "by_llm": "회의·심의",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.88
+    },
+    {
+      "doc_id": "기후에너지환경부_정보관리팀-995",
+      "문서번호": "정보관리팀-995",
+      "gold": "사업계획",
+      "by_title": "사업계획",
+      "by_llm": "결과보고",
+      "title_ok": true,
+      "llm_ok": false,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.63
+    },
+    {
+      "doc_id": "기후에너지환경부_생물소재활용과-1332",
+      "문서번호": "생물소재활용과-1332",
+      "gold": "결과보고",
+      "by_title": "결과보고",
+      "by_llm": "결과보고",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 3.88
+    },
+    {
+      "doc_id": "경기도_경기도서관-12039",
+      "문서번호": "경기도서관-12039",
+      "gold": "계약·검사",
+      "by_title": "계약·검사",
+      "by_llm": "계약·검사",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 0.77
+    },
+    {
+      "doc_id": "경기도_경기도서관-12016",
+      "문서번호": "경기도서관-12016",
+      "gold": "대외제출·통보",
+      "by_title": "대외제출·통보",
+      "by_llm": "대외제출·통보",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.46
+    },
+    {
+      "doc_id": "경기도_경기도서관-12012",
+      "문서번호": "경기도서관-12012",
+      "gold": "회계지출",
+      "by_title": "회계지출",
+      "by_llm": "회계지출",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.88
+    },
+    {
+      "doc_id": "제주특별자치도_일자리에너지과-40914",
+      "문서번호": "일자리에너지과-40914",
+      "gold": "회계지출",
+      "by_title": "회계지출",
+      "by_llm": "회계지출",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 2.36
+    },
+    {
+      "doc_id": "제주특별자치도_보건환경연구원-17732",
+      "문서번호": "보건환경연구원-17732",
+      "gold": "회계지출",
+      "by_title": "회계지출",
+      "by_llm": "회계지출",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.77
+    },
+    {
+      "doc_id": "법무부_총무과-6477",
+      "문서번호": "총무과-6477",
+      "gold": "사업계획",
+      "by_title": "사업계획",
+      "by_llm": "사업계획",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.59
+    },
+    {
+      "doc_id": "법무부_총무과-6743",
+      "문서번호": "총무과-6743",
+      "gold": "회의·심의",
+      "by_title": "회의·심의",
+      "by_llm": "결과보고",
+      "title_ok": true,
+      "llm_ok": false,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.33
+    },
+    {
+      "doc_id": "법무부_총무과-9845",
+      "문서번호": "총무과-9845",
+      "gold": "대외제출·통보",
+      "by_title": "대외제출·통보",
+      "by_llm": "대외제출·통보",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.77
+    },
+    {
+      "doc_id": "법무부_총무과-5451",
+      "문서번호": "총무과-5451",
+      "gold": "인사·복무",
+      "by_title": "인사·복무",
+      "by_llm": "인사·복무",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.5
+    },
+    {
+      "doc_id": "법무부_총무과-11097",
+      "문서번호": "총무과-11097",
+      "gold": "회의·심의",
+      "by_title": "회의·심의",
+      "by_llm": "회의·심의",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.87
+    },
+    {
+      "doc_id": "경기도_경기도서관-10185",
+      "문서번호": "경기도서관-10185",
+      "gold": "회계지출",
+      "by_title": "회계지출",
+      "by_llm": "회계지출",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.89
+    },
+    {
+      "doc_id": "경기도_경기도서관-11698",
+      "문서번호": "경기도서관-11698",
+      "gold": "계약·검사",
+      "by_title": "계약·검사",
+      "by_llm": "계약·검사",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 0.91
+    },
+    {
+      "doc_id": "경기도_경기도서관-8872",
+      "문서번호": "경기도서관-8872",
+      "gold": "사업계획",
+      "by_title": "사업계획",
+      "by_llm": "사업계획",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 0.69
+    },
+    {
+      "doc_id": "경기도_경기도서관-8942",
+      "문서번호": "경기도서관-8942",
+      "gold": "계약·검사",
+      "by_title": "계약·검사",
+      "by_llm": "계약·검사",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 1.97
+    },
+    {
+      "doc_id": "경기도_경기도서관-8938",
+      "문서번호": "경기도서관-8938",
+      "gold": "결과보고",
+      "by_title": "결과보고",
+      "by_llm": "결과보고",
+      "title_ok": true,
+      "llm_ok": true,
+      "llm_off_menu": false,
+      "elapsed_sec": 0.73
+    }
+  ],
+  "elapsed_sec": 38.76
+}
