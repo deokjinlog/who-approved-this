@@ -57,6 +57,7 @@ def run(
     drafts: int = typer.Option(3, "--drafts", help="t1d 케이스당 초안 개수"),
     resample: int = typer.Option(0, "--resample", help="t1c 재표집 검증 라운드 수"),
     qa: bool = typer.Option(False, "--qa", help="t5 자연어 질의응답 RAG 실행"),
+    dataset: str = typer.Option("t6", "--dataset", help="t6 평가 데이터 폴더 (t6 | t6b)"),
 ) -> None:
     """트랙 하나를 collect → parse → evaluate 순서로 실행한다."""
     if track not in TRACKS:
@@ -71,7 +72,9 @@ def run(
         return
 
     if track == "t6":
-        t6_delegation.report(TRACKS[track](model=model, max_docs=docs, embed_model=embed_model))
+        t6_delegation.report(
+            TRACKS[track](model=model, max_docs=docs, embed_model=embed_model, dataset=dataset)
+        )
         return
 
     if track == "t1g":

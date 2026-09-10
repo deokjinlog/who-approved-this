@@ -81,8 +81,10 @@ def run(
     embed_model: str | None = None,
     k: int = 5,
     think: bool = False,
+    dataset: str = "t6",
 ) -> dict[str, Any]:
-    data_dir = track_data_dir(TRACK)
+    """``dataset`` — t6(A, 30건 전부 군수) | t6b(A-2, 군수 15 / 부군수 15, 규칙을 만들 때 안 본 데이터)."""
+    data_dir = track_data_dir(dataset)
     builder = OfficialLineBuilder(RULES, model=model, embed_model=embed_model, k=k, think=think)
     cfg, org = builder.cfg, builder.org
     gold = load_gold(data_dir / "approval_gold.tsv")
@@ -120,14 +122,23 @@ def run(
         final.pop("candidates", None)
         pick_sec = round(time.perf_counter() - t0, 2)
 
+        # 권한대행 기간엔 부군수 한 사람이 군수 권한과 부군수 권한을 다 행사한다 —
+        # 칸만 봐서는 어느 레벨 결재였는지 못 가른다. 둘 다 정답으로 본다.
+        acceptable = {gold_final}
+        if any("권한대행" in c["note"] for c in g["cells"] if c["role"] == "결재"):
+            acceptable = {4, 5}
         lvl = final["level"]
         verdict = ("unknown" if lvl is None else
-                   "same" if lvl == gold_final else
-                   "escalated" if lvl < gold_final else "violation")
+                   "same" if lvl in acceptable else
+                   "escalated" if lvl < min(acceptable) else "violation")
 
         chains = {
-            "path_no_acting": build_slot_chain(dept, drafter, team_lead, org, cfg, date=date, use_acting=False),
-            "path_acting": build_slot_chain(dept, drafter, team_lead, org, cfg, date=date),
+            # 경로 모드는 종점을 gold 로 준다(경로만 잰다). v1 은 전부 군수라 5 로 고정해도
+            # 같았지만 v2 는 부군수 종점이 15건이다.
+            "path_no_acting": build_slot_chain(dept, drafter, team_lead, org, cfg, date=date,
+                                               final_level=gold_final, use_acting=False),
+            "path_acting": build_slot_chain(dept, drafter, team_lead, org, cfg, date=date,
+                                            final_level=gold_final),
             "agent": build_slot_chain(dept, drafter, team_lead, org, cfg, date=date,
                                       final_level=lvl if lvl is not None else 5),
         }
@@ -142,16 +153,21 @@ def run(
 
         cases.append({
             "문서번호": g["문서번호"], "dept": dept, "date": date, "row_eval": row_eval,
+            "org_known": dept in org.head,
             "final": final, "final_gold_level": gold_final, "final_verdict": verdict,
+            "final_gold_ambiguous": len(acceptable) > 1,
             "team_pred": team_pred, "team_gold": team_gold,
             "pred_path_acting": [c["title"] for c in chains["path_acting"]],
             "evidence": [c["evidence"] for c in chains["agent"]],
             "scores": scores, "pick_sec": pick_sec,
         })
 
-    n = len(cases) or 1
+    # 경로 점수는 조직도에 있는 부서만. 없는 부서는 국장 칸을 만들 근거가 없다.
+    known = [c for c in cases if c["org_known"]]
+    n = len(known) or 1
+
     def mean(mode: str, key: str) -> float:
-        return round(sum(float(c["scores"][mode][key]) for c in cases) / n, 4)
+        return round(sum(float(c["scores"][mode][key]) for c in known) / n, 4)
 
     team_cases = [c for c in cases if c["team_gold"]]
     row_cases = [c["row_eval"] for c in cases if c["row_eval"]]
@@ -165,14 +181,27 @@ def run(
         "think": think,
         "rules": "rules/gapyeong.yaml + 별표1(official) + org_chart(official)",
         "method": "기안자 직위·팀은 입력. 조직도 슬롯 체인 → 직무대리 표 → 별표 조회로 종점",
+        "dataset": dataset,
         "documents": len(cases),
+        "path_docs": len(known),
         "summary": {
             mode: {"title_accuracy_mean": mean(mode, "title_accuracy"),
-                   "exact": sum(c["scores"][mode]["exact"] for c in cases),
-                   "cell_count_match": sum(c["scores"][mode]["cell_count_match"] for c in cases)}
+                   "exact": sum(c["scores"][mode]["exact"] for c in known),
+                   "cell_count_match": sum(c["scores"][mode]["cell_count_match"] for c in known)}
             for mode in ("path_no_acting", "path_acting", "agent")
         },
         "final_verdicts": dict(Counter(c["final_verdict"] for c in cases)),
+        "final_exact": sum(c["final_verdict"] == "same" for c in cases),
+        "final_confusion": dict(Counter(
+            f"{LEVEL_NAMES.get(c['final']['level'], '?')}→"
+            f"{'부군수|군수' if c['final_gold_ambiguous'] else LEVEL_NAMES[c['final_gold_level']]}"
+            for c in cases)),
+        # 공개 원문은 부단체장 이상만 올라온다 → 별표가 국장 이하라고 한 문서는 전부 "상향"으로만
+        # 관측된다. 채점이 성립하는 건 예측이 부군수·군수인 문서뿐이다.
+        "final_decidable": {
+            "n": sum((c["final"]["level"] or 0) >= 4 for c in cases),
+            "correct": sum((c["final"]["level"] or 0) >= 4 and c["final_verdict"] == "same" for c in cases),
+        },
         "final_sources": dict(Counter(c["final"]["source"] for c in cases)),
         "gold_final_levels": dict(Counter(LEVEL_NAMES[c["final_gold_level"]] for c in cases)),
         "row_classification": {
@@ -186,9 +215,10 @@ def run(
         "elapsed_sec": round(time.perf_counter() - started, 2),
     }
     results_dir = track_results_dir(TRACK)
-    out_path = results_dir / f"{datetime.now():%Y%m%d-%H%M}.json"
+    prefix = "" if dataset == "t6" else f"{dataset}-"
+    out_path = results_dir / f"{prefix}{datetime.now():%Y%m%d-%H%M}.json"
     if out_path.exists():
-        out_path = results_dir / f"{datetime.now():%Y%m%d-%H%M%S}.json"
+        out_path = results_dir / f"{prefix}{datetime.now():%Y%m%d-%H%M%S}.json"
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     report["results_path"] = str(out_path)
     return report
@@ -197,7 +227,7 @@ def run(
 def report(rep: dict[str, Any]) -> None:
     """콘솔 출력. 이름은 애초에 gold 에 없다."""
     typer.echo(f"[t6] {rep['method']}")
-    typer.echo(f"     가평군 / 문서 {rep['documents']}건 / 모델 {rep['model'] or '(검색 1위)'}"
+    typer.echo(f"     가평군 {rep['dataset']} / 문서 {rep['documents']}건 / 모델 {rep['model'] or '(검색 1위)'}"
                f" / 검색 {rep['retrieval']} k={rep['k']}")
     typer.echo("")
     label = {"path_no_acting": "경로 (대리 표 없음, 종점=gold)",
@@ -205,11 +235,16 @@ def report(rep: dict[str, Any]) -> None:
              "agent": "에이전트 (종점도 별표로)"}
     for mode, s in rep["summary"].items():
         typer.echo(f"  {label[mode]:30} 직위 {s['title_accuracy_mean']:6.1%}  "
-                   f"완전일치 {s['exact']:2}/{rep['documents']}  칸수 {s['cell_count_match']:2}/{rep['documents']}")
+                   f"완전일치 {s['exact']:2}/{rep['path_docs']}  칸수 {s['cell_count_match']:2}/{rep['path_docs']}")
     typer.echo("")
     typer.echo(f"  gold 종점 분포   {rep['gold_final_levels']}")
     typer.echo(f"  별표 vs 실제     {rep['final_verdicts']}   (escalated = 별표 최소보다 높이 결재)")
     typer.echo(f"  종점 근거        {rep['final_sources']}")
+    typer.echo(f"  종점 일치        {rep['final_exact']}/{rep['documents']}   예측→실제 {rep['final_confusion']}")
+    fd = rep["final_decidable"]
+    typer.echo(f"  채점 가능 종점   {fd['correct']}/{fd['n']}   (예측이 부군수·군수인 문서 — 공개 원문이 부단체장 이상뿐이라)")
+    if rep["path_docs"] < rep["documents"]:
+        typer.echo(f"  (경로 점수는 조직도에 있는 부서 {rep['path_docs']}건만)")
     rc = rep["row_classification"]
     typer.echo(f"  별표 행 판정     후보 재현 {rc['candidate_recall']}/{rc['labeled']}  "
                f"선택 정답 {rc['pick_correct']}/{rc['labeled']}   (row_gold 라벨 문서만)")

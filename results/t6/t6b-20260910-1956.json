@@ -1,0 +1,1773 @@
+{
+  "track": "t6",
+  "run_at": "2026-09-10T19:56:40",
+  "org": "가평군",
+  "model": "qwen3:8b",
+  "retrieval": "bm25",
+  "k": 5,
+  "think": false,
+  "rules": "rules/gapyeong.yaml + 별표1(official) + org_chart(official)",
+  "method": "기안자 직위·팀은 입력. 조직도 슬롯 체인 → 직무대리 표 → 별표 조회로 종점",
+  "dataset": "t6b",
+  "documents": 30,
+  "path_docs": 20,
+  "summary": {
+    "path_no_acting": {
+      "title_accuracy_mean": 0.815,
+      "exact": 11,
+      "cell_count_match": 13
+    },
+    "path_acting": {
+      "title_accuracy_mean": 0.9633,
+      "exact": 17,
+      "cell_count_match": 19
+    },
+    "agent": {
+      "title_accuracy_mean": 0.7808,
+      "exact": 8,
+      "cell_count_match": 9
+    }
+  },
+  "final_verdicts": {
+    "same": 12,
+    "escalated": 17,
+    "violation": 1
+  },
+  "final_exact": 12,
+  "final_confusion": {
+    "군수→군수": 1,
+    "과장→군수": 1,
+    "군수→부군수|군수": 4,
+    "국장→군수": 1,
+    "부군수→부군수": 6,
+    "팀장→군수": 1,
+    "국장→부군수|군수": 3,
+    "과장→부군수|군수": 3,
+    "과장→부군수": 6,
+    "국장→부군수": 2,
+    "군수→부군수": 1,
+    "부군수→부군수|군수": 1
+  },
+  "final_decidable": {
+    "n": 13,
+    "correct": 12
+  },
+  "final_sources": {
+    "llm_pick": 20,
+    "amount_bracket": 10
+  },
+  "gold_final_levels": {
+    "군수": 15,
+    "부군수": 15
+  },
+  "row_classification": {
+    "labeled": 0,
+    "candidate_recall": 0,
+    "pick_correct": 0
+  },
+  "team_routing": {
+    "cases": 18,
+    "correct": 7
+  },
+  "cases": [
+    {
+      "문서번호": "관광과-13721",
+      "dept": "관광과",
+      "date": "2026-06-19",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 36,
+        "candidate_rids": [
+          1546,
+          41,
+          48,
+          36,
+          43
+        ],
+        "llm_raw": "D",
+        "row": "[(공통사항)] ○부군수",
+        "level": 5
+      },
+      "final_gold_level": 5,
+      "final_verdict": "same",
+      "final_gold_ambiguous": false,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "관광기획팀장",
+        "관광과장",
+        "부군수",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "agent": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.13
+    },
+    {
+      "문서번호": "관광과-18288",
+      "dept": "관광과",
+      "date": "2026-08-12",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 112,
+        "candidate_rids": [
+          1541,
+          2,
+          112,
+          1545,
+          36
+        ],
+        "llm_raw": "C",
+        "row": "[(공통사항)] 타.그 밖에 군수 또는 부군수의 전결명령을 받은사항",
+        "level": 2
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "수상관광팀장",
+        "관광과장",
+        "행정안전국장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "agent": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.1
+    },
+    {
+      "문서번호": "교통과-61304",
+      "dept": "교통과",
+      "date": "2026-06-01",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "amount_bracket",
+        "category": "그외",
+        "amount": 334000000,
+        "amount_label": "금회지급액",
+        "row": "다. 그 외의 집행 ○ 추정금액 2억원 초과",
+        "level": 5
+      },
+      "final_gold_level": 5,
+      "final_verdict": "same",
+      "final_gold_ambiguous": true,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "교통행정팀장",
+        "교통과장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart+acting:부군수"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.8,
+          "exact": false,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "교통과-82933",
+      "dept": "교통과",
+      "date": "2026-07-24",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 7,
+        "candidate_rids": [
+          97,
+          7,
+          2548,
+          71,
+          24
+        ],
+        "llm_raw": "B",
+        "row": "[(공통사항)] 라.소관별 국고보조금 및 교부금 신청",
+        "level": 3
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "교통행정팀장",
+        "교통과장",
+        "행정안전국장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "agent": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.11
+    },
+    {
+      "문서번호": "기획예산담당관-11771",
+      "dept": "기획예산담당관",
+      "date": "2026-06-05",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 102,
+        "candidate_rids": [
+          117,
+          206,
+          180,
+          102,
+          207
+        ],
+        "llm_raw": "D",
+        "row": "[(공통사항)] 가.군정조정위원회 심의안건",
+        "level": 4
+      },
+      "final_gold_level": 4,
+      "final_verdict": "same",
+      "final_gold_ambiguous": false,
+      "team_pred": "기획팀",
+      "team_gold": "성과관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "성과관리팀장",
+        "기획예산담당관",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.12
+    },
+    {
+      "문서번호": "도시과-13077",
+      "dept": "도시과",
+      "date": "2026-07-16",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 2350,
+        "candidate_rids": [
+          2350,
+          2347,
+          2354,
+          2346,
+          2345
+        ],
+        "llm_raw": "A",
+        "row": "[도시과] ○옥외광고물 안전도검사 업무",
+        "level": 1
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": "도시경관팀",
+      "team_gold": "도시경관팀",
+      "pred_path_acting": [
+        "주무관",
+        "도시경관팀장",
+        "도시과장",
+        "건설과장",
+        "행정안전국장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.6667,
+          "exact": false,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.3333,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.13
+    },
+    {
+      "문서번호": "도시과-8700",
+      "dept": "도시과",
+      "date": "2026-05-12",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 2302,
+        "candidate_rids": [
+          2296,
+          2339,
+          2302,
+          2362,
+          2369
+        ],
+        "llm_raw": "C",
+        "row": "[도시과] ○지구단위계획 입안 및 결정",
+        "level": 3
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": true,
+      "team_pred": "도시계획팀",
+      "team_gold": "도시계획팀",
+      "pred_path_acting": [
+        "주무관",
+        "도시계획팀장",
+        "도시과장",
+        "건설과장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "acting:국장:건설도시국"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.8,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.12
+    },
+    {
+      "문서번호": "도시과-9782",
+      "dept": "도시과",
+      "date": "2026-05-29",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "amount_bracket",
+        "category": "공사",
+        "amount": 1324936620,
+        "amount_label": "보상액",
+        "row": "가.공사, 토지 매입에 관한 사항 ○ 추정금액 8억원 초과",
+        "level": 5
+      },
+      "final_gold_level": 5,
+      "final_verdict": "same",
+      "final_gold_ambiguous": true,
+      "team_pred": "도시개발팀",
+      "team_gold": "도시개발팀",
+      "pred_path_acting": [
+        "주무관",
+        "도시개발팀장",
+        "도시과장",
+        "건설과장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "acting:국장:건설도시국",
+        "org_chart+acting:부군수"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "보건정책과-13568",
+      "dept": "보건정책과",
+      "date": "2026-06-19",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "amount_bracket",
+        "category": "보조금",
+        "amount": 140400000,
+        "amount_label": "교부결정액",
+        "row": "가.보조금 지급결정(「가평군 회계관리에 관한 규칙」적용) ○ 1억원 초과 2억원 이하",
+        "level": 4
+      },
+      "final_gold_level": 4,
+      "final_verdict": "same",
+      "final_gold_ambiguous": false,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "의약관리팀장",
+        "보건정책과장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "사회복지과-37033",
+      "dept": "사회복지과",
+      "date": "2026-05-15",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 1081,
+        "candidate_rids": [
+          1142,
+          1141,
+          1096,
+          1158,
+          1081
+        ],
+        "llm_raw": "E",
+        "row": "[사회복지과] 1. 사회복지과 업무의 기획·조정",
+        "level": 2
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": true,
+      "team_pred": "장애인복지팀",
+      "team_gold": "장애인복지팀",
+      "pred_path_acting": [
+        "주무관",
+        "장애인복지팀장",
+        "사회복지과장",
+        "행정안전국장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.6667,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.11
+    },
+    {
+      "문서번호": "상수도사업소-12344",
+      "dept": "상수도사업소",
+      "date": "2026-06-29",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 3210,
+        "candidate_rids": [
+          3241,
+          38,
+          45,
+          3210,
+          3212
+        ],
+        "llm_raw": "D",
+        "row": "[상수도사업소] 13. 지방상수도 취ㆍ정수시설 신ㆍ증설",
+        "level": 2
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "수도시설팀장",
+        "상수도사업소장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.75,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.09
+    },
+    {
+      "문서번호": "상수도사업소-7683",
+      "dept": "상수도사업소",
+      "date": "2026-04-23",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 3239,
+        "candidate_rids": [
+          3239,
+          3226,
+          3207,
+          38,
+          45
+        ],
+        "llm_raw": "A",
+        "row": "[상수도사업소] ○경과년도 계량기 교체사업 추진",
+        "level": 2
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "급수팀장",
+        "상수도사업소장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.75,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.09
+    },
+    {
+      "문서번호": "상수도사업소-8256",
+      "dept": "상수도사업소",
+      "date": "2026-05-04",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "amount_bracket",
+        "category": "공사",
+        "amount": 278364000,
+        "amount_label": "도급액(표)",
+        "row": "가.공사, 토지 매입에 관한 사항 ○ 추정금액 5천만원 초과 4억원 이하",
+        "level": 3
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "급수팀장",
+        "상수도사업소장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.75,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "상수도사업소-9385",
+      "dept": "상수도사업소",
+      "date": "2026-05-19",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 3210,
+        "candidate_rids": [
+          3210,
+          107,
+          3223,
+          3222,
+          3221
+        ],
+        "llm_raw": "A",
+        "row": "[상수도사업소] 13. 지방상수도 취ㆍ정수시설 신ㆍ증설",
+        "level": 2
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": true,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "수도시설팀장",
+        "상수도사업소장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.75,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.1
+    },
+    {
+      "문서번호": "상수도사업소-9967",
+      "dept": "상수도사업소",
+      "date": "2026-05-27",
+      "row_eval": null,
+      "org_known": false,
+      "final": {
+        "source": "amount_bracket",
+        "category": "용역",
+        "amount": 66000000,
+        "amount_label": "사업비",
+        "row": "나.제조·용역 ○ 추정금액 5천만원 초과 2억원 이하",
+        "level": 3
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": true,
+      "team_pred": null,
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "수도시설팀장",
+        "상수도사업소장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.75,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "소상공인지원과-17475",
+      "dept": "소상공인지원과",
+      "date": "2026-04-21",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 1374,
+        "candidate_rids": [
+          1297,
+          1299,
+          1294,
+          1295,
+          1374
+        ],
+        "llm_raw": "E",
+        "row": "[소상공인지원과] ○기타 저소득층 및 취약계층 에너지복지 지원업무",
+        "level": 2
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": true,
+      "team_pred": "소비자지원팀",
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "고유가 피해지원금 TF팀장",
+        "소상공인지원과장",
+        "경제산업국장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 0.6667,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "agent": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.11
+    },
+    {
+      "문서번호": "소상공인지원과-23486",
+      "dept": "소상공인지원과",
+      "date": "2026-05-28",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "amount_bracket",
+        "category": "그외",
+        "amount": 1500000000,
+        "amount_label": "지급액",
+        "row": "다. 그 외의 집행 ○ 추정금액 2억원 초과",
+        "level": 5
+      },
+      "final_gold_level": 5,
+      "final_verdict": "same",
+      "final_gold_ambiguous": true,
+      "team_pred": "소비자지원팀",
+      "team_gold": null,
+      "pred_path_acting": [
+        "주무관",
+        "고유가 피해지원금 TF팀장",
+        "소상공인지원과장",
+        "경제산업국장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart+acting:부군수"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.6667,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "안전총괄과-12487",
+      "dept": "안전총괄과",
+      "date": "2026-06-09",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "amount_bracket",
+        "category": "그외",
+        "amount": 139937610,
+        "amount_label": "사업비(표)",
+        "row": "다. 그 외의 집행 ○ 추정금액 1억원 초과 2억원 이하",
+        "level": 4
+      },
+      "final_gold_level": 4,
+      "final_verdict": "same",
+      "final_gold_ambiguous": false,
+      "team_pred": "통합관제팀",
+      "team_gold": "통합관제팀",
+      "pred_path_acting": [
+        "주무관",
+        "통합관제팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "안전총괄과-12696",
+      "dept": "안전총괄과",
+      "date": "2026-06-11",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 575,
+        "candidate_rids": [
+          495,
+          603,
+          505,
+          575,
+          577
+        ],
+        "llm_raw": "D",
+        "row": "[안전총괄과] 78. 중대산업ᆞ시민재해 발생 시 재발방지 대책수립 이행 여부 확인",
+        "level": 3
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": "중대재해예방팀",
+      "team_gold": "안전관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "안전관리팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.8,
+          "exact": false,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 0.8,
+          "exact": false,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.12
+    },
+    {
+      "문서번호": "안전총괄과-13897",
+      "dept": "안전총괄과",
+      "date": "2026-06-25",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 547,
+        "candidate_rids": [
+          510,
+          505,
+          560,
+          563,
+          547
+        ],
+        "llm_raw": "E",
+        "row": "[안전총괄과] 53. 충무 3800 행정안전 실시계획(총괄편) 작성 및 조정·통제",
+        "level": 5
+      },
+      "final_gold_level": 4,
+      "final_verdict": "violation",
+      "final_gold_ambiguous": false,
+      "team_pred": "자연재난팀",
+      "team_gold": "안전관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "안전관리팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.8333,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.11
+    },
+    {
+      "문서번호": "안전총괄과-8970",
+      "dept": "안전총괄과",
+      "date": "2026-04-23",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 571,
+        "candidate_rids": [
+          507,
+          488,
+          13,
+          509,
+          571
+        ],
+        "llm_raw": "E",
+        "row": "[안전총괄과] 74. 재난취약시기별 시설물 안전점검",
+        "level": 2
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": "중대재해예방팀",
+      "team_gold": "안전관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "안전관리팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.11
+    },
+    {
+      "문서번호": "안전총괄과-9041",
+      "dept": "안전총괄과",
+      "date": "2026-04-23",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 509,
+        "candidate_rids": [
+          508,
+          547,
+          488,
+          13,
+          509
+        ],
+        "llm_raw": "E",
+        "row": "[안전총괄과] 24. 재난관리기금 운영에 관한 사항",
+        "level": 4
+      },
+      "final_gold_level": 4,
+      "final_verdict": "same",
+      "final_gold_ambiguous": false,
+      "team_pred": "자연재난팀",
+      "team_gold": "안전관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "안전관리팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.11
+    },
+    {
+      "문서번호": "안전총괄과-9381",
+      "dept": "안전총괄과",
+      "date": "2026-04-28",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 509,
+        "candidate_rids": [
+          514,
+          488,
+          563,
+          13,
+          509
+        ],
+        "llm_raw": "E",
+        "row": "[안전총괄과] 24. 재난관리기금 운영에 관한 사항",
+        "level": 4
+      },
+      "final_gold_level": 4,
+      "final_verdict": "same",
+      "final_gold_ambiguous": false,
+      "team_pred": "자연재난팀",
+      "team_gold": "안전관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "안전관리팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.09
+    },
+    {
+      "문서번호": "안전총괄과-9529",
+      "dept": "안전총괄과",
+      "date": "2026-04-30",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 571,
+        "candidate_rids": [
+          515,
+          488,
+          13,
+          509,
+          571
+        ],
+        "llm_raw": "E",
+        "row": "[안전총괄과] 74. 재난취약시기별 시설물 안전점검",
+        "level": 2
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": "자연재난팀",
+      "team_gold": "안전관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "안전관리팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.1
+    },
+    {
+      "문서번호": "안전총괄과-9936",
+      "dept": "안전총괄과",
+      "date": "2026-05-07",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 489,
+        "candidate_rids": [
+          572,
+          532,
+          521,
+          489,
+          547
+        ],
+        "llm_raw": "D",
+        "row": "[안전총괄과] 5. 안전의식 및 안전문화 정책에 관한 사항",
+        "level": 2
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": "자연재난팀",
+      "team_gold": "안전관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "안전관리팀장",
+        "안전총괄과장",
+        "행정안전국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.11
+    },
+    {
+      "문서번호": "자원순환과-15665",
+      "dept": "자원순환과",
+      "date": "2026-06-01",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "amount_bracket",
+        "category": "그외",
+        "amount": 117559370,
+        "amount_label": "지급액",
+        "row": "다. 그 외의 집행 ○ 추정금액 1억원 초과 2억원 이하",
+        "level": 4
+      },
+      "final_gold_level": 5,
+      "final_verdict": "same",
+      "final_gold_ambiguous": true,
+      "team_pred": "자원운영팀",
+      "team_gold": "자원운영팀",
+      "pred_path_acting": [
+        "주무관",
+        "자원운영팀장",
+        "자원순환과장",
+        "건설과장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "acting:국장:건설도시국",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.3333,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 0.8,
+          "exact": false,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.6,
+          "exact": false,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "축산과-19239",
+      "dept": "축산과",
+      "date": "2026-04-22",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "amount_bracket",
+        "category": "보조금",
+        "amount": 181731740,
+        "amount_label": "교부결정액",
+        "row": "가.보조금 지급결정(「가평군 회계관리에 관한 규칙」적용) ○ 1억원 초과 2억원 이하",
+        "level": 4
+      },
+      "final_gold_level": 4,
+      "final_verdict": "same",
+      "final_gold_ambiguous": false,
+      "team_pred": "동물복지팀",
+      "team_gold": "축수산정책팀",
+      "pred_path_acting": [
+        "주무관",
+        "축수산정책팀장",
+        "축산과장",
+        "경제산업국장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "축산과-23411",
+      "dept": "축산과",
+      "date": "2026-05-28",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "amount_bracket",
+        "category": "보조금",
+        "amount": 254976000,
+        "amount_label": "교부결정액",
+        "row": "가.보조금 지급결정(「가평군 회계관리에 관한 규칙」적용) ○ 2억원 초과",
+        "level": 5
+      },
+      "final_gold_level": 5,
+      "final_verdict": "same",
+      "final_gold_ambiguous": true,
+      "team_pred": "가축방역팀",
+      "team_gold": "축수산정책팀",
+      "pred_path_acting": [
+        "주무관",
+        "축수산정책팀장",
+        "축산과장",
+        "경제산업국장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "org_chart",
+        "org_chart+acting:부군수"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.6667,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        }
+      },
+      "pick_sec": 0.0
+    },
+    {
+      "문서번호": "하수도사업소-8094",
+      "dept": "하수도사업소",
+      "date": "2026-04-21",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 3287,
+        "candidate_rids": [
+          3265,
+          3287,
+          3270,
+          3294,
+          3305
+        ],
+        "llm_raw": "B",
+        "row": "[하수도사업소] 12. 공공하수처리시설 시설관리 및 개선사업",
+        "level": 2
+      },
+      "final_gold_level": 4,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": false,
+      "team_pred": "생활하수팀",
+      "team_gold": "하수시설팀",
+      "pred_path_acting": [
+        "주무관",
+        "하수시설팀장",
+        "하수도사업소장",
+        "부군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.75,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.12
+    },
+    {
+      "문서번호": "환경과-13744",
+      "dept": "환경과",
+      "date": "2026-05-18",
+      "row_eval": null,
+      "org_known": true,
+      "final": {
+        "source": "llm_pick",
+        "category": null,
+        "amount": null,
+        "amount_label": null,
+        "rid": 2457,
+        "candidate_rids": [
+          2457,
+          2459,
+          2423,
+          2419,
+          2424
+        ],
+        "llm_raw": "A",
+        "row": "[환경과] 49. 미세먼지 종합대책 수립ᆞ시행에 관한 사항",
+        "level": 3
+      },
+      "final_gold_level": 5,
+      "final_verdict": "escalated",
+      "final_gold_ambiguous": true,
+      "team_pred": "대기관리팀",
+      "team_gold": "대기관리팀",
+      "pred_path_acting": [
+        "주무관",
+        "대기관리팀장",
+        "환경과장",
+        "건설과장",
+        "군수"
+      ],
+      "evidence": [
+        "input",
+        "input:team",
+        "org_chart",
+        "acting:국장:건설도시국"
+      ],
+      "scores": {
+        "path_no_acting": {
+          "title_accuracy": 0.5,
+          "exact": false,
+          "cell_count_match": false
+        },
+        "path_acting": {
+          "title_accuracy": 1.0,
+          "exact": true,
+          "cell_count_match": true
+        },
+        "agent": {
+          "title_accuracy": 0.8,
+          "exact": false,
+          "cell_count_match": false
+        }
+      },
+      "pick_sec": 0.11
+    }
+  ],
+  "elapsed_sec": 2.7
+}

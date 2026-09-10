@@ -41,13 +41,14 @@ def extract_labeled_amount(text: str, labels: list[str]) -> tuple[int | None, st
     """라벨 우선순위대로 금액을 찾는다. 공문은 라벨을 자간 벌려 쓴다("도 급 액")."""
     for label in labels:
         spaced = r"\s*".join(map(re.escape, label))
-        m = re.search(spaced + r"[^\d\n]{0,12}?([\d,]{3,})\s*(천원|백만원|원)", text)
-        if m:
+        for m in re.finditer(spaced + r"[^\d\n]{0,12}?([\d,]{3,})\s*(천원|백만원|원)", text):
+            if "기" in text[max(0, m.start() - 2) : m.start()]:
+                continue  # 기지급액·기 지급액 — 이미 나간 돈
             return int(m.group(1).replace(",", "")) * _UNIT[m.group(2)], label
     return _table_amount(text, labels)
 
 
-_NUM_LINE = re.compile(r"^[\d,]{5,}$")
+_NUM_LINE = re.compile(r"^[\d,]{5,}원?$")
 _TABLE_UNIT = re.compile(r"단위\s*[:：]?\s*(천원|백만원|원)")
 
 
@@ -57,16 +58,17 @@ def _table_amount(text: str, labels: list[str]) -> tuple[int | None, str | None]
     단위는 표 머리의 "(단위:원)" 을 따른다. 단위 표기가 없으면 원으로 본다.
     변경계약 표는 당초·변경 순이라 첫 숫자(당초)를 쓴다 — 구간 판정엔 둘 다 같은 편이다.
     """
-    lines = [re.sub(r"\s+", "", ln) for ln in text.splitlines() if ln.strip()]
+    # 표 머리 "도급액(원)" "사업비(계)" 의 괄호는 떼고 라벨과 비교한다
+    lines = [re.sub(r"\(.*?\)|\s+", "", ln) for ln in text.splitlines() if ln.strip()]
     unit = _TABLE_UNIT.search(text)
     mult = _UNIT[unit.group(1)] if unit else 1
     for label in labels:
         for i, ln in enumerate(lines):
             if ln != label:
                 continue
-            for nxt in lines[i + 1 : i + 4]:
+            for nxt in lines[i + 1 : i + 7]:
                 if _NUM_LINE.match(nxt):
-                    return int(nxt.replace(",", "")) * mult, f"{label}(표)"
+                    return int(nxt.replace(",", "").rstrip("원")) * mult, f"{label}(표)"
     return None, None
 
 
@@ -104,10 +106,14 @@ class DelegationLookup:
         return has(self.cfg["execute_keywords"]) and not (suffix and re.search(suffix, flat))
 
     def execution(self, title: str, body: str) -> dict[str, Any]:
-        category = next(
-            c for c in self.cfg["categories"]
-            if not c["match"] or any(m in title for m in c["match"])
-        )
+        # 가장 뒤에 나온 키워드의 구간표 (한국어 제목은 끝이 머리말). 없으면 "그 외".
+        best, best_pos = self.cfg["categories"][-1], -1
+        for c in self.cfg["categories"]:
+            for m in c["match"]:
+                pos = title.rfind(m)
+                if pos > best_pos:
+                    best, best_pos = c, pos
+        category = best
         amount, label = extract_labeled_amount(body, self.cfg["amount_labels"])
         out: dict[str, Any] = {
             "source": "amount_bracket", "category": category["key"],
