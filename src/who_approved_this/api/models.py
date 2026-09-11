@@ -16,18 +16,22 @@ class ApprovalCell(BaseModel):
     role: str = Field(description="기안 | 검토 | 결재 | 협조")
     title: str = Field(description="직위")
     name: str = Field(default="", description="이름. 모르면 빈 문자열")
+    evidence: str = Field(default="", description="근거 태그 '직위근거/이름근거' (roster·rule·vote·llm·agent)")
 
 
 class PredictRequest(BaseModel):
     org: str = Field(description="조직 키 (예: 경기도서관)")
     title: str
-    body: str = Field(default="", description="본문. 규칙 기반 예측기는 쓰지 않는다")
+    body: str = Field(default="", description="본문. layered·agent 는 업무항목·팀·협조 판정에 쓴다")
+    predictor: str = Field(default="default", description="default | vote | layered | agent")
+    rules: str = Field(default="induced", description="layered 규칙 벌: induced | manual | rules/approval.<이름>.yaml 경로")
 
 
 class PredictResponse(BaseModel):
     masked: bool = Field(default=True, description="사람 이름을 가렸는지")
     org: str
     predictor: str
+    rules: str | None = None
     cells: list[ApprovalCell]
     reference_doc_ids: list[str] = Field(description="예측에 참고한 문서 id")
     reference_count: int
@@ -100,3 +104,12 @@ class OfficialLineRequest(BaseModel):
     title: str = Field(description="문서 제목")
     body: str = Field(default="", description="본문 — 금액 구간 판정에 쓴다")
     date: str | None = Field(default=None, description="기안일 YYYY-MM-DD. 없으면 오늘")
+
+
+class SummaryRequest(BaseModel):
+    """요약 요청. 본문만 — 첨부는 자리만 있다."""
+
+    text: str | None = Field(default=None, description="요약할 본문 텍스트")
+    doc_id: str | None = Field(default=None, description="text 대신 T1 문서 id (PDF 쪽별)")
+    mode: str = Field(default="whole", description="whole(통째) | paged(쪽별 요약 → 병합)")
+    attachments: list[str] | None = Field(default=None, description="(미지원) 첨부 텍스트 — 자리만")

@@ -81,7 +81,10 @@ uv run wat ui         # http://127.0.0.1:7860
 
 | 경로 | 하는 일 |
 |---|---|
-| `POST /approval-line/predict` | 조직·제목·본문 → 예측 결재선 + 참고한 문서 id |
+| `POST /approval-line/predict` | 조직·제목·본문 → 예측 결재선 + 참고한 문서 id. `predictor`(default·vote·layered·agent), `rules`(induced·manual·규칙 파일) 선택, 칸마다 `evidence` |
+| `GET /approval-line/options` | 고를 수 있는 예측기·규칙 벌 |
+| `POST /approval-line/official` | 공식 전결 규정 결재선(가평군 T6) |
+| `POST /summary` | 본문 요약 — 한줄요약·핵심 3·금액·일정·업체·결재자 확인사항·원문 위치(쪽). `mode` whole·paged. 첨부는 자리만 |
 | `POST /draft/generate` | 조직·제목 → 초안 n개 + 검색된 참고 문서 id·점수 |
 | `GET /docs`, `GET /docs/{id}` | 문서 메타와 gold 결재선 유무 (**실명 제외**) |
 | `GET /orgs` | 조직 목록 |
@@ -277,6 +280,9 @@ uv run wat run t1c --model qwen2.5:7b   # ollama 모델까지
 | `baseline_copy` | 같은 부서 직전 문서 결재선을 그대로 복사 |
 | `baseline_vote` | 칸 위치별 다수결(동률이면 최근 것) |
 | `llm_local` | ollama 로컬 모델에 참고 2건 + 대상을 주고 JSON 요청 |
+| `vote_titles+llm_names` | 직위는 다수결, 이름은 LLM (결합) |
+| `layered[induced\|manual]` | 층 규칙(전결·팀라우팅·협조) → 남는 칸 vote → 이름은 명부, 여럿이면 LLM 이 후보 안에서. 칸마다 근거 태그 |
+| `agent` | layered 의 층을 도구 6개로 주고 호출 순서는 모델이 정한다(툴콜링, 최대 8회) — [비교](docs/t1c_agent_vs_layered.md) |
 
 ### 그룹은 부서명이 아니라 **실제 조직**으로
 
@@ -292,7 +298,32 @@ uv run wat run t1c --model qwen2.5:7b   # ollama 모델까지
 | 대구합동청사 | 2 | 2 |
 | (1건짜리 8개 조직) | 8 | 제외 |
 
-### 베이스라인 결과 (12케이스)
+### 2026-09-11 정정 — 아래 "이름" 숫자는 누출 조건에서 잰 것이다
+
+대상 문서 본문(텍스트 레이어)에 **결재란이 들어 있어** 12건 전부 정답 이름이 프롬프트에 보였다.
+결재 전 문서에는 결재란이 없으므로, 이제 대상 본문의 사람 이름을 가리고 잰다(`mask_target`, 기본 켬).
+
+| 예측기 | 직위 | 이름 | 칸 수 | 협조 칸 | 협조 케이스 | 경기도서관 첫 검토 |
+|---|---|---|---|---|---|---|
+| baseline_vote | 66.2% | 42.1% | 83.3% | 0/5 (+3) | 9/12 | 5/8 |
+| llm_local (qwen3:8b) | 72.5% | **8.3%** | 87.5% | 1/5 (+2) | 9/12 | 6/8 |
+| vote_titles+llm_names | 67.2% | **8.3%** | 83.3% | 1/5 (+3) | 9/12 | 5/8 |
+| **layered[induced]** | 64.2% | **44.9%** | 81.2% | 0/5 (+2) | 9/12 | 4/8 |
+| layered[manual] ※ | 75.5% | 54.9% | 85.4% | 0/5 (+3) | 9/12 | 8/8 |
+| agent (툴콜링, 같은 층) | 29.3% | 7.2% | 43.8% | 0/5 (+4) | 6/12 | — |
+
+- LLM 이름 64% → **8%**. 그전 이름 점수는 본문 결재란을 읽은 몫이었다.
+- layered[induced] 는 케이스마다 **참고 문서만으로** 규칙을 귀납한다(대상이 규칙에 새지 않게).
+  근거별: 규칙이 정한 직위 68.6%, vote 36.4% / 명부 이름 51.5%, LLM 이 후보 중 고른 이름 18.2%.
+- ※ manual 은 사람이 gold 20건 전부를 보고 쓴 `rules/approval.yaml` — 대상 문서가 규칙에 섞여 있다.
+- agent 는 layered 층을 도구로 받아 3~4회 호출 후 멈추고 과거 결재선(search_past)을 한 번도 안 봤다 — 기안·검토 칸이 빠진다. [비교 문서](docs/t1c_agent_vs_layered.md)
+- 협조 칸(5칸, 2문서)은 어느 예측기도 못 맞힌다. LOO 에서 참고 문서에 협조 예시가 없거나(12012),
+  업무항목이 달라 규칙이 안 걸린다(7941 → 6477). layered 는 vote 의 협조 오탐(6477 +3)을 없앴지만
+  10185 에 새 오탐(+2)이 생겼다.
+- 결과: `results/t1c/20260911-1433.json`. 규칙 두 벌 차이: `rules/approval.induced.yaml` vs `rules/approval.yaml`
+  (`evaluate/rules_diff.py`, 커버리지 0.89·충돌 0).
+
+### 베이스라인 결과 (12케이스) — 누출 조건, 기록용
 
 | 예측기 | 직위만 | 이름 | 칸 수 | 직위 전부 맞음 | 케이스당 |
 |---|---|---|---|---|---|
@@ -414,6 +445,27 @@ gold 명단으로 마스킹했다(초안은 케이스당 1개).
 자세한 분석은 [`docs/t1c_missing_info.md`](docs/t1c_missing_info.md) ·
 [`docs/t1d_missing_info.md`](docs/t1d_missing_info.md).
 
+
+## T1s — 결재문서 요약 (본문만, 첨부는 자리만)
+
+```bash
+uv run wat run t1s --model qwen3:8b
+```
+
+`templates/summary.yaml` v2 — 한줄요약 · 핵심 3가지(쪽 번호) · 금액 · 일정 · 업체 · 관련 문서 · 결재자 확인사항 · 원문 위치.
+숫자 칸은 정규식으로 옮기고(지어낼 수 없다), 생성 칸은 원문에 없는 숫자·문서번호가 들면 버린다.
+원문에 없으면 비운다. 사람 이름은 LLM 전에 직위로 바꾼다.
+
+| 20건 (qwen3:8b) | 값 |
+|---|---|
+| JSON 성공 | 20/20 |
+| 환각률 (필터 전, 숫자·날짜·금액 토큰) | 0/47 = 0% |
+| 출력 실명 | 0 |
+| 길이 비율 | 0.28 |
+| 6쪽 문서(1332) 통째 vs 쪽별 병합 | 둘 다 위치 3/3 — **통째가 낫다**(핵심이 서로 다른 절, 1회 28s vs 7회 52s) |
+
+검증은 `evaluate/summary_check.py`. 사람 검토쌍(원문 첫 200자 / 요약)은 `DATA_ROOT/t1/summary_review/`.
+업체명은 요약 출력에만 담고 결과 JSON 에는 개수만 남긴다(CLAUDE.md 예외 규칙).
 
 ## T5 — 관보 안건 요약 (RAG 가 관보에서도 되는가)
 

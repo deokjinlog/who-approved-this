@@ -52,6 +52,27 @@ def parse_amount_range(text: str) -> tuple[int | None, int | None]:
     return lo, hi
 
 
+def amount_bands_from_text(item_text: str) -> list[dict[str, Any]]:
+    """**자연어 2열형 별표**에서 금액 구간과 전결권자를 뽑는다 (스텁).
+
+    가평군처럼 "사무명 × 직급 ○표" 행렬이면 :func:`parse_delegation_table` 로 충분하다.
+    그런데 공기업 규정은 항목 텍스트 안에 금액 기준을 문장으로 넣는 일이 많다
+    (조사 §4-2, 한국석유공사)::
+
+        1. 5억원 이상인 경우 사장결재를 득한 후 이사회 의결을 거쳐 시행한다.
+        2. 3천만원 이상 5억원 미만인 경우 비축기지건설담당 상임이사의 결재를 득하여 시행한다.
+
+    돌려줄 모양::
+
+        [{"amount_min": 500_000_000, "amount_max": None, "final_title": "사장",
+          "extra": "이사회 의결", "text": "1. …"}, …]
+
+    금액 부분은 :func:`parse_amount_range` 를 그대로 쓰면 된다. 남은 일은 번호 조항 분리와
+    "○○의 결재를 득하여" 에서 결재 직위를 떼는 것. 실물 별표가 오면 구현한다.
+    """
+    raise NotImplementedError("자연어 2열형 별표 실물 도착 후 구현 — 금액 부분은 parse_amount_range 사용")
+
+
 def _header_levels(ws: Any, max_header_rows: int = 8) -> tuple[dict[int, int], int, int]:
     """시트 머리행에서 ``{열번호: 레벨}``, 사무명 열, 데이터 시작 행을 찾는다."""
     col_level: dict[int, int] = {}

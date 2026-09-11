@@ -1,0 +1,866 @@
+{
+  "track": "t1s",
+  "run_at": "2026-09-11T14:46:06",
+  "model": "qwen3:8b",
+  "template": "templates/summary.yaml v2",
+  "documents": 20,
+  "note": "첨부 없이 본문만. 결과엔 개수·비율만 — 요약 문장·업체명은 DATA_ROOT/t1/summary_review/",
+  "summary_whole_all": {
+    "cases": 20,
+    "json_ok": 20,
+    "hallucination_raw_rate": 0.0,
+    "hallucination_raw": "0/47",
+    "hallucination_final_rate": 0.0,
+    "dropped_items": 0,
+    "names_in_output": 0,
+    "location": "3/3",
+    "length_ratio_mean": 0.28,
+    "sec_mean": 8.99,
+    "llm_calls": 20
+  },
+  "multi_page": {
+    "기후에너지환경부_생물소재활용과-1332": {
+      "whole": {
+        "cases": 1,
+        "json_ok": 1,
+        "hallucination_raw_rate": 0.0,
+        "hallucination_raw": "0/0",
+        "hallucination_final_rate": 0.0,
+        "dropped_items": 0,
+        "names_in_output": 0,
+        "location": "3/3",
+        "length_ratio_mean": 0.0849,
+        "sec_mean": 28.06,
+        "llm_calls": 1
+      },
+      "paged": {
+        "cases": 1,
+        "json_ok": 1,
+        "hallucination_raw_rate": 0.0,
+        "hallucination_raw": "0/0",
+        "hallucination_final_rate": 0.0,
+        "dropped_items": 0,
+        "names_in_output": 0,
+        "location": "3/3",
+        "length_ratio_mean": 0.0564,
+        "sec_mean": 51.54,
+        "llm_calls": 7
+      }
+    }
+  },
+  "review_dir": "/Users/user/data/who-approved-this/t1/summary_review",
+  "cases": [
+    {
+      "doc_id": "법무부_총무과-7941",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 3,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 8,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 8.5
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2198,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "법무부_총무과-5908",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 4,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 6.2
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 3,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 3,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2277,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "법무부_총무과-6989",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 5,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 9.25
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2397,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "기후에너지환경부_정보관리팀-995",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 5,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 9.5
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.308,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "기후에너지환경부_생물소재활용과-1332",
+      "pages": 6,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 7,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 6,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 28.06
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 3,
+          "correct": 3,
+          "missing_page": 0
+        },
+        "length_ratio": 0.0849,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "기후에너지환경부_생물소재활용과-1332",
+      "pages": 6,
+      "mode": "paged",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 5,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 6,
+        "names_in_output": 0,
+        "llm_calls": 7,
+        "sec": 51.54
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 3,
+          "correct": 3,
+          "missing_page": 0
+        },
+        "length_ratio": 0.0564,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "경기도_경기도서관-12039",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 3,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 3,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 7.75
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.5106,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "경기도_경기도서관-12016",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 5,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 3,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 7.35
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.293,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "경기도_경기도서관-12012",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 6,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 8.47
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2539,
+        "empty_slots": [
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "제주특별자치도_일자리에너지과-40914",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 6,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 10.19
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 6,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 6,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.284,
+        "empty_slots": [
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "제주특별자치도_보건환경연구원-17732",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 7,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 4,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 11.02
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 6,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 6,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2873,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "법무부_총무과-6477",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 5,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 10.94
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 4,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.3942,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "법무부_총무과-6743",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 6,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 4,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 7.23
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.256,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "법무부_총무과-9845",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 4,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 6.1
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.1909,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "법무부_총무과-5451",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 6,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 5,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 8.67
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2993,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "법무부_총무과-11097",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 3,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 3,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 6.55
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2002,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "경기도_경기도서관-10185",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 6,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 3,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 8.17
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 3,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 3,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2153,
+        "empty_slots": []
+      },
+      "vendors_found": 1
+    },
+    {
+      "doc_id": "경기도_경기도서관-11698",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 6,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 3,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 6.77
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 2,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.3747,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "경기도_경기도서관-8872",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 3,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 3,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 4.12
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.3268,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    },
+    {
+      "doc_id": "경기도_경기도서관-8942",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 7,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 4,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 10.13
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 5,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 5,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.2485,
+        "empty_slots": []
+      },
+      "vendors_found": 1
+    },
+    {
+      "doc_id": "경기도_경기도서관-8938",
+      "pages": 1,
+      "mode": "whole",
+      "checks": {
+        "json_ok": true,
+        "generated_items": 3,
+        "dropped_ungrounded_number": 0,
+        "dropped_invented_ref": 0,
+        "names_replaced_in_source": 3,
+        "names_in_output": 0,
+        "llm_calls": 1,
+        "sec": 4.87
+      },
+      "eval": {
+        "hallucination_raw": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "hallucination_final": {
+          "tokens": 0,
+          "ungrounded": 0,
+          "rate": 0.0
+        },
+        "names_in_output": 0,
+        "location": {
+          "checked": 0,
+          "correct": 0,
+          "missing_page": 0
+        },
+        "length_ratio": 0.3856,
+        "empty_slots": [
+          "amounts",
+          "vendors"
+        ]
+      },
+      "vendors_found": 0
+    }
+  ],
+  "elapsed_sec": 231.75
+}

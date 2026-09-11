@@ -1,0 +1,440 @@
+# 귀납 규칙 — gold 결재선 20건에서 자동 생성 (parse/rules_parser.build_induced_rules).
+# 이름 없음(결재자 이름은 애초에 안 담고, 제목 속 직함 앞뒤 이름은 키워드에서 뺀다).
+# 평가(t1c layered[induced])는 이 파일이 아니라 케이스마다 참고 문서만으로 귀납한다.
+
+meta:
+  schema_version: 3
+  source: induced
+  generated_at: '2026-09-11'
+  source_docs: 20
+  note: gold 결재선에서 자동 귀납. 이름 없음. priority·fallback·acting·mode·join_key 는 조사(approval_rules_survey.md
+    §8-A)에서 나온 빠진 개념의 자리
+organizations:
+- key: 경기도서관
+  provenance: induced
+  observed_docs: 8
+  join_key: org+title
+  chain:
+    draft: 주무관
+    approve: 경기도서관장
+    review_slots: 1
+  teams:
+  - name: 독서문화진흥팀
+    lead: 독서문화진흥팀장
+    keywords:
+    - 코칭
+    - 독서
+    - 어린이
+    - 경기도
+    - 용역
+    observed_docs: 1
+    provenance: induced
+  - name: 도서관정책팀
+    lead: 도서관정책팀장
+    keywords:
+    - 국회의원
+    - 임차상인
+    - 공유재산
+    - 일반직
+    - 초과근무수당
+    observed_docs: 2
+    provenance: induced
+  - name: 도서관운영팀
+    lead: 도서관운영팀장
+    keywords:
+    - 스튜디오
+    - 프로그램
+    - AI
+    - 정수기
+    - 렌탈료
+    - 건의
+    - 완료
+    - 프로젝트
+    - 분야
+    - 협업
+    - Collabo
+    - 투어
+    observed_docs: 5
+    provenance: induced
+  delegation:
+    default_final: 경기도서관장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 경기도서관장
+      provenance: induced
+      note: 관측 8건, 금액 181,800~222,000,000원
+    fallback:
+      policy: chain_top
+      final_title: 경기도서관장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review:
+  - work_type: 회계지출
+    title: 도서관정책팀장
+    observed_docs: 1
+    provenance: induced
+  cooperation:
+  - titles:
+    - 주무관
+    - 경리팀장
+    work_type:
+    - 회계지출
+    trigger_keywords:
+    - 일반직
+    - 초과근무수당
+    mode: parallel
+    mode_provenance: assumed
+    observed_docs: 1
+    provenance: induced
+- key: 광주합동청사
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 교위
+    approve: 청장
+    review_slots: 3
+  teams: []
+  delegation:
+    default_final: 청장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 청장
+      provenance: induced
+      note: 관측 1건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 청장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation: []
+- key: 국립생물자원관
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 환경연구사
+    approve: 국립생물자원관장
+    review_slots: 3
+  teams: []
+  delegation:
+    default_final: 국립생물자원관장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 국립생물자원관장
+      provenance: induced
+      note: 관측 1건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 국립생물자원관장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation: []
+- key: 대구합동청사
+  provenance: induced
+  observed_docs: 2
+  join_key: org+title
+  chain:
+    draft: 교감
+    approve: 청장
+    review_slots: 1
+  teams:
+  - name: 총무사무관
+    lead: 총무사무관
+    keywords:
+    - 교정기관
+    - 일정
+    - 노사협의회
+    observed_docs: 1
+    provenance: induced
+  - name: 교감
+    lead: 교감
+    keywords:
+    - 외국인
+    - 교정시설
+    - 통보
+    - 참관
+    - 승인
+    observed_docs: 1
+    provenance: induced
+  delegation:
+    default_final: 청장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 청장
+      provenance: induced
+      note: 관측 2건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 청장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review:
+  - work_type: 대외제출·통보
+    title: 총무사무관
+    observed_docs: 1
+    provenance: induced
+  - work_type: 대외제출·통보
+    title: 과장
+    observed_docs: 1
+    provenance: induced
+  cooperation: []
+- key: 대전통합청사
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 교위
+    approve: 청장
+    review_slots: 2
+  teams: []
+  delegation:
+    default_final: 청장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 청장
+      provenance: induced
+      note: 관측 1건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 청장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation: []
+- key: 서울출입국외국인청
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 출입국관리서기
+    approve: 청장
+    review_slots: 3
+  teams: []
+  delegation:
+    default_final: 청장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 청장
+      provenance: induced
+      note: 관측 1건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 청장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation: []
+- key: 안양교도소
+  provenance: induced
+  observed_docs: 2
+  join_key: org+title
+  chain:
+    draft: 교위
+    approve: 안양교도소장
+    review_slots: 4
+  teams: []
+  delegation:
+    default_final: 안양교도소장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 안양교도소장
+      provenance: induced
+      note: 관측 2건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 안양교도소장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation:
+  - titles:
+    - 민원과장
+    - 과학기술서기관(일반임기제)
+    - 복지과장
+    work_type:
+    - 회의·심의
+    trigger_keywords:
+    - 복무관리위원회
+    - 심의
+    - 지정
+    - 현업공무원
+    mode: parallel
+    mode_provenance: assumed
+    observed_docs: 1
+    provenance: induced
+- key: 온실가스종합정보센터
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 전문위원
+    approve: 온실가스종합정보센터장
+    review_slots: 2
+  teams: []
+  delegation:
+    default_final: 온실가스종합정보센터장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 온실가스종합정보센터장
+      provenance: induced
+      note: 관측 1건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 온실가스종합정보센터장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation:
+  - titles:
+    - 주무관
+    work_type:
+    - 사업계획
+    trigger_keywords:
+    - 구축사업
+    - 국가
+    - 온실가스종합정보시스템
+    - 용역
+    - 추진계획
+    - 통합감리
+    mode: parallel
+    mode_provenance: assumed
+    observed_docs: 1
+    provenance: induced
+- key: 인천공항출입국외국인청
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 출입국관리주사보
+    approve: 청장
+    review_slots: 3
+  teams: []
+  delegation:
+    default_final: 청장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 청장
+      provenance: induced
+      note: 관측 1건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 청장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation: []
+- key: 제주보건환경연구원
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 주무관
+    approve: 보건환경연구원장
+    review_slots: 2
+  teams: []
+  delegation:
+    default_final: 보건환경연구원장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 보건환경연구원장
+      provenance: induced
+      note: 관측 1건, 금액 없음
+    fallback:
+      policy: chain_top
+      final_title: 보건환경연구원장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation: []
+- key: 제주시일자리에너지과
+  provenance: induced
+  observed_docs: 1
+  join_key: org+title
+  chain:
+    draft: 주무관
+    approve: 부시장
+    review_slots: 3
+  teams: []
+  delegation:
+    default_final: 부시장
+    rules:
+    - priority: 1
+      work_type: '*'
+      amount_min: null
+      amount_max: null
+      final_title: 부시장
+      provenance: induced
+      note: 관측 1건, 금액 205,810,810~205,810,810원
+    fallback:
+      policy: chain_top
+      final_title: 부시장
+      note: 규칙 미매칭 시 최상위 결재 직위 — 상신을 막지도, 무결재로 통과시키지도 않는다
+    cell_policy:
+      name_empty: false
+      observed_name_empty: 0
+  acting: []
+  extra_review: []
+  cooperation: []

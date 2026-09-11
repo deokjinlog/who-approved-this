@@ -58,13 +58,14 @@ def _cells_table(gold: list[dict[str, str]], pred: list[dict[str, str]]) -> str:
             f'<td style="padding:4px 8px">{(g or {}).get("name", "—")}</td>'
             + cell((p or {}).get("title"), title_ok)
             + cell((p or {}).get("name"), name_ok)
+            + f'<td style="padding:4px 8px;color:#666">{(p or {}).get("evidence", "")}</td>'
             + "</tr>"
         )
     head = (
         "<tr>"
         + "".join(
             f'<th style="padding:4px 8px;text-align:left">{h}</th>'
-            for h in ("#", "역할", "gold 직위", "gold 이름", "예측 직위", "예측 이름")
+            for h in ("#", "역할", "gold 직위", "gold 이름", "예측 직위", "예측 이름", "근거")
         )
         + "</tr>"
     )
@@ -76,16 +77,21 @@ def _cells_table(gold: list[dict[str, str]], pred: list[dict[str, str]]) -> str:
     )
 
 
-def run_approval(choice: str) -> tuple[str, str]:
-    """결재선 탭 실행 — 자기 자신을 참고에서 빼고(leave-one-out) 예측한다."""
+def run_approval(choice: str, predictor: str = "default", rules: str = "induced") -> tuple[str, str]:
+    """결재선 탭 실행 — 자기 자신을 참고에서 빼고(leave-one-out) 예측한다.
+
+    본문은 결재란 이름을 가려서 준다(결재 전 문서엔 결재란이 없다).
+    """
     doc_id = _doc_id(choice)
     if not doc_id:
         return "문서를 고르세요.", ""
     org, title = _org_of(doc_id), _title_of(doc_id)
-    result = services.predict_approval_line(org, title, exclude_doc_id=doc_id)
+    result = services.predict_approval_line(
+        org, title, body=services.masked_body(doc_id), exclude_doc_id=doc_id, mask=False,
+        predictor=predictor, rules=rules)
     gold = services.gold_cells(doc_id)
     summary = (
-        f"**{doc_id}** · 조직 `{org}` · 예측기 `{result['predictor']}` · "
+        f"**{doc_id}** · 조직 `{org}` · 예측기 `{result['predictor']}` · 규칙 `{result.get('rules') or '-'}` · "
         f"참고 문서 {result['reference_count']}건\n\n"
         f"참고: {', '.join(result['reference_doc_ids']) or '(없음)'}"
     )
@@ -164,8 +170,21 @@ def run_agent(choice: str, attach_text: str, linked: str, show_names: bool):
     return info, line_html, r["draft"]["markdown"], sections, summary_md, needs
 
 
+def run_summary(choice: str, text: str, mode: str) -> tuple[str, str]:
+    """요약 탭 — 문서를 고르면 그 PDF 를 쪽별로, 아니면 붙여 넣은 본문을 요약한다."""
+    doc_id = _doc_id(choice)
+    if not doc_id and not text.strip():
+        return "문서를 고르거나 본문을 붙여 넣으세요.", ""
+    r = services.summarize_text(text=text or None, doc_id=doc_id or None, mode=mode)
+    c = r["checks"]
+    info = (f"모드 `{r['mode']}` · {r['pages']}쪽 · 모델 `{r['model'] or '(없음 — 추출 칸만)'}` · "
+            f"근거 없는 항목 제외 {c['dropped_ungrounded_number'] + c['dropped_invented_ref']} · "
+            f"출력 실명 {c['names_in_output']} · {c['sec']}s")
+    return r["markdown"], info
+
+
 def build() -> gr.Blocks:
-    """화면 조립. 탭 두 개."""
+    """화면 조립. 탭 네 개(결재선·초안·에이전트·요약)."""
     with gr.Blocks(title="who-approved-this 데모") as demo:
         gr.Markdown(
             "# who-approved-this — 로컬 데모\n"
@@ -175,10 +194,14 @@ def build() -> gr.Blocks:
 
         with gr.Tab("결재선"):
             pick1 = gr.Dropdown(_doc_choices(), label="문서", value=None)
+            with gr.Row():
+                pred1 = gr.Dropdown(list(services.PREDICTORS), value="layered", label="예측기")
+                rules1 = gr.Dropdown(services.rules_sets(), value="induced", label="규칙 벌 (layered)")
             go1 = gr.Button("실행", variant="primary")
             info1 = gr.Markdown()
             table1 = gr.HTML()
-            go1.click(run_approval, inputs=pick1, outputs=[info1, table1])
+            gr.Markdown("근거 = `직위근거/이름근거` — roster(명부) · rule(전결·팀·협조 규칙) · vote(과거 다수결) · llm(후보 안 선택) · agent")
+            go1.click(run_approval, inputs=[pick1, pred1, rules1], outputs=[info1, table1])
 
         with gr.Tab("초안"):
             pick2 = gr.Dropdown(_doc_choices(), label="문서", value=None)
@@ -220,6 +243,18 @@ def build() -> gr.Blocks:
                 inputs=[pick3, attach, linked, show],
                 outputs=[info3, line3, draft3, sections3, summary3, needs3],
             )
+
+        with gr.Tab("요약"):
+            gr.Markdown("본문 요약. 칸: 한줄요약 · 핵심 3가지 · 금액·일정·업체 · 결재자 확인사항 · 원문 위치(쪽). "
+                        "원문에 없으면 비운다. **첨부 요약은 준비 중**(자리만).")
+            pick4 = gr.Dropdown(_doc_choices(), label="문서 (또는 아래에 본문 붙여 넣기)", value=None)
+            text4 = gr.Textbox(label="본문", lines=6)
+            mode4 = gr.Radio(["whole", "paged"], value="whole", label="방식 (여러 쪽: 통째 / 쪽별 병합)")
+            gr.File(label="첨부 (준비 중)", interactive=False)
+            go4 = gr.Button("요약", variant="primary")
+            out4 = gr.Markdown()
+            info4 = gr.Markdown()
+            go4.click(run_summary, inputs=[pick4, text4, mode4], outputs=[out4, info4])
 
     return demo
 

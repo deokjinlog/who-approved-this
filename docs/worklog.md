@@ -584,7 +584,7 @@
     앞 200자에 제목 내용어가 하나도 없으면 1회 재생성.
 
   D-4 마스킹 — (a) API `/approval-line/predict` 에 mask 파라미터 추가, **기본 켬**.
-    사람 이름만 가리고 직위·조직은 그대로. (b) 마스킹 정규식이 "허 채 윤" 처럼 자간을
+    사람 이름만 가리고 직위·조직은 그대로. (b) 마스킹 정규식이 "홍 길 동" 처럼 자간을
     벌린 표기를 놓쳤다 → 글자 사이 \s* 허용으로 수정. (c) CLAUDE.md 에 "마스킹 대상은
     사람 이름뿐, 카드번호·업체명은 애초에 결과에 담지 않는다" 명시.
 
@@ -846,3 +846,70 @@ Aside 가 찾은 원문공개 기준("부단체장 이상 결재문서 공개", 
   - A-3 (4개 부서 조직도 + 부서→국 트리). Aside 에 넣을 문구는 aside_requests.md.
   - 국장 이하 종점 채점은 공개 데이터로 불가 → 회사 내부 데이터 또는 정보공개청구.
   - C(첨부) → B(서식).
+
+## 2026-09-11
+
+### 과제 25. 전결 규칙 두 벌 · layered 예측기 · 툴콜링 에이전트 · 요약 v2
+
+요청 셋(전결위임표 A~D / layered vs 에이전트 / 요약 템플릿)을 한꺼번에 받았다.
+
+**막힌 것 — 전결위임표.xlsx 가 없다.** `DATA_ROOT/rules/` 에 `가평군/` 만 있고 홈 전체 검색(NFC 정규화)에도
+없다. 원칙대로 A(엑셀 파싱·TODO 채워 다시 쓰기)와 "엑셀 규칙" 벌은 만들지 않았다. 사용자 선택으로
+귀납 규칙부터 진행. 요청의 "gold 38건 / 28케이스"도 실제(20문서 / t1c 12케이스)와 달라 실제 기준으로 쟀다.
+
+**발견 — 기존 t1c LLM 이름 점수는 누출이었다.** 대상 문서 본문(텍스트 레이어)에 결재란이 들어 있어
+12건 전부 정답 이름이 프롬프트 앞 1,500자 안에 있었다. 대상 본문 이름을 가리자:
+    llm_local 이름 64% → 8.3%, vote_titles+llm_names 72.5% → 8.3%
+결재 전 문서엔 결재란이 없으니 가린 쪽이 실제 조건이다. 이후 모든 t1c 측정은 가림(기본값).
+
+한 일:
+  - `parse/approval_layers.py` — 층 함수(classify_doc · lookup_delegation · route_team · lookup_cooperation ·
+    lookup_roster · search_past)와 gold 귀납(induce_org). layered 와 에이전트가 같은 함수를 쓴다.
+  - B `rules/approval.induced.yaml`(schema v3, 11개 조직, 이름 0) — `rules_parser.build_induced_rules`.
+    제목 키워드에 국회의원 이름이 섞여 들어가 직함 앞뒤 낱말을 거르는 필터를 넣었다(재생성 후 0).
+    `evaluate/rules_diff.py` 구현 — 수기 `approval.yaml` vs 귀납: 커버리지 0.89, 과잉 일반화 1, 충돌 0.
+    (엑셀이 오면 같은 함수로 엑셀 vs 귀납)
+  - C `tracks/t1c_layered.py` — roster → 전결·대결(전결 칸 이름 비움) → doc_type → 팀라우팅 → 협조 → 남는 칸
+    vote → LLM 은 후보 안에서만(기호로). 칸마다 `evidence = 직위근거/이름근거`.
+    t1c 에 협조 칸·첫 검토 칸·근거별 정확도 열 추가.
+  - D 하드코딩 점검: layered·귀납 경로는 조직 키·시트명 0. 규칙 파일 경로(agent·official_line)는 환경변수
+    `WAT_RULES`·`WAT_OFFICIAL_RULES` 로 뺐다. 남은 것: 가평군 경로의 직급 레벨표(군수·부군수 — 지자체 전용),
+    t1d/t1f/t1g 의 실험 기본 조직 인자. 엑셀 시트 구조는 파일이 없어 확인 불가.
+  - A-2 빠진 개념 5개를 스키마 자리로(priority·fallback·acting·cooperation.mode·join_key),
+    `rules_xlsx.amount_bands_from_text` 스텁. ibs·castlog 원본을 읽고 차이 3개 → `docs/approval_rules_gaps.md`.
+  - 에이전트 `tracks/t1c_agent.py`, 요약 v2(`summarize_doc`, `evaluate/summary_check.py`, `tracks/t1s_summary.py`).
+  - API: `/approval-line/predict` 에 predictor·rules, `/approval-line/options`, `POST /summary`.
+    UI: 결재선 탭 예측기·규칙 선택 + 근거 열, 요약 탭(첨부 자리만).
+  - CLAUDE.md: 요약 "업체" 칸 예외 규칙(요약 출력엔 담고 리포 결과엔 개수만).
+
+결과 (t1c 12케이스, 대상 본문 이름 가림, qwen3:8b):
+    예측기                   직위    이름    칸수   협조칸      첫검토(경기도서관)
+    baseline_vote          66.2%  42.1%  83.3%  0/5 (+3)   5/8
+    vote_titles+llm_names  67.2%   8.3%  83.3%  1/5 (+3)   5/8
+    layered[induced]       64.2%  44.9%  81.2%  0/5 (+2)   4/8
+    layered[manual] ※      75.5%  54.9%  85.4%  0/5 (+3)   8/8     ※ gold 전체를 보고 쓴 규칙
+  - 정책팀/운영팀 혼동: 귀납 규칙으론 **안 사라졌다**(4/8). 독서문화진흥팀은 1건뿐이라 LOO 참고에 없고,
+    정책팀 키워드는 다른 주제 문서에서 나와 대상과 안 겹친다. 수기 규칙 8/8 은 누출 포함.
+  - 협조 칸 0 → 0. layered 가 6477 오탐(+3)은 없앴고 10185 에 새 오탐(+2).
+
+layered vs 툴콜링 에이전트 (같은 12케이스, 같은 층 함수·규칙·명부, `docs/t1c_agent_vs_layered.md`):
+    layered[induced]  직위 64.2% · 이름 44.9% · 칸수 81.2% · 협조 케이스 9/12 · 0.09s/건 · 후보 밖 0
+    agent(qwen3:8b)   직위 29.3% · 이름  7.2% · 칸수 43.8% · 협조 케이스 6/12 · 28.4s/건 · 후보 밖 4 · 실패 0
+  - tool calling 형식은 안정(12/12 정상 호출). 계획이 부실 — 3~4회 만에 멈추고 search_past 0회.
+    기안·검토 뼈대(과거 다수결)에 닿는 유일한 도구를 안 불러 결재 칸 + 협조 결과로만 결재선을 만든다.
+  - 빈 도구 결과를 스스로 채움(협조 지어내기 5건), 결과를 엉뚱한 역할 칸에 넣음(검토↔협조, 복제).
+  - 흔한 순서: cls→del→coop 4 / cls→del→roster 4 / cls→del→team→coop 2.
+
+요약 v2 (`wat run t1s --model qwen3:8b`, 20건 본문, 첨부 없이, `results/t1s/20260911-1446.json`):
+    JSON 20/20 · 환각률(필터 전) 0/47 토큰 = 0% · 필터 제외 0 · 출력 실명 0 · 길이비 0.28 · 9.0s/건
+    빈 칸: 금액 16/20, 업체 18/20 — 원문에 없어서 비운 것(없으면 비움 규칙대로)
+  - 1332(6쪽) 통째 vs 쪽별 병합: 둘 다 환각 0·위치 3/3. **통째가 낫다** — 핵심 3개가 서로 다른 절(p.2·3·5)을
+    짚고, LLM 1회·28s. 쪽별은 7회·52s 에 핵심 하나가 지명 나열, 확인사항 1개(목적 반복).
+  - 흠: 통째 한줄요약이 max_chars 80 에서 문장 중간 잘림, 확인사항 하나가 프롬프트 문구 그대로(상투어).
+    환각률은 숫자 토큰만 잰다 — 이런 질적 문제는 검토쌍(`DATA_ROOT/t1/summary_review/`, 11개)으로 본다.
+
+다음:
+  - 전결위임표.xlsx 도착 → A(파싱·TODO 채우기·엑셀 규칙 벌) → layered[excel] vs [induced] 재측정.
+  - 이미 푸시된 커밋 기록에 실명 예시 1개(자간 예시)가 남아 있다 — 이번에 파일에서는 가명으로 바꿨다.
+    기록까지 지우려면 히스토리 재작성(force push)이 필요해 사용자 결정으로 남긴다.
+  - 에이전트는 qwen3:14b 로 한 번 더(8B 한계인지 방식 한계인지).

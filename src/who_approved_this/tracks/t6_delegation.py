@@ -174,7 +174,7 @@ def run(
     report = {
         "track": TRACK,
         "run_at": datetime.now().isoformat(timespec="seconds"),
-        "org": "가평군",
+        "org": builder.org_name,
         "model": model,
         "retrieval": f"hybrid(bm25+{embed_model})" if embed_model else "bm25",
         "k": k,

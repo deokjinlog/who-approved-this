@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 import time
 from pathlib import Path
@@ -80,7 +81,8 @@ class ApprovalAgent:
 
     def __init__(self, model: str | None, docs: list[dict[str, Any]] | None = None) -> None:
         self.model = model
-        self.rules = load_rules(REPO / "rules" / "approval.yaml")
+        # 규칙 벌은 파일로 바꾼다(수기 approval.yaml / 엑셀에서 만든 것 / 귀납). 조직 키는 파일 안에 있다.
+        self.rules = load_rules(Path(os.environ.get("WAT_RULES") or REPO / "rules" / "approval.yaml"))
         self.worktypes = load_worktypes()
         self.templates = load_draft_templates(REPO / "templates" / "draft")
         self.summary_template = load_summary_template(REPO / "templates" / "summary.yaml")

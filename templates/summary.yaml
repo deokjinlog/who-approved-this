@@ -9,16 +9,21 @@
 # 문서번호를 6/7 지어냈다. 그래서 숫자가 핵심인 칸은 전부 extract 로 둔다.
 
 name: summary
-version: 1
+version: 2
 rules:
   - 원문에 있는 내용만 쓴다. 원문에 없는 숫자·날짜·금액·문서번호·기관명·법령명을 만들지 않는다.
   - 사람 이름은 쓰지 않는다. 필요하면 직위로 부른다.
   - 원문에 없으면 칸을 비운다. 추측으로 채우지 않는다.
+# 슬롯마다 source(어디서 오나)와 empty(없으면) 를 둔다. empty 는 전부 blank — 비워 두고 채우지 않는다.
 slots:
-  - {key: one_line,        label: 한줄요약,       source: generate, required: true, max_chars: 80}
-  - {key: key_points,      label: 핵심,           source: generate, max_items: 3, max_chars: 90}
-  - {key: amounts,         label: 금액,           source: extract,  pattern: amount}
-  - {key: dates,           label: 일정,           source: extract,  pattern: date}
-  - {key: doc_refs,        label: 관련 문서,      source: extract,  pattern: doc_no}
-  - {key: approver_checks, label: 결재자 확인사항, source: generate, max_items: 3, max_chars: 90}
-  - {key: locations,       label: 원문 위치,      source: system}
+  - {key: one_line,        label: 한줄요약,        source: generate, rule: "무엇을 왜 하는지 한 문장", required: true, max_chars: 80, empty: blank}
+  - {key: key_points,      label: 핵심 3가지,      source: generate, rule: "원문 문장에 근거. 항목마다 쪽 번호", max_items: 3, max_chars: 90, empty: blank}
+  - {key: amounts,         label: 금액,            source: extract,  pattern: amount, rule: "원문 '…원' 표기 그대로", empty: blank}
+  - {key: dates,           label: 일정,            source: extract,  pattern: date,   rule: "원문 날짜 표기(YYYY.MM.DD)", empty: blank}
+  - {key: vendors,         label: 업체,            source: extract,  pattern: vendor, rule: "(주)·주식회사·업체명:·계약상대자: 표기가 있을 때만", empty: blank}
+  - {key: doc_refs,        label: 관련 문서,       source: extract,  pattern: doc_no, empty: blank}
+  - {key: approver_checks, label: 결재자 확인사항, source: generate, rule: "금액·기간·근거 문서·빠진 첨부 등 결재 전 볼 점", max_items: 3, max_chars: 90, empty: blank}
+  - {key: locations,       label: 원문 위치,       source: system,   rule: "추출·핵심 항목마다 몇 쪽인지", empty: blank}
+modes:
+  whole: "쪽 구분을 붙인 원문 전체를 한 번에 (긴 문서는 num_ctx 를 키운다)"
+  paged: "쪽마다 요약 → 병합. 1쪽 문서는 whole 과 같다"

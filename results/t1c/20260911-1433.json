@@ -1,0 +1,4530 @@
+{
+  "track": "t1c",
+  "run_at": "2026-09-11T14:33:22",
+  "method": "leave-one-out (같은 담당부서 3건 중 2건을 참고로 1건 예측)",
+  "ground_truth": "approval_gold.tsv (사람이 직접 만든 정답, 리포 밖)",
+  "note": "프롬프트에 들어간 제목·본문·실명은 저장하지 않는다. 점수와 개수만.",
+  "target_names_masked": true,
+  "prompt_template": "src/who_approved_this/tracks/t1c_prompt.md",
+  "model": "qwen3:8b",
+  "groups": {
+    "경기도서관": 8,
+    "대구합동청사": 2,
+    "안양교도소": 2
+  },
+  "predictors": {
+    "baseline_copy": {
+      "json_retries": 0,
+      "json_failures": 0,
+      "llm_calls": null,
+      "by_evidence": {
+        "title": {},
+        "name": {}
+      },
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관정책팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "coop_gold": 2,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-10185",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 4,
+          "pred_cells": 3,
+          "title_accuracy": 0.5,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-11698",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8872",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8942",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8938",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-9845",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.2,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교감",
+            "검토:총무사무관",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-11097",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 3,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:총무사무관",
+            "검토:과장",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 1 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-7941",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 9,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.25,
+          "cell_count_match": 0.5,
+          "coop_gold": 3,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교감",
+            "검토:교감",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 4 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-6477",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.6,
+          "name_accuracy": 0.4,
+          "cell_count_match": 0.5,
+          "coop_gold": 0,
+          "coop_pred": 3,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:서기관",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장",
+            "협조:민원과장",
+            "협조:과학기술서기관(일반임기제)",
+            "협조:복지과장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 12,
+        "title_accuracy_mean": 0.5306,
+        "name_accuracy_mean": 0.2819,
+        "cell_count_match_mean": 0.8333,
+        "cases_title_perfect": 0,
+        "coop_gold_cells": 5,
+        "coop_cell_hits": 0,
+        "coop_extra_cells": 3,
+        "coop_case_exact": 9,
+        "first_review_ok": 2,
+        "first_review_scored": 12,
+        "sec_per_case_mean": 0.0
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 8,
+          "title_accuracy_mean": 0.6125,
+          "name_accuracy_mean": 0.275,
+          "cell_count_match_mean": 0.9375,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 2,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 7,
+          "first_review_ok": 0,
+          "first_review_scored": 8,
+          "sec_per_case_mean": 0.0
+        },
+        "대구합동청사": {
+          "cases": 2,
+          "title_accuracy_mean": 0.2666,
+          "name_accuracy_mean": 0.2666,
+          "cell_count_match_mean": 0.75,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 0,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 2,
+          "first_review_ok": 0,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.0
+        },
+        "안양교도소": {
+          "cases": 2,
+          "title_accuracy_mean": 0.4667,
+          "name_accuracy_mean": 0.325,
+          "cell_count_match_mean": 0.5,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 3,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 3,
+          "coop_case_exact": 0,
+          "first_review_ok": 2,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.0
+        }
+      },
+      "elapsed_sec": 0.0
+    },
+    "baseline_vote": {
+      "json_retries": 0,
+      "json_failures": 0,
+      "llm_calls": null,
+      "by_evidence": {
+        "title": {},
+        "name": {}
+      },
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "coop_gold": 2,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-10185",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 4,
+          "pred_cells": 3,
+          "title_accuracy": 0.75,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-11698",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8872",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8942",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8938",
+          "elapsed_sec": 0.0,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-9845",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.2,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교감",
+            "검토:총무사무관",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-11097",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 3,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:총무사무관",
+            "검토:과장",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 1 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-7941",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 9,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.25,
+          "cell_count_match": 0.5,
+          "coop_gold": 3,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교감",
+            "검토:교감",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 4 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-6477",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.6,
+          "name_accuracy": 0.4,
+          "cell_count_match": 0.5,
+          "coop_gold": 0,
+          "coop_pred": 3,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:서기관",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장",
+            "협조:민원과장",
+            "협조:과학기술서기관(일반임기제)",
+            "협조:복지과장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 12,
+        "title_accuracy_mean": 0.6625,
+        "name_accuracy_mean": 0.4208,
+        "cell_count_match_mean": 0.8333,
+        "cases_title_perfect": 4,
+        "coop_gold_cells": 5,
+        "coop_cell_hits": 0,
+        "coop_extra_cells": 3,
+        "coop_case_exact": 9,
+        "first_review_ok": 7,
+        "first_review_scored": 12,
+        "sec_per_case_mean": 0.0
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 8,
+          "title_accuracy_mean": 0.8104,
+          "name_accuracy_mean": 0.4833,
+          "cell_count_match_mean": 0.9375,
+          "cases_title_perfect": 4,
+          "coop_gold_cells": 2,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 7,
+          "first_review_ok": 5,
+          "first_review_scored": 8,
+          "sec_per_case_mean": 0.0
+        },
+        "대구합동청사": {
+          "cases": 2,
+          "title_accuracy_mean": 0.2666,
+          "name_accuracy_mean": 0.2666,
+          "cell_count_match_mean": 0.75,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 0,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 2,
+          "first_review_ok": 0,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.0
+        },
+        "안양교도소": {
+          "cases": 2,
+          "title_accuracy_mean": 0.4667,
+          "name_accuracy_mean": 0.325,
+          "cell_count_match_mean": 0.5,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 3,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 3,
+          "coop_case_exact": 0,
+          "first_review_ok": 2,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.0
+        }
+      },
+      "elapsed_sec": 0.0
+    },
+    "llm_local(qwen3:8b)": {
+      "json_retries": 0,
+      "json_failures": 0,
+      "llm_calls": null,
+      "by_evidence": {
+        "title": {},
+        "name": {}
+      },
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "elapsed_sec": 18.1,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:독서문화진흥팀장",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "elapsed_sec": 14.18,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관정책팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "elapsed_sec": 14.46,
+          "refs": 7,
+          "gold_cells": 5,
+          "pred_cells": 4,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "coop_gold": 2,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:도서관정책팀장",
+            "검토:도서관정책팀장",
+            "검토:경리팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 1 / 추출 2)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-10185",
+          "elapsed_sec": 12.47,
+          "refs": 7,
+          "gold_cells": 4,
+          "pred_cells": 3,
+          "title_accuracy": 0.25,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:도서관운영팀장",
+            "검토:도서관정책팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-11698",
+          "elapsed_sec": 10.08,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8872",
+          "elapsed_sec": 20.46,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8942",
+          "elapsed_sec": 9.39,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8938",
+          "elapsed_sec": 9.93,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-9845",
+          "elapsed_sec": 9.67,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.6,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-11097",
+          "elapsed_sec": 32.0,
+          "refs": 1,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:총무사무관",
+            "검토:교감",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-7941",
+          "elapsed_sec": 15.57,
+          "refs": 1,
+          "gold_cells": 9,
+          "pred_cells": 8,
+          "title_accuracy": 0.7778,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 3,
+          "coop_pred": 2,
+          "coop_hits": 1,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:서기관",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장",
+            "협조:민원과장",
+            "협조:복지과장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 2)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-6477",
+          "elapsed_sec": 13.28,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 7,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 2,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교감",
+            "검토:교감",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장",
+            "협조:민원과장",
+            "협조:복지과장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 2)"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 12,
+        "title_accuracy_mean": 0.7245,
+        "name_accuracy_mean": 0.0833,
+        "cell_count_match_mean": 0.875,
+        "cases_title_perfect": 6,
+        "coop_gold_cells": 5,
+        "coop_cell_hits": 1,
+        "coop_extra_cells": 2,
+        "coop_case_exact": 9,
+        "first_review_ok": 9,
+        "first_review_scored": 12,
+        "sec_per_case_mean": 14.97
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 8,
+          "title_accuracy_mean": 0.7479,
+          "name_accuracy_mean": 0.125,
+          "cell_count_match_mean": 0.9062,
+          "cases_title_perfect": 5,
+          "coop_gold_cells": 2,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 7,
+          "first_review_ok": 6,
+          "first_review_scored": 8,
+          "sec_per_case_mean": 13.63
+        },
+        "대구합동청사": {
+          "cases": 2,
+          "title_accuracy_mean": 0.4667,
+          "name_accuracy_mean": 0.0,
+          "cell_count_match_mean": 0.875,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 0,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 2,
+          "first_review_ok": 1,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 20.84
+        },
+        "안양교도소": {
+          "cases": 2,
+          "title_accuracy_mean": 0.8889,
+          "name_accuracy_mean": 0.0,
+          "cell_count_match_mean": 0.75,
+          "cases_title_perfect": 1,
+          "coop_gold_cells": 3,
+          "coop_cell_hits": 1,
+          "coop_extra_cells": 2,
+          "coop_case_exact": 0,
+          "first_review_ok": 2,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 14.43
+        }
+      },
+      "elapsed_sec": 179.59
+    },
+    "vote_titles+llm_names(qwen3:8b)": {
+      "json_retries": 0,
+      "json_failures": 0,
+      "llm_calls": null,
+      "by_evidence": {
+        "title": {},
+        "name": {}
+      },
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "elapsed_sec": 5.51,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "elapsed_sec": 3.4,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "elapsed_sec": 4.75,
+          "refs": 7,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 2,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-10185",
+          "elapsed_sec": 9.28,
+          "refs": 7,
+          "gold_cells": 4,
+          "pred_cells": 3,
+          "title_accuracy": 0.75,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-11698",
+          "elapsed_sec": 3.35,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8872",
+          "elapsed_sec": 9.13,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8942",
+          "elapsed_sec": 7.02,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8938",
+          "elapsed_sec": 7.39,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-9845",
+          "elapsed_sec": 2.81,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.2,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교감",
+            "검토:총무사무관",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-11097",
+          "elapsed_sec": 2.87,
+          "refs": 1,
+          "gold_cells": 3,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:총무사무관",
+            "검토:과장",
+            "결재:청장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 1 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-7941",
+          "elapsed_sec": 7.51,
+          "refs": 1,
+          "gold_cells": 9,
+          "pred_cells": 7,
+          "title_accuracy": 0.4444,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "coop_gold": 3,
+          "coop_pred": 2,
+          "coop_hits": 1,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교감",
+            "검토:교감",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장",
+            "협조:민원과장",
+            "협조:복지과장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 4 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 2)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 직위 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-6477",
+          "elapsed_sec": 6.61,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.6,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "coop_gold": 0,
+          "coop_pred": 3,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:서기관",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장",
+            "협조:민원과장",
+            "협조:과학기술서기관(일반임기제)",
+            "협조:복지과장"
+          ],
+          "cells": [],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "결재",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 12,
+        "title_accuracy_mean": 0.6718,
+        "name_accuracy_mean": 0.0833,
+        "cell_count_match_mean": 0.8333,
+        "cases_title_perfect": 4,
+        "coop_gold_cells": 5,
+        "coop_cell_hits": 1,
+        "coop_extra_cells": 3,
+        "coop_case_exact": 9,
+        "first_review_ok": 7,
+        "first_review_scored": 12,
+        "sec_per_case_mean": 5.8
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 8,
+          "title_accuracy_mean": 0.8104,
+          "name_accuracy_mean": 0.125,
+          "cell_count_match_mean": 0.9375,
+          "cases_title_perfect": 4,
+          "coop_gold_cells": 2,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 7,
+          "first_review_ok": 5,
+          "first_review_scored": 8,
+          "sec_per_case_mean": 6.23
+        },
+        "대구합동청사": {
+          "cases": 2,
+          "title_accuracy_mean": 0.2666,
+          "name_accuracy_mean": 0.0,
+          "cell_count_match_mean": 0.75,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 0,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 2,
+          "first_review_ok": 0,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 2.84
+        },
+        "안양교도소": {
+          "cases": 2,
+          "title_accuracy_mean": 0.5222,
+          "name_accuracy_mean": 0.0,
+          "cell_count_match_mean": 0.5,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 3,
+          "coop_cell_hits": 1,
+          "coop_extra_cells": 3,
+          "coop_case_exact": 0,
+          "first_review_ok": 2,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 7.06
+        }
+      },
+      "elapsed_sec": 69.61
+    },
+    "layered[induced](qwen3:8b)": {
+      "json_retries": 0,
+      "json_failures": 0,
+      "llm_calls": 11,
+      "by_evidence": {
+        "title": {
+          "rule": {
+            "cells": 35,
+            "accuracy": 0.6857
+          },
+          "vote": {
+            "cells": 11,
+            "accuracy": 0.3636
+          }
+        },
+        "name": {
+          "llm": {
+            "cells": 11,
+            "accuracy": 0.1818
+          },
+          "roster": {
+            "cells": 33,
+            "accuracy": 0.5152
+          }
+        }
+      },
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "elapsed_sec": 1.84,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "elapsed_sec": 2.19,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 0.6667,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "elapsed_sec": 2.5,
+          "refs": 7,
+          "gold_cells": 5,
+          "pred_cells": 4,
+          "title_accuracy": 0.4,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.5,
+          "coop_gold": 2,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "검토:도서관정책팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 1 / 추출 2)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-10185",
+          "elapsed_sec": 2.69,
+          "refs": 7,
+          "gold_cells": 4,
+          "pred_cells": 5,
+          "title_accuracy": 0.5,
+          "name_accuracy": 0.0,
+          "cell_count_match": 0.5,
+          "coop_gold": 0,
+          "coop_pred": 2,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장",
+            "협조:주무관",
+            "협조:경리팀장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": null
+            },
+            {
+              "role": "협조",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "협조",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 2)"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-11698",
+          "elapsed_sec": 1.76,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 1.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": []
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8872",
+          "elapsed_sec": 1.54,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8942",
+          "elapsed_sec": 2.23,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 1.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": []
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8938",
+          "elapsed_sec": 1.63,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-9845",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.2,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교감",
+            "검토:총무사무관",
+            "결재:청장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-11097",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 3,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:총무사무관",
+            "검토:과장",
+            "결재:청장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 1 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-7941",
+          "elapsed_sec": 1.93,
+          "refs": 1,
+          "gold_cells": 9,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.25,
+          "cell_count_match": 0.5,
+          "coop_gold": 3,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교감",
+            "검토:교감",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": null
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 4 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-6477",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 6,
+          "title_accuracy": 0.6,
+          "name_accuracy": 0.4,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:서기관",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "roster",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 12,
+        "title_accuracy_mean": 0.6417,
+        "name_accuracy_mean": 0.4486,
+        "cell_count_match_mean": 0.8125,
+        "cases_title_perfect": 4,
+        "coop_gold_cells": 5,
+        "coop_cell_hits": 0,
+        "coop_extra_cells": 2,
+        "coop_case_exact": 9,
+        "first_review_ok": 6,
+        "first_review_scored": 12,
+        "sec_per_case_mean": 1.53
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 8,
+          "title_accuracy_mean": 0.7792,
+          "name_accuracy_mean": 0.525,
+          "cell_count_match_mean": 0.875,
+          "cases_title_perfect": 4,
+          "coop_gold_cells": 2,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 2,
+          "coop_case_exact": 6,
+          "first_review_ok": 4,
+          "first_review_scored": 8,
+          "sec_per_case_mean": 2.05
+        },
+        "대구합동청사": {
+          "cases": 2,
+          "title_accuracy_mean": 0.2666,
+          "name_accuracy_mean": 0.2666,
+          "cell_count_match_mean": 0.75,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 0,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 2,
+          "first_review_ok": 0,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.0
+        },
+        "안양교도소": {
+          "cases": 2,
+          "title_accuracy_mean": 0.4667,
+          "name_accuracy_mean": 0.325,
+          "cell_count_match_mean": 0.625,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 3,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 1,
+          "first_review_ok": 2,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.96
+        }
+      },
+      "elapsed_sec": 18.31
+    },
+    "layered[manual](qwen3:8b)": {
+      "json_retries": 0,
+      "json_failures": 0,
+      "llm_calls": 8,
+      "by_evidence": {
+        "title": {
+          "rule": {
+            "cells": 26,
+            "accuracy": 0.9615
+          },
+          "vote": {
+            "cells": 22,
+            "accuracy": 0.3636
+          }
+        },
+        "name": {
+          "llm": {
+            "cells": 8,
+            "accuracy": 0.25
+          },
+          "none": {
+            "cells": 2,
+            "accuracy": 0.0
+          },
+          "roster": {
+            "cells": 15,
+            "accuracy": 1.0
+          },
+          "vote": {
+            "cells": 21,
+            "accuracy": 0.2857
+          }
+        }
+      },
+      "cases": [
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12039",
+          "elapsed_sec": 0.1,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:독서문화진흥팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "none",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12016",
+          "elapsed_sec": 0.11,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관정책팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-12012",
+          "elapsed_sec": 0.1,
+          "refs": 7,
+          "gold_cells": 5,
+          "pred_cells": 4,
+          "title_accuracy": 0.6,
+          "name_accuracy": 0.4,
+          "cell_count_match": 0.75,
+          "coop_gold": 2,
+          "coop_pred": 1,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관정책팀장",
+            "결재:경기도서관장",
+            "협조:경리팀장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "협조",
+              "title_src": "rule",
+              "name_src": "none",
+              "title_ok": false,
+              "name_ok": false
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 2 / 추출 1)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-10185",
+          "elapsed_sec": 0.09,
+          "refs": 7,
+          "gold_cells": 4,
+          "pred_cells": 4,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "검토:도서관정책팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": null
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-11698",
+          "elapsed_sec": 0.09,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 1.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": []
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8872",
+          "elapsed_sec": 0.09,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8942",
+          "elapsed_sec": 0.09,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 1.0,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": []
+        },
+        {
+          "group": "경기도서관",
+          "doc_id": "경기도_경기도서관-8938",
+          "elapsed_sec": 0.09,
+          "refs": 7,
+          "gold_cells": 3,
+          "pred_cells": 3,
+          "title_accuracy": 1.0,
+          "name_accuracy": 0.6667,
+          "cell_count_match": 1.0,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:주무관",
+            "검토:도서관운영팀장",
+            "결재:경기도서관장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "rule",
+              "name_src": "llm",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "결재",
+              "title_src": "rule",
+              "name_src": "roster",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-9845",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 3,
+          "title_accuracy": 0.2,
+          "name_accuracy": 0.2,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교감",
+            "검토:총무사무관",
+            "결재:청장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 1)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "대구합동청사",
+          "doc_id": "법무부_총무과-11097",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 3,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.3333,
+          "cell_count_match": 0.75,
+          "coop_gold": 0,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": true,
+          "first_review_ok": false,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:총무사무관",
+            "검토:과장",
+            "결재:청장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 1 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-7941",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 9,
+          "pred_cells": 5,
+          "title_accuracy": 0.3333,
+          "name_accuracy": 0.25,
+          "cell_count_match": 0.5,
+          "coop_gold": 3,
+          "coop_pred": 0,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교감",
+            "검토:교감",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": null
+            },
+            {
+              "role": "결재",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": true
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 4 / 추출 3)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 누락"
+            },
+            {
+              "role": "검토",
+              "reason": "4번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 3 / 추출 0)"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "2번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 누락"
+            },
+            {
+              "role": "협조",
+              "reason": "3번 칸 이름 틀림"
+            }
+          ]
+        },
+        {
+          "group": "안양교도소",
+          "doc_id": "법무부_총무과-6477",
+          "elapsed_sec": 0.0,
+          "refs": 1,
+          "gold_cells": 5,
+          "pred_cells": 9,
+          "title_accuracy": 0.6,
+          "name_accuracy": 0.4,
+          "cell_count_match": 0.5,
+          "coop_gold": 0,
+          "coop_pred": 3,
+          "coop_hits": 0,
+          "coop_exact": false,
+          "first_review_ok": true,
+          "pred_titles": [
+            "기안:교위",
+            "검토:교감",
+            "검토:서기관",
+            "검토:서기관",
+            "검토:부소장",
+            "결재:안양교도소장",
+            "협조:민원과장",
+            "협조:과학기술서기관(일반임기제)",
+            "협조:복지과장"
+          ],
+          "cells": [
+            {
+              "role": "기안",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "검토",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "결재",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": true,
+              "name_ok": true
+            },
+            {
+              "role": "협조",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "협조",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            },
+            {
+              "role": "협조",
+              "title_src": "vote",
+              "name_src": "vote",
+              "title_ok": false,
+              "name_ok": false
+            }
+          ],
+          "extra": null,
+          "failures": [
+            {
+              "role": "기안",
+              "reason": "1번 칸 직위 틀림"
+            },
+            {
+              "role": "기안",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "칸 수 불일치 (gold 3 / 추출 4)"
+            },
+            {
+              "role": "검토",
+              "reason": "1번 칸 이름 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 직위 틀림"
+            },
+            {
+              "role": "검토",
+              "reason": "3번 칸 이름 틀림"
+            },
+            {
+              "role": "협조",
+              "reason": "칸 수 불일치 (gold 0 / 추출 3)"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "cases": 12,
+        "title_accuracy_mean": 0.7555,
+        "name_accuracy_mean": 0.5486,
+        "cell_count_match_mean": 0.8542,
+        "cases_title_perfect": 7,
+        "coop_gold_cells": 5,
+        "coop_cell_hits": 0,
+        "coop_extra_cells": 3,
+        "coop_case_exact": 9,
+        "first_review_ok": 10,
+        "first_review_scored": 12,
+        "sec_per_case_mean": 0.06
+      },
+      "by_group": {
+        "경기도서관": {
+          "cases": 8,
+          "title_accuracy_mean": 0.95,
+          "name_accuracy_mean": 0.675,
+          "cell_count_match_mean": 0.9688,
+          "cases_title_perfect": 7,
+          "coop_gold_cells": 2,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 7,
+          "first_review_ok": 8,
+          "first_review_scored": 8,
+          "sec_per_case_mean": 0.1
+        },
+        "대구합동청사": {
+          "cases": 2,
+          "title_accuracy_mean": 0.2666,
+          "name_accuracy_mean": 0.2666,
+          "cell_count_match_mean": 0.75,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 0,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 0,
+          "coop_case_exact": 2,
+          "first_review_ok": 0,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.0
+        },
+        "안양교도소": {
+          "cases": 2,
+          "title_accuracy_mean": 0.4667,
+          "name_accuracy_mean": 0.325,
+          "cell_count_match_mean": 0.5,
+          "cases_title_perfect": 0,
+          "coop_gold_cells": 3,
+          "coop_cell_hits": 0,
+          "coop_extra_cells": 3,
+          "coop_case_exact": 0,
+          "first_review_ok": 2,
+          "first_review_scored": 2,
+          "sec_per_case_mean": 0.0
+        }
+      },
+      "elapsed_sec": 0.77
+    }
+  },
+  "ref_sweep": {
+    "groups": [
+      "경기도서관"
+    ],
+    "1": {
+      "cases": 8,
+      "title_accuracy_mean": 0.6125,
+      "name_accuracy_mean": 0.275,
+      "cell_count_match_mean": 0.9375,
+      "cases_title_perfect": 0,
+      "coop_gold_cells": 0,
+      "coop_cell_hits": 0,
+      "coop_extra_cells": 0,
+      "coop_case_exact": 0,
+      "first_review_ok": 0,
+      "first_review_scored": 0,
+      "sec_per_case_mean": 0.0
+    },
+    "3": {
+      "cases": 8,
+      "title_accuracy_mean": 0.6125,
+      "name_accuracy_mean": 0.275,
+      "cell_count_match_mean": 0.9375,
+      "cases_title_perfect": 0,
+      "coop_gold_cells": 0,
+      "coop_cell_hits": 0,
+      "coop_extra_cells": 0,
+      "coop_case_exact": 0,
+      "first_review_ok": 0,
+      "first_review_scored": 0,
+      "sec_per_case_mean": 0.0
+    },
+    "7": {
+      "cases": 8,
+      "title_accuracy_mean": 0.8104,
+      "name_accuracy_mean": 0.4833,
+      "cell_count_match_mean": 0.9375,
+      "cases_title_perfect": 4,
+      "coop_gold_cells": 0,
+      "coop_cell_hits": 0,
+      "coop_extra_cells": 0,
+      "coop_case_exact": 0,
+      "first_review_ok": 0,
+      "first_review_scored": 0,
+      "sec_per_case_mean": 0.0
+    }
+  },
+  "robustness": {
+    "skipped": "재표집 미실행"
+  },
+  "elapsed_sec": 268.29
+}

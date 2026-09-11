@@ -15,6 +15,7 @@ from who_approved_this.tracks import (
     t1e_worktype,
     t1f_agent,
     t1g_agent_eval,
+    t1s_summary,
     t5_gazette_summary,
     t6_delegation,
     t4_gazette_ocr,
@@ -33,6 +34,7 @@ TRACKS = {
     "t1e": t1e_worktype.run,
     "t1f": t1f_agent.run,
     "t1g": t1g_agent_eval.run,
+    "t1s": t1s_summary.run,
     "t4": t4_gazette_ocr.run,
     "t5": t5_gazette_summary.run,
     "t6": t6_delegation.run,
@@ -69,6 +71,10 @@ def run(
                 model=model, embed_model=embed_model, sample=docs or 24, qa=qa
             )
         )
+        return
+
+    if track == "t1s":
+        t1s_summary.report(TRACKS[track](model=model, max_docs=docs))
         return
 
     if track == "t6":

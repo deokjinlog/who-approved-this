@@ -13,6 +13,7 @@ from who_approved_this.api.models import (
     OfficialLineRequest,
     PredictRequest,
     PredictResponse,
+    SummaryRequest,
 )
 
 router = APIRouter()
@@ -46,7 +47,7 @@ def predict(
     """``mask`` 는 응답의 **사람 이름**만 가린다. 직위·조직은 그대로 둔다."""
     return PredictResponse(
         **services.predict_approval_line(
-            req.org, req.title, req.body, exclude_doc_id, mask
+            req.org, req.title, req.body, exclude_doc_id, mask, req.predictor, req.rules
         )
     )
 
@@ -75,3 +76,18 @@ def official_line(req: OfficialLineRequest) -> dict:
     직무대리)을 올린다.
     """
     return services.official_line(req.model_dump())
+
+
+@router.get("/approval-line/options", summary="예측기·규칙 벌 목록")
+def approval_options() -> dict:
+    return {"predictors": list(services.PREDICTORS), "rules": services.rules_sets()}
+
+
+@router.post("/summary", summary="요약 — 본문(첨부는 자리만). 칸: 한줄요약·핵심3·금액·일정·업체·결재자 확인사항·원문 위치")
+def summary(req: SummaryRequest) -> dict:
+    if not req.text and not req.doc_id:
+        raise HTTPException(status_code=422, detail="text 또는 doc_id 가 필요하다")
+    try:
+        return services.summarize_text(req.text, req.doc_id, req.mode)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"모르는 문서: {req.doc_id}") from None

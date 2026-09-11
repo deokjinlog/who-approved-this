@@ -263,8 +263,11 @@ def ollama_chat(
     temperature: float = 0.0,
     timeout: int = 600,
     think: bool = False,
+    num_ctx: int | None = None,
 ) -> str | None:
     """ollama ``/api/chat`` 으로 한 번 대화한다. 실패하면 ``None``.
+
+    ``num_ctx`` — 긴 원문(여러 쪽 통째 요약)은 기본 문맥 창을 넘으면 **조용히 잘린다.** 그때만 키운다.
 
     ``/api/generate`` 대신 이걸 쓴다. generate 는 **이어쓰기** 엔드포인트라
     프롬프트가 문서 모양이면 모델이 그 문서를 계속 이어 쓴다 — 실제로 초안에
@@ -278,7 +281,7 @@ def ollama_chat(
             {"role": "user", "content": user},
         ],
         "stream": False,
-        "options": {"temperature": temperature},
+        "options": {"temperature": temperature, **({"num_ctx": num_ctx} if num_ctx else {})},
     }
     if not think:
         payload["think"] = False

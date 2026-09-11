@@ -120,12 +120,53 @@ def get_doc(doc_id: str) -> dict[str, Any] | None:
     }
 
 
+PREDICTORS = ("default", "vote", "layered", "agent")
+
+
+def make_predictor(name: str = "default", rules: str = "induced") -> Any:
+    """API·UI 가 고르는 결재선 예측기.
+
+    ``default`` 결합(다수결 직위 + LLM 이름) — 2026-09-11 대상 본문 이름을 가리자 이름 8% 로
+    무너졌다(그전 64% 는 본문 결재란을 읽은 몫). 비교용으로 남겨 둔다.
+    ``layered`` 층 규칙(전결·팀·협조) + 명부 + vote, LLM 은 후보 안에서만. ``rules`` 로 규칙 벌 선택.
+    ``agent`` 같은 층을 도구로 주고 순서는 모델이 정한다(툴콜링). 모델 필요.
+    """
+    if name == "vote" or (name == "default" and not LLM_MODEL):
+        return BaselineVote()
+    if name == "layered":
+        from who_approved_this.tracks.t1c_layered import LayeredPredictor
+
+        return LayeredPredictor(LLM_MODEL, rules=rules)
+    if name == "agent":
+        if not LLM_MODEL:
+            raise ValueError("agent 예측기는 WAT_LLM_MODEL 이 필요하다")
+        from who_approved_this.tracks.t1c_agent import AgentPredictor
+
+        return AgentPredictor(LLM_MODEL)
+    return VoteTitlesLLMNames(LLM_MODEL)
+
+
+def rules_sets() -> list[str]:
+    """고를 수 있는 규칙 벌. 엑셀에서 만든 규칙은 ``rules/approval.<이름>.yaml`` 로 두면 뜬다."""
+    from pathlib import Path as _P
+
+    extra = sorted(str(q) for q in (_P(__file__).resolve().parents[3] / "rules").glob("approval.*.yaml"))
+    return ["induced", "manual", *extra]
+
+
+def masked_body(doc_id: str) -> str:
+    """데모용 대상 본문 — 결재란 실명을 가린다(결재 전 문서에는 결재란이 없으니까)."""
+    return t1d.mask_names(actual_body(doc_id), set(_gold_names()))
+
+
 def predict_approval_line(
     org: str,
     title: str,
     body: str = "",
     exclude_doc_id: str | None = None,
     mask: bool = True,
+    predictor: str = "default",
+    rules: str = "induced",
 ) -> dict[str, Any]:
     """같은 조직의 과거 문서를 참고해 결재선을 예측한다.
 
@@ -141,11 +182,9 @@ def predict_approval_line(
         for d in _docs()
         if d["org"] == org and d["cells"] and d["doc_id"] != exclude_doc_id
     ]
-    # 기본 예측기는 결합(규칙으로 뼈대, LLM 으로 이름). 12케이스 + 재표집 40회에서
-    # 직위·이름·칸수 모두 단독 방식보다 낫거나 같았다.
-    predictor = VoteTitlesLLMNames(LLM_MODEL) if LLM_MODEL else BaselineVote()
+    model = make_predictor(predictor, rules)
     target = {"제목": title, "body": body, "org": org}
-    cells = predictor.predict(refs, target) if refs else []
+    cells = model.predict(refs, target) if refs else []
     if mask:
         cells = [
             {**c, "name": t1d.NAME_MASK if c.get("name") else ""} for c in cells
@@ -153,7 +192,8 @@ def predict_approval_line(
     return {
         "masked": mask,
         "org": org,
-        "predictor": predictor.name,
+        "predictor": model.name,
+        "rules": rules if predictor == "layered" else None,
         "cells": cells,
         "reference_doc_ids": [d["doc_id"] for d in refs],
         "reference_count": len(refs),
@@ -245,3 +285,31 @@ def official_line(req: dict[str, Any]) -> dict[str, Any]:
     b = official_builder(LLM_MODEL)
     return b.build(req["dept"], req.get("title_of_user") or "주무관", req.get("team"),
                    req["title"], req.get("body") or "", req.get("date"))
+
+
+def summarize_text(
+    text: str | None = None, doc_id: str | None = None, mode: str = "whole"
+) -> dict[str, Any]:
+    """요약 — 본문만. ``doc_id`` 면 그 문서 PDF 를 쪽별로, 아니면 ``text`` 한 쪽.
+
+    첨부 요약은 아직 없다(자리만). 사람 이름은 LLM 전에 직위로 바꾸고, 출력에 남았는지 센다.
+    """
+    from pathlib import Path as _P
+
+    from who_approved_this.parse.summarizer import load_summary_template, render_markdown, summarize_doc
+
+    if doc_id:
+        doc = next((d for d in _docs() if d["doc_id"] == doc_id), None)
+        if doc is None:
+            raise KeyError(doc_id)
+        with pymupdf.open(doc["pdf"] if "pdf" in doc else track_data_dir("t1") / doc["저장파일명"]) as f:
+            pages = [f[i].get_text(sort=True) for i in range(f.page_count)]
+    else:
+        pages = [text or ""]
+    name_to_title = {c["name"]: c["title"] for d in _docs() for c in d.get("cells", [])
+                     if c.get("name") not in (None, "", "-", "?")}
+    template = load_summary_template(_P(__file__).resolve().parents[3] / "templates" / "summary.yaml")
+    res = summarize_doc(LLM_MODEL, pages, template, name_to_title, set(_gold_names()), mode=mode)
+    return {"mode": mode, "pages": len(pages), "model": LLM_MODEL, "slots": res["slots"],
+            "markdown": render_markdown(res, doc_id or ""), "checks": res["checks"],
+            "attachments": "미지원 — 첨부 요약은 자리만 있다"}

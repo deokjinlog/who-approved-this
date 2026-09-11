@@ -41,6 +41,7 @@ from who_approved_this.evaluate.approval_match import (
     load_gold,
     load_orgs,
 )
+from who_approved_this.evaluate.rules_diff import score_predictions_by_source
 from who_approved_this.tracks.t1c_predictors import (
     BaselineCopy,
     BaselineVote,
@@ -48,6 +49,7 @@ from who_approved_this.tracks.t1c_predictors import (
     Predictor,
     VoteTitlesLLMNames,
 )
+from who_approved_this.tracks.t1d_draft import mask_names
 
 TRACK = "t1c"
 
@@ -101,12 +103,50 @@ def groups_of(docs: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     return {k: v for k, v in out.items() if len(v) >= MIN_GROUP}
 
 
+def all_names(docs: list[dict[str, Any]], data_dir: Path) -> set[str]:
+    """가릴 이름 — gold 결재선의 이름 + 명부. 이름을 본문에서 추정하지 않는다."""
+    names = {c["name"] for d in docs for c in d["cells"] if c["name"] not in ("", "-", "?")}
+    roster = data_dir / "roster.tsv"
+    if roster.is_file():
+        with roster.open(encoding="utf-8") as fh:
+            names |= {r["name"] for r in csv.DictReader(fh, delimiter="\t") if r.get("name")}
+    return {n for n in names if len(n) >= 2}
+
+
+def cell_outcomes(pred: list[dict[str, Any]], gold_doc: dict[str, list[dict[str, str]]]) -> list[dict[str, Any]]:
+    """칸별 정오와 근거 태그. 값(직위·이름)은 담지 않는다."""
+    from who_approved_this.evaluate.approval_match import normalize_token
+
+    out = []
+    for role in ("기안", "검토", "결재", "협조"):
+        p = [c for c in pred if c["role"] == role]
+        for i, c in enumerate(p):
+            g = gold_doc[role][i] if i < len(gold_doc[role]) else None
+            t_src, _, n_src = c.get("evidence", "?/?").partition("/")
+            name_ok = None
+            if g is not None and g["name"] != "?":
+                name_ok = normalize_token(c["name"]) == normalize_token(g["name"])
+            out.append({"role": role, "title_src": t_src, "name_src": n_src or "?",
+                        "title_ok": g is not None and normalize_token(c["title"]) == normalize_token(g["title"]),
+                        "name_ok": name_ok if g is not None else False})
+    return out
+
+
 def run(
     model: str | None = None,
     max_docs: int | None = None,
     resample: int = 0,
+    rules: tuple[str, ...] = ("induced", "manual"),
+    mask_target: bool = True,
+    extra_predictors: list[Predictor] | None = None,
+    baselines: bool = True,
 ) -> dict[str, Any]:
-    """T1c를 돌리고 결과 JSON을 남긴다. ``model`` 을 주면 llm_local 도 함께 돈다."""
+    """T1c를 돌리고 결과 JSON을 남긴다. ``model`` 을 주면 llm_local 도 함께 돈다.
+
+    ``mask_target`` — 대상 문서 본문의 사람 이름을 가린다. 본문 텍스트 레이어에 결재란이
+    들어 있어 12건 전부 **정답 이름이 프롬프트에 보였다**(2026-09-11 확인). 결재 전 문서에는
+    결재란이 없으므로 가리는 쪽이 실제 조건이다.
+    """
     data_dir = track_data_dir("t1")
     results_dir = track_results_dir(TRACK)
 
@@ -118,10 +158,17 @@ def run(
     groups = groups_of(docs)
     evaluator = ApprovalMatchEvaluator(load_gold(gold_path))
 
-    predictors: list[Predictor] = [BaselineCopy(), BaselineVote()]
-    if model:
+    predictors: list[Predictor] = [BaselineCopy(), BaselineVote()] if baselines else []
+    if model and baselines:
         predictors.append(LocalLLM(model))
         predictors.append(VoteTitlesLLMNames(model))
+    # 늦은 import — t1e_worktype 가 이 모듈의 load_docs 를 부르고, layered 가 t1e 를 부르는 순환을 끊는다
+    from who_approved_this.tracks.t1c_layered import LayeredPredictor
+
+    for r in rules:
+        predictors.append(LayeredPredictor(model, rules=r))
+    predictors.extend(extra_predictors or [])
+    names = all_names(docs, data_dir) if mask_target else set()
 
     started = time.perf_counter()
     results: dict[str, Any] = {}
@@ -131,10 +178,14 @@ def run(
         for dept, members in sorted(groups.items()):
             for target in members:
                 refs = [d for d in members if d["doc_id"] != target["doc_id"]]
+                seen = {**target, "body": mask_names(target["body"], names)} if names else target
                 c0 = time.perf_counter()
-                predicted = predictor.predict(refs, target)
+                predicted = predictor.predict(refs, seen)
                 case_sec = round(time.perf_counter() - c0, 2)
                 scores = evaluator.evaluate({"cells": predicted}, target)
+                gold_doc = evaluator.gold[target["저장파일명"]]
+                g_first = next((c["title"] for c in gold_doc["검토"]), None)
+                p_first = next((c["title"] for c in predicted if c["role"] == "검토"), None)
                 cases.append(
                     {
                         "group": dept,
@@ -148,6 +199,17 @@ def run(
                         "title_accuracy": round(scores["title_accuracy"], 4),
                         "name_accuracy": round(scores["name_accuracy"], 4),
                         "cell_count_match": round(scores["cell_count_match"], 4),
+                        "coop_gold": int(scores["role_협조_gold_cells"]),
+                        "coop_pred": int(scores["role_협조_pred_cells"]),
+                        "coop_hits": int(scores["role_협조_title_hits"]),
+                        "coop_exact": bool(scores["role_협조_count_match"]
+                                           and scores["role_협조_title_hits"] == scores["role_협조_gold_cells"]),
+                        "first_review_ok": g_first == p_first if g_first else None,
+                        # 직위 순서만(이름 없음) — 예측기끼리 케이스별로 비교할 때 쓴다
+                        "pred_titles": [f"{c['role']}:{c['title']}" for c in predicted],
+                        "cells": cell_outcomes(predicted, gold_doc) if any(
+                            "evidence" in c and "/" in c.get("evidence", "") for c in predicted) else [],
+                        "extra": getattr(predictor, "last_trace", None),
                         "failures": [
                             {"role": r, "reason": why} for r, why in evaluator.failures
                         ],
@@ -156,6 +218,8 @@ def run(
         results[predictor.name] = {
             "json_retries": getattr(predictor, "retries", 0),
             "json_failures": getattr(predictor, "failures", 0),
+            "llm_calls": getattr(predictor, "llm_calls", None),
+            "by_evidence": score_predictions_by_source([x for c in cases for x in c["cells"]]),
             "cases": cases,
             "summary": _summarize(cases),
             "by_group": {
@@ -179,6 +243,7 @@ def run(
         "method": "leave-one-out (같은 담당부서 3건 중 2건을 참고로 1건 예측)",
         "ground_truth": "approval_gold.tsv (사람이 직접 만든 정답, 리포 밖)",
         "note": "프롬프트에 들어간 제목·본문·실명은 저장하지 않는다. 점수와 개수만.",
+        "target_names_masked": bool(names),
         "prompt_template": "src/who_approved_this/tracks/t1c_prompt.md",
         "model": model,
         "groups": {g: len(v) for g, v in sorted(groups.items())},
@@ -336,6 +401,13 @@ def _summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "name_accuracy_mean": round(sum(c["name_accuracy"] for c in cases) / n, 4),
         "cell_count_match_mean": round(sum(c["cell_count_match"] for c in cases) / n, 4),
         "cases_title_perfect": sum(1 for c in cases if c["title_accuracy"] == 1.0),
+        # 협조: gold 협조 칸 중 맞힌 칸 / 협조가 칸 수·직위 모두 맞은 케이스
+        "coop_gold_cells": sum(c.get("coop_gold", 0) for c in cases),
+        "coop_cell_hits": sum(c.get("coop_hits", 0) for c in cases),
+        "coop_extra_cells": sum(max(c.get("coop_pred", 0) - c.get("coop_gold", 0), 0) for c in cases),
+        "coop_case_exact": sum(1 for c in cases if c.get("coop_exact")),
+        "first_review_ok": sum(1 for c in cases if c.get("first_review_ok")),
+        "first_review_scored": sum(1 for c in cases if c.get("first_review_ok") is not None),
         "sec_per_case_mean": round(
             sum(c.get("elapsed_sec", 0.0) for c in cases) / n, 2
         ),
@@ -347,12 +419,15 @@ def report(rep: dict[str, Any]) -> None:
     typer.echo(f"[t1c] {rep['method']}")
     typer.echo(f"      묶음: {rep['groups']}  모델: {rep['model'] or '(llm 미실행)'}")
     typer.echo("")
-    typer.echo(f"  {'예측기':22} {'직위만':>7} {'이름':>7} {'칸수':>7}  직위전부맞은케이스")
+    typer.echo(f"      대상 본문 이름 가림: {rep.get('target_names_masked')}")
+    typer.echo(f"  {'예측기':30} {'직위만':>7} {'이름':>7} {'칸수':>7} {'협조칸':>7} {'협조케이스':>6} {'첫검토':>6}  직위전부맞은케이스")
     for name, data in rep["predictors"].items():
         s = data["summary"]
         typer.echo(
-            f"  {name:22} {s['title_accuracy_mean']:6.1%} {s['name_accuracy_mean']:6.1%}"
-            f" {s['cell_count_match_mean']:6.1%}   {s['cases_title_perfect']}/{s['cases']}"
+            f"  {name:30} {s['title_accuracy_mean']:6.1%} {s['name_accuracy_mean']:6.1%}"
+            f" {s['cell_count_match_mean']:6.1%}  {s['coop_cell_hits']}/{s['coop_gold_cells']}(+{s['coop_extra_cells']})"
+            f"  {s['coop_case_exact']:2}/{s['cases']}  {s['first_review_ok']}/{s['first_review_scored']}"
+            f"   {s['cases_title_perfect']}/{s['cases']}"
             f"   케이스당 {s['sec_per_case_mean']:5.1f}s"
             + (
                 f"  (JSON 재시도 {data['json_retries']}, 실패 {data['json_failures']})"

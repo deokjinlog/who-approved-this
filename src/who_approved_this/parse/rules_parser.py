@@ -78,11 +78,17 @@ def build_official_rules(paths: list[Path], org_key: str) -> dict[str, Any]:
     raise NotImplementedError("근거 문서 도착 후 구현")
 
 
-def build_induced_rules(gold_path: Path) -> dict[str, Any]:
+def build_induced_rules(gold_path: Path, generated_at: str = "") -> dict[str, Any]:
     """gold 이력에서 같은 스키마를 **귀납**해 만든다(비교군).
 
     ``meta.source`` 는 ``"induced"``. 규정 문서 없이 관측만으로 어디까지 복원되는지가
     이 함수의 결과이고, 규정본과의 차이가 곧 "규정 없이 가면 틀리는 지점"이다.
-    이건 지금 데이터로도 만들 수 있어 먼저 구현한다.
+    이름은 담지 않는다 — 명부는 따로(:func:`~who_approved_this.parse.approval_layers.build_roster`).
+
+    평가에서는 이 파일을 쓰지 않는다. 전 문서로 귀납하면 대상 문서가 규칙에 새어 들어가므로,
+    t1c 는 케이스마다 참고 문서만으로 :func:`~who_approved_this.parse.approval_layers.induce_org` 를 부른다.
     """
-    raise NotImplementedError("gold 기반 귀납 — ⑤ 단계에서 구현")
+    from who_approved_this.parse.approval_layers import induce_rules
+    from who_approved_this.tracks.t1c_approval_predict import load_docs
+
+    return induce_rules(load_docs(gold_path.parent), generated_at)

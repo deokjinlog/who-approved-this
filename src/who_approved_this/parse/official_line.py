@@ -13,6 +13,7 @@ T6 실측으로 정한 기본값: BM25 후보 5개 + LLM(생각 끔). 후보를 
 
 from __future__ import annotations
 
+import os
 import re
 from datetime import date as _date
 from functools import lru_cache
@@ -25,7 +26,9 @@ from who_approved_this.parse.delegation_lookup import DelegationLookup, load_tab
 from who_approved_this.parse.slot_chain import OrgChart, build_slot_chain, title_level
 from who_approved_this.tracks.t1c_predictors import _THINK_BLOCK, ollama_chat
 
-RULES = Path(__file__).resolve().parents[3] / "rules" / "gapyeong.yaml"
+#: 기관별 공식 규칙 파일. 새 기관은 파일만 바꿔 ``WAT_OFFICIAL_RULES`` 로 준다.
+RULES = Path(os.environ.get("WAT_OFFICIAL_RULES")
+             or Path(__file__).resolve().parents[3] / "rules" / "gapyeong.yaml")
 LEVEL_NAMES = {0: "주무관", 1: "팀장", 2: "과장", 3: "국장", 4: "부군수", 5: "군수"}
 
 PICK_SYSTEM = (
